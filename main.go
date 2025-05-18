@@ -6,8 +6,6 @@ import (
 	"ren/backend-api/src/database"
 	"ren/backend-api/src/models"
 	"ren/backend-api/src/routes"
-	"ren/backend-api/src/service"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -25,13 +23,12 @@ func main() {
 	//automigrate
 	database.DB.AutoMigrate(
 		&models.User{},
-		&models.Order{},
 	)
 
 	//Inisialisasi Server
 	router := gin.Default()
 	
-	routes.ViewRoute(router)
+	// routes.ViewRoute(router)
 
 	router.Use(func (c *gin.Context)  {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
@@ -46,19 +43,19 @@ func main() {
 		c.Next()
 	})
 
-	//setup email service
-	smtpPort, _ := strconv.Atoi(os.Getenv("SMTP_PORT"))
-	emailService := service.EmailService{
-		SMTPHost: os.Getenv("SMTP_HOST"),
-		SMTPPort: smtpPort,
-		Username: os.Getenv("SMTP_USERNAME"),
-		Password: os.Getenv("SMTP_PASSWORD"),
-	}
+	// //setup email service
+	// smtpPort, _ := strconv.Atoi(os.Getenv("SMTP_PORT"))
+	// emailService := service.EmailService{
+	// 	SMTPHost: os.Getenv("SMTP_HOST"),
+	// 	SMTPPort: smtpPort,
+	// 	Username: os.Getenv("SMTP_USERNAME"),
+	// 	Password: os.Getenv("SMTP_PASSWORD"),
+	// }
 
 
 	//Setup Routing
-	routes.UserRoutes(router, database.DB, &emailService)
-	routes.OrderRoutes(router, database.DB, &emailService)
+	routes.UserRoutes(router, database.DB)
+	// routes.OrderRoutes(router, database.DB, &emailService)
 
 	//Server berjalan di port 8080
 	port := os.Getenv("PORT")
