@@ -23,9 +23,9 @@ func ValidatePassword(password string) (bool, string) {
 		return false, "Password atleast have 1 Lowercase!"
 	}
 
-	hasSymbol := regexp.MustCompile(`[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]`).MatchString(password)
-	if !hasSymbol {
-		return false, "Password atleast have 1 Symbol!"
+	hasDigit := regexp.MustCompile(`[0-9]`).MatchString(password)
+	if !hasDigit {
+		return false, "Password must include at least 1 number!"
 	}
 
 	return true, ""
