@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"log"
 	"net/http"
 	"ren/backend-api/src/database"
 	"ren/backend-api/src/middlewares"
@@ -12,82 +11,32 @@ import (
 )
 
 //Login user
-func LoginInit(c *gin.Context) {
-	var input struct {
+func Login(c *gin.Context) {
+	var req struct {
 		Email string `json:"email" binding:"required,email"`
 		Password string `json:"password" binding:"required"`
 	}
 
 	//Bind JSON ke struct
-	if err := c.ShouldBindJSON(&input); err != nil {
+	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	//Search user by email
 	var user models.User
-	if err := database.DB.Where("email = ?", input.Email).First(&user).Error; err != nil {
+	if err := database.DB.Where("email = ?", req.Email).First(&user).Error; err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email or password"})
 		return
 	}
 
-	//Password Check
-	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password)); err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email or password"})
-		return
-	}
-
-	if user.Status != "active" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Your account is not active. Please activate your account first or contact our admin for assistance."})
-		return
-	}
-
-	//set cookie for login
-	c.SetCookie("loginData", user.ID, 300, "/", "", false, true)
-
-	//Send OTP for login
-	_, err := otpService.CreateOTP(user.Email, "login")
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate OTP: " + err.Error()})
-		return
-	}
-	
-	c.JSON(http.StatusOK, gin.H{
-		"Message": "OTP has been sent to your email. Please verify to complete login.",
-	})	
-}
-
-func LoginComplete(c *gin.Context) {
-	var req struct {
-		Email 		string `json:"email" binding:"required"`
-		OTP		 	string `json:"otp" binding:"required"`
-	}
-
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	//Take user data for jwt token
-	var user models.User 
+	//Take user data for jwt token 
 	if err := database.DB.Where("email = ?", req.Email).First(&user).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "User not found!"})
 		return
 	}
 
-	//OTP verivication
-	valid, err := otpService.VerifyOTPByEmail(user.Email, "login", req.OTP)
-	if err != nil || !valid {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid or expired otp"})
-		return
-	}
-
-	if user.Status != "active" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Your account is not active. Please activate your account first or contact our admin for assistance."})
-		return
-	}
-
-	//take user id from cookie
+		//take user id from cookie
 	userID, err := c.Cookie("loginData")
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Login session expired"})
@@ -102,7 +51,7 @@ func LoginComplete(c *gin.Context) {
 
 
 	// //Generate JWT token
-	token, err := middlewares.GenerateToken(user.Username, user.Role, user.Status)
+	token, err := middlewares.GenerateToken(user.Username, user.Role)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
 		return
@@ -111,16 +60,12 @@ func LoginComplete(c *gin.Context) {
 	//delete cookie after login success
 	c.SetCookie("loginData", userID, 300, "/", "", false, true)
 
-
-	//Delete otp after login success
-	err = otpService.DeleteOTP(user.ID, "login")
-	if err != nil {
-		log.Printf("Failed to delete OTP: %v", err)
+	//Password Check
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password)); err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email or password"})
+		return
 	}
 
 	//return token
-	c.JSON(http.StatusOK, gin.H{"token": token})
-
-	log.Printf("User %s logged in successfully", user.ID)
-	log.Printf("OTP verified for user: %s", user.ID)
+	c.JSON(http.StatusOK, gin.H{"token": token})	
 }

@@ -25,7 +25,6 @@ func main() {
 	//automigrate
 	database.DB.AutoMigrate(
 		&models.User{},
-		&models.OTP{},
 		&models.Order{},
 	)
 
@@ -56,14 +55,9 @@ func main() {
 		Password: os.Getenv("SMTP_PASSWORD"),
 	}
 
-	//setup otp service
-	otpService := &service.OTPService{
-		DB: database.DB,
-		EmailService: &emailService,
-	}
 
 	//Setup Routing
-	routes.UserRoutes(router, database.DB, otpService, &emailService)
+	routes.UserRoutes(router, database.DB, &emailService)
 	routes.OrderRoutes(router, database.DB, &emailService)
 
 	//Server berjalan di port 8080

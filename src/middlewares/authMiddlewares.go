@@ -14,11 +14,10 @@ import (
 var secretKey = []byte(os.Getenv("SECRET_KEY"))
 
 //Generate token JWT
-func GenerateToken(username string, role string, status string)(string, error) {
+func GenerateToken(username string, role string)(string, error) {
 	claims := jwt.MapClaims{
 		"username": username,
 		"role": role,
-		"status": status,
 		"exp": time.Now().Add(time.Hour * 3).Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
