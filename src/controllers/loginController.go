@@ -30,13 +30,8 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	//Take user data for jwt token 
-	if err := database.DB.Where("email = ?", req.Email).First(&user).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "User not found!"})
-		return
-	}
-
-		//take user id from cookie
+	
+	//take user id from cookie
 	userID, err := c.Cookie("loginData")
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Login session expired"})

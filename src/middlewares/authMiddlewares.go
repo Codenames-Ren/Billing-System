@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -27,7 +28,14 @@ func GenerateToken(username string, role string)(string, error) {
 //middleware untuk verifikasi token
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		tokenString := c.GetHeader("Authorization")
+		authHeader := c.GetHeader("Authorization")
+		if authHeader == "" || !strings.HasPrefix(authHeader, "Bearer ") {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization header must be in format: Bearer <token>"})
+			c.Abort()
+			return
+		}
+
+		tokenString := strings.TrimSpace(strings.TrimPrefix(authHeader, "Bearer "))
 		if tokenString == "" {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization token required"})
 			c.Abort()
@@ -54,13 +62,6 @@ func AuthMiddleware() gin.HandlerFunc {
 		if !ok || !token.Valid {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token claims"})
 			c.Abort()
-			return
-		}
-
-		//cek status user
-		status, exists := claims["status"]
-		if !exists || status != "active" {
-			c.JSON(http.StatusForbidden, gin.H{"error": "Account is not active"})
 			return
 		}
 
