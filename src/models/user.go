@@ -12,6 +12,7 @@ type User struct {
 	Email 		string 		`gorm:"unique"`
 	Password 	string
 	Role 		string 		`gorm:"default:collector"`
+	Status		string		
 	CreatedAt 	time.Time
 	UpdatedAt 	time.Time
 	DeletedAt 	gorm.DeletedAt `gorm:"index"`
