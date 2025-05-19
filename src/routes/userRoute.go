@@ -13,7 +13,7 @@ func UserRoutes(router *gin.Engine, db *gorm.DB) {
 	userGroup := router.Group("/users")
 	{
 		//Endpoint for Register with OTP
-		// userGroup.POST("/register/init", controllers.RegisterInit)
+		userGroup.POST("/register", controllers.Register)
 		// userGroup.POST("/register/verify", controllers.RegisterComplete)
 		// userGroup.POST("/register/resend-otp", controllers.ResendRegisterOTP)
 
