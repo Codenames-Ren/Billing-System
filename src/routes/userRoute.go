@@ -14,13 +14,9 @@ func UserRoutes(router *gin.Engine, db *gorm.DB) {
 	{
 		//Endpoint for Register with OTP
 		userGroup.POST("/register", controllers.Register)
-		// userGroup.POST("/register/verify", controllers.RegisterComplete)
-		// userGroup.POST("/register/resend-otp", controllers.ResendRegisterOTP)
 
 		//Endpoint for login with otp
 		userGroup.POST("/login", controllers.Login)
-		// userGroup.POST("/login/verify", controllers.LoginComplete)
-		// userGroup.POST("/login/resend-otp", controllers.ResendLoginOTP)
 
 		//Endpoint for reset password
 		// userGroup.POST("/forgot-password", controllers.ForgotPassword)
@@ -54,12 +50,12 @@ func UserRoutes(router *gin.Engine, db *gorm.DB) {
 	}
 
 	//route group admin
-	adminGroup := router.Group("/admin", middlewares.AuthMiddleware(), middlewares.AdminMiddleware())
+	teknisiGroup := router.Group("/teknisi", middlewares.AuthMiddleware(), middlewares.AdminMiddleware())
 	{
-		adminGroup.GET("/dashboard", func(c *gin.Context) {
+		teknisiGroup.GET("/dashboard", func(c *gin.Context) {
 			username, _ := c.Get("username")
 			c.JSON(200, gin.H{
-				"message": "Welcome Admin!",
+				"message": "Welcome Technician!",
 				"admin" : username,
 			})
 		})
@@ -69,9 +65,9 @@ func UserRoutes(router *gin.Engine, db *gorm.DB) {
 	}
 
 	//superadmin
-	// superAdminGroup := router.Group("/sp-admin", middlewares.AuthMiddleware(), middlewares.SuperAdminMiddleware())
+	// AdminGroup := router.Group("/admin", middlewares.AuthMiddleware(), middlewares.SuperAdminMiddleware())
 	// {
-	// 	// superAdminGroup.GET("/users", controllers.GetAllUsers)
-	// 	// superAdminGroup.DELETE("/users/:id", controllers.DeleteUser)
+	// 	AdminGroup.GET("/users", controllers.GetAllUsers)
+	// 	AdminGroup.DELETE("/users/:id", controllers.DeleteUser)
 	// }
 }
