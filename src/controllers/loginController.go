@@ -30,34 +30,17 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	
-	//take user id from cookie
-	userID, err := c.Cookie("loginData")
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Login session expired"})
+
+	//Password Check
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password)); err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email or password"})
 		return
 	}
-
-	//validate user_id
-	if userID != user.ID {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "User ID mismatch"})
-		return
-	}
-
 
 	// //Generate JWT token
 	token, err := middlewares.GenerateToken(user.Username, user.Role)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
-		return
-	}
-	
-	//delete cookie after login success
-	c.SetCookie("loginData", userID, 300, "/", "", false, true)
-
-	//Password Check
-	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password)); err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email or password"})
 		return
 	}
 
