@@ -74,7 +74,7 @@ func AuthMiddleware() gin.HandlerFunc {
 	}
 }
 
-func AdminMiddleware() gin.HandlerFunc {
+func TeknisiMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		role, exists := c.Get("role")
 		if !exists || role != "teknisi" && role != "admin" {
@@ -86,7 +86,7 @@ func AdminMiddleware() gin.HandlerFunc {
 	}
 }
 
-func SuperAdminMiddleware() gin.HandlerFunc {
+func AdminMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		role, exists := c.Get("role")
 		if !exists || role != "admin" {
