@@ -13,6 +13,7 @@ type User struct {
 	Password 	string
 	Role 		string 		`gorm:"default:kasir"`
 	Status		string		
+	ResetAllowed bool		`gorm:"default:false"`
 	CreatedAt 	time.Time
 	UpdatedAt 	time.Time
 	DeletedAt 	gorm.DeletedAt `gorm:"index"`
