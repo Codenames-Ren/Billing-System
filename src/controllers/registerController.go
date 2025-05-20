@@ -34,7 +34,7 @@ func Register(c *gin.Context) {
 	}
 
 	if input.Role == "" {
-		input.Role = "collector"
+		input.Role = "kasir"
 	}
 
 	//Check user has been used or not
@@ -46,7 +46,7 @@ func Register(c *gin.Context) {
 	}
 
 	//prefix id by role
-	prefix := "COL"
+	prefix := "CAS"
 	if input.Role == "teknisi" {
 		prefix = "TKN"
 	}
