@@ -64,10 +64,11 @@ func UserRoutes(router *gin.Engine, db *gorm.DB) {
 		// adminGroup.GET("/users", controllers.GetAllUsers)
 	}
 
-	//superadmin
-	// AdminGroup := router.Group("/admin", middlewares.AuthMiddleware(), middlewares.SuperAdminMiddleware())
-	// {
-	// 	AdminGroup.GET("/users", controllers.GetAllUsers)
-	// 	AdminGroup.DELETE("/users/:id", controllers.DeleteUser)
-	// }
+	//admin
+	AdminGroup := router.Group("/admin", middlewares.AuthMiddleware(), middlewares.AdminMiddleware())
+	{
+		AdminGroup.GET("/users", controllers.GetAllUsers)
+		AdminGroup.GET("/users/:id", controllers.GetAllUsersById)
+		AdminGroup.DELETE("/users/:id", controllers.DeleteUser)
+	}
 }
