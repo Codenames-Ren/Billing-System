@@ -90,14 +90,14 @@
       <!-- Main Content Area -->
       <div class="main-content">
         <div class="header">
-          <h1 class="page-title">Dashboard Penjualan Tiket</h1>
+          <h1 class="page-title">Dashboard Penjualan Bulanan</h1>
           <div>
             <span id="current-date"></span>
           </div>
         </div>
 
         <div class="card">
-          <h2 class="card-title">Grafik Omset Penjualan Bulanan</h2>
+          <h2 class="card-title">Grafik Omset Bulanan</h2>
           <div
             class="chart-container"
             id="monthly-chart"
@@ -108,7 +108,7 @@
         </div>
 
         <div class="card">
-          <h2 class="card-title">Daftar Penjualan Tiket</h2>
+          <h2 class="card-title">Daftar Pelanggan</h2>
           <div class="filter-container">
             <div>
               <label for="month-filter">Bulan:</label>
@@ -150,14 +150,12 @@
             <table id="sales-table">
               <thead>
                 <tr>
-                  <th>ID User</th>
-                  <th>Tiket Konser</th>
-                  <th>Tipe Tiket</th>
-                  <th>Quantity</th>
-                  <th>Harga Satuan</th>
-                  <th>Total Harga</th>
-                  <th>Status</th>
-                  <th>Tanggal</th>
+                  <th>ID Pelanggan</th>
+                  <th>Nama Pelanggan</th>
+                  <th>Paket Yang Dipilih</th>
+                  <th>Harga Perbulan</th>
+                  <th>Status Pembayaran</th>
+                  <th>Tanggal Pembayaran</th>
                 </tr>
               </thead>
               <tbody id="sales-data">
