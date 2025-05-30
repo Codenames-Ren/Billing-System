@@ -43,6 +43,8 @@ func main() {
 		c.Next()
 	})
 
+	routes.ViewRoute(router)
+
 	// //setup email service
 	// smtpPort, _ := strconv.Atoi(os.Getenv("SMTP_PORT"))
 	// emailService := service.EmailService{
