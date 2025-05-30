@@ -270,6 +270,13 @@ window.addEventListener("DOMContentLoaded", () => {
       document.getElementById("login-page").style.display = "flex";
       document.getElementById("username").value = "";
       document.getElementById("password").value = "";
+      Swal.fire({
+        icon: "success",
+        title: "Logout berhasil",
+        text: "Anda akan diarahkan ke halaman Login",
+      }).then(() => {
+        window.location.href = "/home";
+      });
     });
   }
 
