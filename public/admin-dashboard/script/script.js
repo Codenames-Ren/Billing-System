@@ -223,6 +223,14 @@ function setupAuth() {
 
       initDashboard();
       renderSidebarByRole(role);
+      Swal.fire({
+        icon: "success",
+        title: "Berhasil!",
+        text: "Login sukses",
+        confirmButtonText: "OK",
+      }).then(() => {
+        window.location.href = "/home";
+      });
     } catch (err) {
       console.error("Login error:", err);
       Swal.fire("Login Gagal!", err.message, "error");
@@ -272,8 +280,9 @@ window.addEventListener("DOMContentLoaded", () => {
       document.getElementById("password").value = "";
       Swal.fire({
         icon: "success",
-        title: "Logout berhasil",
-        text: "Anda akan diarahkan ke halaman Login",
+        title: "Berhasil!",
+        text: "Berhasil Logout",
+        confirmButtonText: "OK",
       }).then(() => {
         window.location.href = "/home";
       });
