@@ -1,202 +1,6 @@
-// Sample data for monthly sales
-const monthlySalesData = [
-  { month: "Jan", sales: 125000000 },
-  { month: "Feb", sales: 150000000 },
-  { month: "Mar", sales: 180000000 },
-  { month: "Apr", sales: 210000000 },
-  { month: "May", sales: 250000000 },
-  { month: "Jun", sales: 200000000 },
-  { month: "Jul", sales: 300000000 },
-  { month: "Aug", sales: 320000000 },
-  { month: "Sep", sales: 280000000 },
-  { month: "Oct", sales: 350000000 },
-  { month: "Nov", sales: 400000000 },
-  { month: "Dec", sales: 450000000 },
-];
-
-// Expanded sample data for ticket sales
-const ticketSalesData = [
-  {
-    id: "USR-001",
-    concert: "Konser Tahun Baru",
-    type: "VIP",
-    quantity: 2,
-    price: 1500000,
-    status: "active",
-    date: "2025-01-15",
-  },
-  {
-    id: "USR-002",
-    concert: "Konser Valentine",
-    type: "Regular",
-    quantity: 3,
-    price: 750000,
-    status: "active",
-    date: "2025-02-14",
-  },
-  {
-    id: "USR-003",
-    concert: "Konser Musim Semi",
-    type: "VVIP",
-    quantity: 1,
-    price: 3000000,
-    status: "pending",
-    date: "2025-03-21",
-  },
-  {
-    id: "USR-004",
-    concert: "Festival Musik Indie",
-    type: "Regular",
-    quantity: 4,
-    price: 500000,
-    status: "active",
-    date: "2025-04-10",
-  },
-  {
-    id: "USR-005",
-    concert: "Konser Rock Klasik",
-    type: "VIP",
-    quantity: 2,
-    price: 1750000,
-    status: "active",
-    date: "2025-05-05",
-  },
-  {
-    id: "USR-006",
-    concert: "Konser Pop Summer",
-    type: "VVIP",
-    quantity: 1,
-    price: 3500000,
-    status: "active",
-    date: "2025-06-20",
-  },
-  {
-    id: "USR-007",
-    concert: "Festival Jazz",
-    type: "Regular",
-    quantity: 5,
-    price: 600000,
-    status: "pending",
-    date: "2025-07-15",
-  },
-  {
-    id: "USR-008",
-    concert: "Konser Nostalgia 90an",
-    type: "VIP",
-    quantity: 3,
-    price: 1200000,
-    status: "active",
-    date: "2025-08-30",
-  },
-  {
-    id: "USR-009",
-    concert: "Konser Musik Klasik",
-    type: "VVIP",
-    quantity: 2,
-    price: 2500000,
-    status: "active",
-    date: "2025-09-12",
-  },
-  {
-    id: "USR-010",
-    concert: "Halloween Music Fest",
-    type: "Regular",
-    quantity: 6,
-    price: 800000,
-    status: "pending",
-    date: "2025-10-31",
-  },
-  {
-    id: "USR-011",
-    concert: "Jazz Night",
-    type: "VIP",
-    quantity: 2,
-    price: 1800000,
-    status: "active",
-    date: "2025-11-15",
-  },
-  {
-    id: "USR-012",
-    concert: "Konser Tahun Baru",
-    type: "VVIP",
-    quantity: 1,
-    price: 4000000,
-    status: "active",
-    date: "2025-12-31",
-  },
-  {
-    id: "USR-013",
-    concert: "Konser Valentine",
-    type: "Regular",
-    quantity: 2,
-    price: 750000,
-    status: "pending",
-    date: "2025-02-14",
-  },
-  {
-    id: "USR-014",
-    concert: "Festival Musik Indie",
-    type: "VIP",
-    quantity: 3,
-    price: 1500000,
-    status: "active",
-    date: "2025-04-10",
-  },
-  {
-    id: "USR-015",
-    concert: "Konser Pop Summer",
-    type: "Regular",
-    quantity: 4,
-    price: 600000,
-    status: "active",
-    date: "2025-06-20",
-  },
-  {
-    id: "USR-016",
-    concert: "Festival Jazz",
-    type: "VVIP",
-    quantity: 1,
-    price: 3500000,
-    status: "pending",
-    date: "2025-07-15",
-  },
-  {
-    id: "USR-017",
-    concert: "Konser Rock Klasik",
-    type: "Regular",
-    quantity: 5,
-    price: 500000,
-    status: "active",
-    date: "2025-05-05",
-  },
-  {
-    id: "USR-018",
-    concert: "Halloween Music Fest",
-    type: "VIP",
-    quantity: 2,
-    price: 1800000,
-    status: "active",
-    date: "2025-10-31",
-  },
-  {
-    id: "USR-019",
-    concert: "Jazz Night",
-    type: "Regular",
-    quantity: 3,
-    price: 800000,
-    status: "pending",
-    date: "2025-11-15",
-  },
-  {
-    id: "USR-020",
-    concert: "Konser Tahun Baru",
-    type: "VVIP",
-    quantity: 2,
-    price: 3500000,
-    status: "active",
-    date: "2025-12-31",
-  },
-];
+let ticketSalesData = [];
+let currentPage = 1;
+const itemsPerPage = 8;
 
 // Format currency
 function formatRupiah(angka) {
@@ -223,10 +27,6 @@ function createMonthlyChart() {
         </div>
       `;
 }
-
-// Pagination variables
-let currentPage = 1;
-const itemsPerPage = 8;
 
 // Filter and paginate sales data
 function filterAndPaginateSales() {
@@ -387,29 +187,98 @@ function initDashboard() {
 
 // Auth related functions
 function setupAuth() {
-  // Login button
-  document.getElementById("login-btn").addEventListener("click", function () {
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
+  const loginBtn = document.getElementById("login-btn");
+  loginBtn.addEventListener("click", async () => {
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-    // Simple validation - in real app this would check against a database
-    if (username === "admin" && password === "admin123") {
+    if (!username || !password) {
+      Swal.fire("Error", "Username dan password wajib diisi", "error");
+      return;
+    }
+
+    try {
+      const res = await fetch("/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message || "Login Gagal");
+      }
+
+      const data = await res.json();
+      const { token, role } = data;
+
+      //save token and role via local storage
+      localStorage.setItem("auth_token", token);
+      localStorage.setItem("user_role", role);
+
       document.getElementById("login-page").style.display = "none";
       document.getElementById("dashboard").style.display = "flex";
-      initDashboard();
-    } else {
-      alert("Username atau password salah!");
-    }
-  });
 
-  // Logout button
-  document.getElementById("logout-btn").addEventListener("click", function () {
-    document.getElementById("dashboard").style.display = "none";
-    document.getElementById("login-page").style.display = "flex";
-    document.getElementById("username").value = "";
-    document.getElementById("password").value = "";
+      initDashboard();
+      renderSidebarByRole(role);
+    } catch (err) {
+      console.error("Login error:", err);
+      Swal.fire("Login Gagal!", err.message, "error");
+    }
   });
 }
 
+function renderSidebarByRole(role) {
+  const menuItems = document.querySelectorAll(".sidebar-menu .menu-item");
+
+  menuItems.forEach((item) => {
+    const text = item.innerText.trim().toLowerCase();
+
+    if (
+      role === "kasir" &&
+      !["dashboard", "data pelanggan", "logout"].includes(text)
+    ) {
+      item.style.display = "none";
+    } else if (
+      role === "teknisi" &&
+      !["dashboard", "setup mikrotik", "paket wifi", "logout"].includes(text)
+    ) {
+      item.style.display = "none";
+    } else {
+      item.style.display = "flex";
+    }
+  });
+
+  const displayName = role.charAt(0).toUpperCase() + role.slice(1);
+  document.querySelector(".user-name").innerText = displayName;
+}
+
 // Run when the page loads
-window.addEventListener("DOMContentLoaded", setupAuth);
+window.addEventListener("DOMContentLoaded", () => {
+  const token = localStorage.getItem("auth_token");
+  const role = localStorage.getItem("user_role");
+  // Logout button
+  const logoutBtn = document.getElementById("logout-btn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", function () {
+      localStorage.removeItem("auth_token");
+      localStorage.removeItem("user_role");
+
+      document.getElementById("dashboard").style.display = "none";
+      document.getElementById("login-page").style.display = "flex";
+      document.getElementById("username").value = "";
+      document.getElementById("password").value = "";
+    });
+  }
+
+  if (token && role) {
+    document.getElementById("login-page").style.display = "none";
+    document.getElementById("dashboard").style.display = "flex";
+    initDashboard();
+    renderSidebarByRole(role);
+  } else {
+    setupAuth();
+  }
+});

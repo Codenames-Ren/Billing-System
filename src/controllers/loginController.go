@@ -13,7 +13,7 @@ import (
 //Login user
 func Login(c *gin.Context) {
 	var req struct {
-		Email string `json:"email" binding:"required,email"`
+		Username string `json:"username" binding:"required"`
 		Password string `json:"password" binding:"required"`
 	}
 
@@ -23,9 +23,9 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	//Search user by email
+	//Search user by username
 	var user models.User
-	if err := database.DB.Where("email = ?", req.Email).First(&user).Error; err != nil {
+	if err := database.DB.Where("username = ?", req.Username).First(&user).Error; err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email or password"})
 		return
 	}
@@ -45,5 +45,8 @@ func Login(c *gin.Context) {
 	}
 
 	//return token
-	c.JSON(http.StatusOK, gin.H{"token": token})	
+	c.JSON(http.StatusOK, gin.H{
+		"token": token,
+		"role": user.Role,
+		})	
 }

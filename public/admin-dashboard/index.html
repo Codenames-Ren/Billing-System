@@ -4,13 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard Penjualan Tiket Konser</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.1.12/Recharts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
     />
     <link rel="stylesheet" href="/public/admin-dashboard/style/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
     <!-- Login Page (initially shown) -->
@@ -47,14 +48,20 @@
             <i class="fas fa-chart-line"></i>
             <span class="menu-text">Dashboard</span>
           </a>
+
+          <a href="#" class="menu-item">
+            <i class="fas fa-users"></i>
+            <span class="menu-text">Manajemen User</span>
+          </a>
           <a href="#" class="menu-item">
             <i class="fa-solid fa-wrench"></i>
 
             <span class="menu-text">Setup Mikrotik</span>
           </a>
           <a href="#" class="menu-item">
-            <i class="fas fa-users"></i>
-            <span class="menu-text">Manajemen User</span>
+            <i class="fa-solid fa-person"></i>
+
+            <span class="menu-text">Data Pelanggan</span>
           </a>
           <a href="#" class="menu-item">
             <i class="fas fa-wifi"></i>
@@ -91,7 +98,13 @@
 
         <div class="card">
           <h2 class="card-title">Grafik Omset Penjualan Bulanan</h2>
-          <div class="chart-container" id="monthly-chart"></div>
+          <div
+            class="chart-container"
+            id="monthly-chart"
+            style="position: relative; width: 100%; height: 300px"
+          >
+            <canvas id="sales-bar-chart" width="100%" height="60"></canvas>
+          </div>
         </div>
 
         <div class="card">
