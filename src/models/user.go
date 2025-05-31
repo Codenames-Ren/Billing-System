@@ -12,6 +12,7 @@ type User struct {
 	Email 		string 		`gorm:"unique"`
 	Password 	string
 	Role 		string 		`gorm:"default:kasir"`
+	Region		string		
 	Status		string		
 	ResetAllowed bool		`gorm:"default:false"`
 	CreatedAt 	time.Time

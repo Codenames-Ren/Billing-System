@@ -15,10 +15,11 @@ import (
 var secretKey = []byte(os.Getenv("SECRET_KEY"))
 
 //Generate token JWT
-func GenerateToken(username string, role string)(string, error) {
+func GenerateToken(username, role, region string)(string, error) {
 	claims := jwt.MapClaims{
 		"username": username,
 		"role": role,
+		"region": region,
 		"exp": time.Now().Add(time.Hour * 3).Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -68,6 +69,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		//simpan username dan role ke context
 		c.Set("username", claims["username"])
 		c.Set("role", claims["role"])
+		c.Set("region", claims["region"])
 
 		//Lanjut ke endpoint jika token valid
 		c.Next()
