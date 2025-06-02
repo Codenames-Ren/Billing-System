@@ -23,6 +23,8 @@ func main() {
 	//automigrate
 	database.DB.AutoMigrate(
 		&models.User{},
+		&models.Client{},
+		&models.Billing{},
 	)
 
 	//Inisialisasi Server
@@ -57,7 +59,8 @@ func main() {
 
 	//Setup Routing
 	routes.UserRoutes(router, database.DB)
-	// routes.OrderRoutes(router, database.DB, &emailService)
+	routes.ClientRoutes(router)
+	routes.BillingRoutes(router)
 
 	//Server berjalan di port 8080
 	port := os.Getenv("PORT")

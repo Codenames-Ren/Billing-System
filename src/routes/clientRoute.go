@@ -8,7 +8,12 @@ import (
 )
 
 func ClientRoutes(router *gin.Engine) {
-	client := router.Group("/clients", middlewares.AdminMiddleware())
+	client := router.Group("/clients", middlewares.AuthMiddleware(), middlewares.TeknisiMiddleware())
+	{
+		client.GET("/", controllers.GetClientsByRegion)
+		client.POST("/", controllers.CreateNewClient)
+	}
 
-	client.GET("/", controllers.GetClientsByRegion)
+
+
 }

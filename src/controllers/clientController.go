@@ -2,11 +2,14 @@ package controllers
 
 import (
 	"net/http"
+
 	"ren/backend-api/src/database"
 	"ren/backend-api/src/models"
 
 	"github.com/gin-gonic/gin"
 )
+
+
 
 func GetClientsByRegion(c *gin.Context) {
 	role, _:= c.Get("role")
