@@ -34,13 +34,14 @@ type Client struct {
 }
 
 type Billing struct {
-	ID         uint      `gorm:"primaryKey"`
-	ClientID   string    
-	Client     Client    `gorm:"foreignKey:ClientID"`
-	InvoiceNo  string    
-	Status     string    
-	Total      int       
-	DueDate    time.Time 
-	CreatedAt  time.Time
-	UpdatedAt  time.Time
+	ID         	uint      `gorm:"primaryKey"`
+	ClientID   	string    
+	Client     	Client    `gorm:"foreignKey:ClientID"`
+	InvoiceNo  	string    
+	Status     	string    
+	Package 	string
+	Total      	int       
+	DueDate    	time.Time 
+	CreatedAt  	time.Time
+	UpdatedAt  	time.Time
 }
