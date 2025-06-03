@@ -8,10 +8,15 @@ import (
 )
 
 func BillingRoutes(router *gin.Engine) {
-	billing := router.Group("/billing", middlewares.AuthMiddleware())
+	billing := router.Group("/billing", middlewares.AuthMiddleware(), middlewares.BillingAccessMiddleware())
 	{
 		billing.GET("/", controllers.GetBillingByRegion)
-		billing.PUT("/", controllers.UpdateBillingStatus)
+	}
+
+	//only admin who can update status bill
+	billingProtected := router.Group("/billing", middlewares.AuthMiddleware(), middlewares.KasirMiddleware())
+	{
+		billingProtected.PUT("/", controllers.UpdateBillingStatus)
 	}
 
 }
