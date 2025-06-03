@@ -48,6 +48,6 @@ func Login(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"token": token,
 		"role": user.Role,
-		// "region": user.Region,
+		"region": user.Region,
 		})	
 }
