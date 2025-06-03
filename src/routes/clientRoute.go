@@ -8,10 +8,15 @@ import (
 )
 
 func ClientRoutes(router *gin.Engine) {
-	client := router.Group("/clients", middlewares.AuthMiddleware(), middlewares.TeknisiMiddleware())
+	client := router.Group("/clients", middlewares.AuthMiddleware())
 	{
 		client.GET("/", controllers.GetClientsByRegion)
-		client.POST("/", controllers.CreateNewClient)
+	}
+
+	//special admin and technician create new client
+	clientProtected := router.Group("/clients", middlewares.AuthMiddleware(), middlewares.TeknisiMiddleware())
+	{
+				clientProtected.POST("/", controllers.CreateNewClient)
 	}
 
 }
