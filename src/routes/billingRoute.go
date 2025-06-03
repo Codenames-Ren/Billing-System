@@ -11,5 +11,5 @@ func BillingRoutes(router *gin.Engine) {
 	billing := router.Group("/billing", middlewares.AuthMiddleware())
 
 	billing.GET("/", middlewares.BillingAccessMiddleware(), controllers.GetBillingByRegion)
-	// billing.PUT("/:id", middlewares.KasirMiddleware(), controllers.UpdateBillingStatus)
+	billing.PUT("/:id", middlewares.KasirMiddleware(), controllers.UpdateBillingStatus)
 }
