@@ -8,9 +8,10 @@ import (
 )
 
 func BillingRoutes(router *gin.Engine) {
-	billing := router.Group("/billing", middlewares.AuthMiddleware()) 
+	billing := router.Group("/billing", middlewares.AuthMiddleware())
+	{
+		billing.GET("/", controllers.GetBillingByRegion)
+		billing.PUT("/", controllers.UpdateBillingStatus)
+	}
 
-	billing.GET("/", controllers.GetBillingByRegion)
-	billing.PUT("/:id/status", controllers.UpdateBillingStatus)
-	
 }

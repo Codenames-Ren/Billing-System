@@ -14,6 +14,4 @@ func ClientRoutes(router *gin.Engine) {
 		client.POST("/", controllers.CreateNewClient)
 	}
 
-
-
 }
