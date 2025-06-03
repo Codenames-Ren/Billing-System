@@ -19,6 +19,7 @@ func Register(c *gin.Context) {
 		Username 	string `json:"username" binding:"required"`
 		Email 		string `json:"email" binding:"required,email"`
 		Password 	string `json:"password" binding:"required"`
+		// Region		string `json:"region" binding:"required"`
 		Role	 	string `json:"role"`
 	}
 
@@ -87,6 +88,7 @@ func Register(c *gin.Context) {
 		Username: 		strings.TrimSpace(input.Username),
 		Email: 			strings.TrimSpace(input.Email),
 		Password: 		string(hashedPassword),
+		Region: 		strings.TrimSpace(input.Region),
 		Role: 			input.Role,
 		Status: 		"active",
 	}
@@ -100,6 +102,7 @@ func Register(c *gin.Context) {
 	"message": "User registered successfully",
 	"username": user.Username,
 	"email": user.Email,
+	"region": user.Region,
 	"id": user.ID,
 	})
 	

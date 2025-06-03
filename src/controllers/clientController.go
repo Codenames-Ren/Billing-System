@@ -116,16 +116,19 @@ func CreateNewClient(c *gin.Context) {
 }
 
 func GetClientsByRegion(c *gin.Context) {
-	role, _:= c.Get("role")
+	role, _ := c.Get("role")
 	region, _:= c.Get("region")
 
-	if role != "kasir" && role != "admin"{
-		c.JSON(http.StatusForbidden, gin.H{"error": "Access denied"})
-		return
-	}
-
 	var clients []models.Client
-	if err := database.DB.Where("region = ?", region).Find(&clients).Error; err != nil {
+
+	query := database.DB
+
+	if role == "kasir" {
+		query = query.Where("region = ?", region)
+	}
+	
+	
+	if err := query.Find(&clients).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get client data."})
 		return
 	}

@@ -9,29 +9,25 @@ import (
 )
 
 func GetBillingByRegion(c *gin.Context) {
-	role, _:= c.Get("role")
+	role, _ := c.Get("role")
 	region, _:= c.Get("region")
 
-	if role != "kasir" && role != "admin" {
-		c.JSON(http.StatusForbidden, gin.H{"error": "Access Denied!"})
-		return
+	var billings []models.Billing
+	query := database.DB.Joins("JOIN clients ON clients.id = billings.client_id").Preload("Client")
+
+	if role == "kasir" {
+	query = query.Where("clients.region = ?", region)
 	}
 
-	var billings []models.Billing
-	if err := database.DB.Joins("JOIN clients ON clients.id = billings.client_id").Where("clients.region = ?", region).Preload("Client").Find(&billings).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get bill data"})
-		return
+	if err := query.Find(&billings).Error; err != nil {
+	c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get billing data"})
+	return
 	}
 
 	c.JSON(http.StatusOK, billings)
 }
 
 func UpdateBillingStatus(c *gin.Context) {
-	role, _:= c.Get("role")
-	if role != "kasir" && role != "admin" {
-		c.JSON(http.StatusForbidden, gin.H{"error": "Access denied!"})
-		return
-	}
 
 	var req struct {
 		Status string `json:"status"`
