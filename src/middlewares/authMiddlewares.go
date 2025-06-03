@@ -76,6 +76,18 @@ func AuthMiddleware() gin.HandlerFunc {
 	}
 }
 
+func KasirMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		role, exists := c.Get("role")
+		if !exists || role != "kasir" && role != "admin" {
+			c.JSON(http.StatusForbidden, gin.H{"error": "Access forbidden"})
+			c.Abort()
+			return
+		}
+		c.Next()
+	}
+}
+
 func TeknisiMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		role, exists := c.Get("role")
