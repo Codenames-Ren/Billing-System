@@ -19,7 +19,7 @@ func Register(c *gin.Context) {
 		Username 	string `json:"username" binding:"required"`
 		Email 		string `json:"email" binding:"required,email"`
 		Password 	string `json:"password" binding:"required"`
-		// Region		string `json:"region" binding:"required"`
+		Region		string `json:"region" binding:"required"`
 		Role	 	string `json:"role"`
 	}
 
