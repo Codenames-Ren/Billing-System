@@ -16,7 +16,7 @@ func ClientRoutes(router *gin.Engine) {
 	//special admin and technician create new client
 	clientProtected := router.Group("/clients", middlewares.AuthMiddleware(), middlewares.TeknisiMiddleware())
 	{
-		// clientProtected.POST("/", controllers.CreateNewClient)
+		clientProtected.POST("/", controllers.CreateNewClient)
 	}
 
 }
