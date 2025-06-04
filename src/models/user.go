@@ -30,7 +30,7 @@ type Client struct {
 	CreatedAt 			time.Time
 	UpdatedAt 			time.Time
 	
-	Billings []Billing
+	Billings []Billing	
 }
 
 type Billing struct {

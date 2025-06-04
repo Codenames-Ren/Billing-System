@@ -121,7 +121,7 @@ func GetClientsByRegion(c *gin.Context) {
 
 	var clients []models.Client
 
-	query := database.DB
+	query := database.DB.Preload("Billings").Preload("Billings.Client")
 
 	if role == "kasir" {
 		query = query.Where("region = ?", region)
