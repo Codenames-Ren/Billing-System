@@ -11,6 +11,8 @@ func ClientRoutes(router *gin.Engine) {
 	client := router.Group("/clients", middlewares.AuthMiddleware())
 	{
 		client.GET("/", controllers.GetClientsByRegion)
+		client.PUT("/:id/type", controllers.UpdateClientType)
+
 	}
 
 	//special admin and technician create new client

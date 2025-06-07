@@ -3,6 +3,7 @@ package controllers
 import (
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"ren/backend-api/src/database"
@@ -116,22 +117,62 @@ func CreateNewClient(c *gin.Context) {
 }
 
 func GetClientsByRegion(c *gin.Context) {
-	role, _ := c.Get("role")
-	region, _:= c.Get("region")
+	roleInterface, _ := c.Get("role")
+	regionInterface, _ := c.Get("region")
 
+	// Convert interface{} to string dengan aman
+	var role, region string
+	if roleInterface != nil {
+		role = fmt.Sprintf("%v", roleInterface)
+	}
+	if regionInterface != nil {
+		region = fmt.Sprintf("%v", regionInterface)
+	}
+
+	// Debug log
+	fmt.Println("=== DEBUG INFO ===")
+	fmt.Println("Role:", role)
+	fmt.Println("Region:", region)
+	
 	var clients []models.Client
 
 	query := database.DB.Preload("Billings").Preload("Billings.Client")
 
-	if role == "kasir" {
+	// Gunakan strings.ToLower untuk case-insensitive comparison
+	if strings.ToLower(role) == "kasir" {
+		fmt.Println("KASIR detected - filtering by region:", region)
 		query = query.Where("region = ?", region)
+	} else {
+		fmt.Println("NON-KASIR role - showing all data")
 	}
 	
-	
 	if err := query.Find(&clients).Error; err != nil {
+		fmt.Println("Query error:", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get client data."})
 		return
 	}
 
+	fmt.Printf("Found %d clients\n", len(clients))
+
 	c.JSON(http.StatusOK, clients)
+}
+
+func UpdateClientType(c *gin.Context) {
+	var req struct {
+		Type string `json:"type"`
+	}
+
+	id := c.Param("id")
+
+	if err := c.ShouldBindJSON(&req); err != nil || (req.Type != "prepaid" && req.Type != "postpaid") {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Tipe harus 'prepaid' atau 'postpaid'"})
+		return
+	}
+
+	if err := database.DB.Model(&models.Client{}).Where("id = ?", id).Update("type", req.Type).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal mengubah tipe client"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Tipe client berhasil diperbarui"})
 }
