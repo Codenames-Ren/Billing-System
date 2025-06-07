@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Pelanggan - Admin Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/public/admin-dashboard/style/style.css" />
+  </head>
+  <body>
+    <div id="dashboard" style="width: 100%">
+      <!-- Sidebar Navigation -->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-logo">Admin Dashboard</div>
+        </div>
+        <div class="sidebar-menu">
+          <a href="/" class="menu-item">
+            <i class="fas fa-chart-line"></i>
+            <span class="menu-text">Dashboard</span>
+          </a>
+          <a href="#" class="menu-item">
+            <i class="fas fa-users"></i>
+            <span class="menu-text">Manajemen User</span>
+          </a>
+          <a href="#" class="menu-item">
+            <i class="fa-solid fa-wrench"></i>
+            <span class="menu-text">Setup Mikrotik</span>
+          </a>
+          <a href="/clients.html" class="menu-item active">
+            <i class="fa-solid fa-person"></i>
+            <span class="menu-text">Data Pelanggan</span>
+          </a>
+          <a href="#" class="menu-item">
+            <i class="fas fa-wifi"></i>
+            <span class="menu-text">Paket Wifi</span>
+          </a>
+          <a href="#" class="menu-item">
+            <i class="fas fa-file-alt"></i>
+            <span class="menu-text">Laporan</span>
+          </a>
+          <a href="#" class="menu-item">
+            <i class="fas fa-cog"></i>
+            <span class="menu-text">Pengaturan</span>
+          </a>
+        </div>
+        <div class="user-info">
+          <div class="user-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="user-name" id="user-name">User</div>
+          <button class="logout-btn" id="logout-btn">
+            <i class="fas fa-sign-out-alt"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <div class="header">
+          <h1 class="page-title">Data Pelanggan</h1>
+          <div id="current-date"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Daftar Pelanggan & Tagihan</div>
+
+          <div class="filter-container">
+            <label for="status-filter">Status:</label>
+            <select id="status-filter">
+              <option value="">Semua</option>
+              <option value="paid">Paid</option>
+              <option value="unpaid">Unpaid</option>
+            </select>
+            <button class="btn" id="filter-btn">Filter</button>
+            <button class="btn" id="reset-btn">Reset</button>
+          </div>
+
+          <div style="overflow-x: auto">
+            <table id="client-table">
+              <thead>
+                <tr>
+                  <th>Nama</th>
+                  <th>Alamat</th>
+                  <th>Wilayah</th>
+                  <th>Whatsapp</th>
+                  <th>Paket</th>
+                  <th>Tagihan</th>
+                  <th>Status</th>
+                  <th>Jatuh Tempo</th>
+                </tr>
+              </thead>
+              <tbody id="client-table-body">
+                <!-- Data will be populated here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/public/admin-dashboard/script/clients.js"></script>
+  </body>
+</html>
