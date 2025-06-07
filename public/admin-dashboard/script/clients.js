@@ -1,17 +1,21 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const token = localStorage.getItem("auth_token");
+  const role = localStorage.getItem("user_role");
   const tableBody = document.getElementById("client-table-body");
   const filterSelect = document.getElementById("status-filter");
   const filterBtn = document.getElementById("filter-btn");
   const resetBtn = document.getElementById("reset-btn");
 
+  // Format currency function
   function formatRupiah(value) {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
       currency: "IDR",
+      minimumFractionDigits: 0,
     }).format(value);
   }
 
+  // Fetch clients data from API
   async function fetchClients() {
     try {
       const res = await fetch("/clients", {
@@ -27,7 +31,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const data = await res.json();
 
-      // Karena controller return langsung []Client
       if (!Array.isArray(data)) {
         throw new Error("Respon backend tidak sesuai format (bukan array)");
       }
@@ -39,12 +42,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+  // Render table with client data
   async function renderTable(clients, filterStatus = "") {
     tableBody.innerHTML = "";
 
     const filtered = filterStatus
       ? clients.filter((c) => {
-          // Pastikan menggunakan huruf kapital sesuai dengan struktur data
           const status = c?.Billings?.[0]?.Status || c?.billings?.[0]?.Status;
           return status && status.toLowerCase() === filterStatus;
         })
@@ -57,12 +60,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     filtered.forEach((client) => {
-      // Menggunakan huruf kapital sesuai dengan struktur data dari backend
       const billing = client.Billings?.[0] || client.billings?.[0];
       if (!billing) return;
-
-      console.log("ISI CLIENT:", client);
-      console.log("ISI BILLING:", billing);
 
       const row = document.createElement("tr");
 
@@ -106,6 +105,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       tableBody.appendChild(row);
     });
 
+    // Add event listeners for update buttons
     document.querySelectorAll(".update-btn").forEach((btn) => {
       btn.addEventListener("click", async () => {
         const clientId = btn.dataset.client;
@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         ).value;
 
         try {
-          // Update tipe client
+          // Update client type
           const clientResponse = await fetch(`/clients/${clientId}/type`, {
             method: "PUT",
             headers: {
@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             throw new Error("Gagal update tipe client");
           }
 
-          // Update status billing
+          // Update billing status
           const billingResponse = await fetch(`/billing/${billingId}`, {
             method: "PUT",
             headers: {
@@ -149,8 +149,6 @@ document.addEventListener("DOMContentLoaded", async () => {
           }
 
           Swal.fire("Sukses", "Data berhasil diupdate", "success");
-
-          // Refresh data setelah update
           const updatedClients = await fetchClients();
           renderTable(updatedClients, filterSelect.value);
         } catch (err) {
@@ -161,17 +159,90 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  const allClients = await fetchClients();
-  console.log("CLIENTS:", allClients);
-  renderTable(allClients);
+  // Render sidebar based on user role
+  function renderSidebarByRole(role) {
+    const menuItems = document.querySelectorAll(".sidebar-menu .menu-item");
 
-  filterBtn.addEventListener("click", () => {
-    const selected = filterSelect.value;
-    renderTable(allClients, selected);
-  });
+    menuItems.forEach((item) => {
+      const text = item.innerText.trim().toLowerCase();
 
-  resetBtn.addEventListener("click", () => {
-    filterSelect.value = "";
-    renderTable(allClients);
-  });
+      if (
+        role === "kasir" &&
+        !["dashboard", "data pelanggan", "logout"].includes(text)
+      ) {
+        item.style.display = "none";
+      } else if (
+        role === "teknisi" &&
+        !["dashboard", "setup mikrotik", "paket wifi", "logout"].includes(text)
+      ) {
+        item.style.display = "none";
+      } else {
+        item.style.display = "flex";
+      }
+    });
+
+    const displayName = role.charAt(0).toUpperCase() + role.slice(1);
+    const userNameElement = document.querySelector(".user-name");
+    if (userNameElement) {
+      userNameElement.innerText = displayName;
+    }
+  }
+
+  // Setup logout functionality
+  function setupLogout() {
+    const logoutBtn = document.getElementById("logout-btn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", function () {
+        localStorage.removeItem("auth_token");
+        localStorage.removeItem("user_role");
+
+        Swal.fire({
+          icon: "success",
+          title: "Berhasil!",
+          text: "Berhasil Logout",
+          confirmButtonText: "OK",
+        }).then(() => {
+          window.location.href = "/home";
+        });
+      });
+    }
+  }
+
+  // Initialize the page
+  async function initClientPage() {
+    try {
+      if (!token || !role) {
+        window.location.href = "/home";
+        return;
+      }
+
+      renderSidebarByRole(role);
+      setupLogout();
+
+      // Fetch and render client data
+      const allClients = await fetchClients();
+      await renderTable(allClients);
+
+      // Setup filter functionality
+      if (filterBtn) {
+        filterBtn.addEventListener("click", () => {
+          const selected = filterSelect.value;
+          renderTable(allClients, selected);
+        });
+      }
+
+      if (resetBtn) {
+        resetBtn.addEventListener("click", () => {
+          filterSelect.value = "";
+          renderTable(allClients);
+        });
+      }
+    } catch (error) {
+      console.error("Error initializing client page:", error);
+      Swal.fire("Error", "Gagal memuat halaman", "error");
+    }
+  }
+
+  // Initialize the client page
+  await initClientPage();
 });
