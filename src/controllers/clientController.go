@@ -128,11 +128,6 @@ func GetClientsByRegion(c *gin.Context) {
 	if regionInterface != nil {
 		region = fmt.Sprintf("%v", regionInterface)
 	}
-
-	// Debug log
-	fmt.Println("=== DEBUG INFO ===")
-	fmt.Println("Role:", role)
-	fmt.Println("Region:", region)
 	
 	var clients []models.Client
 
@@ -140,19 +135,15 @@ func GetClientsByRegion(c *gin.Context) {
 
 	// Gunakan strings.ToLower untuk case-insensitive comparison
 	if strings.ToLower(role) == "kasir" {
-		fmt.Println("KASIR detected - filtering by region:", region)
 		query = query.Where("region = ?", region)
 	} else {
 		fmt.Println("NON-KASIR role - showing all data")
 	}
 	
 	if err := query.Find(&clients).Error; err != nil {
-		fmt.Println("Query error:", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get client data."})
 		return
 	}
-
-	fmt.Printf("Found %d clients\n", len(clients))
 
 	c.JSON(http.StatusOK, clients)
 }
