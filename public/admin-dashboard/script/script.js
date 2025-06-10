@@ -246,12 +246,14 @@ function renderSidebarByRole(role) {
 
     if (
       role === "kasir" &&
-      !["dashboard", "data pelanggan", "logout"].includes(text)
+      !["data pelanggan", "laporan", "logout"].includes(text)
     ) {
       item.style.display = "none";
     } else if (
       role === "teknisi" &&
-      !["dashboard", "setup mikrotik", "paket wifi", "logout"].includes(text)
+      !["data pelanggan", "setup mikrotik", "paket wifi", "logout"].includes(
+        text
+      )
     ) {
       item.style.display = "none";
     } else {
