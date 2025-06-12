@@ -17,9 +17,9 @@ function updateChart(data) {
   const monthlySales = Array(12).fill(0);
 
   data.forEach((sale) => {
-    const date = new Date(sale.CreatedAt);
+    const date = new Date(sale.date);
     const monthIndex = date.getMonth();
-    const amount = (sale.OrderCount || 0) * (sale.TicketPrice || 0);
+    const amount = sale.price || 0;
     monthlySales[monthIndex] += amount;
   });
 
@@ -270,9 +270,12 @@ async function initDashboard() {
 
   filterAndPaginateSales();
 
+  updateChart(wifiSalesData);
+
   document.getElementById("filter-btn").addEventListener("click", () => {
     currentPage = 1;
     filterAndPaginateSales();
+    updateChart(wifiSalesData);
   });
 
   document.getElementById("reset-btn").addEventListener("click", () => {
@@ -281,6 +284,7 @@ async function initDashboard() {
     document.getElementById("status-filter").value = "";
     currentPage = 1;
     filterAndPaginateSales();
+    updateChart(wifiSalesData);
   });
 
   document.getElementById("export-btn").addEventListener("click", exportData);
