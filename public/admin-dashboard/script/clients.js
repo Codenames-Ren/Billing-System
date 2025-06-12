@@ -158,6 +158,17 @@ document.addEventListener("DOMContentLoaded", async () => {
       `;
 
       tableBody.appendChild(row);
+      const statusSelect = row.querySelector(".status-select");
+      const updateSelector = (select) => {
+        const val = select.value;
+        select.style.color = val === "paid" ? "green" : "red";
+      };
+
+      updateSelector(statusSelect);
+
+      statusSelect.addEventListener("change", () => {
+        updateSelectColor(statusSelect);
+      });
     });
 
     // Add event listeners for update buttons
