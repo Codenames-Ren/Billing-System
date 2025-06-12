@@ -81,13 +81,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function renderTable(clients, filterStatus = "") {
     tableBody.innerHTML = "";
 
-    // const filtered = filterStatus
-    //   ? clients.filter((c) => {
-    //       const status = c?.Billings?.[0]?.Status || c?.billings?.[0]?.Status;
-    //       return status && status.toLowerCase() === filterStatus;
-    //     })
-    //   : clients;
-
     const searchQuery =
       document.getElementById("search-input")?.value.toLowerCase() || "";
 
