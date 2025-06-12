@@ -244,7 +244,11 @@ function populateSalesTable(data) {
       <td>${formatRupiah(rowData.price)}</td>
       <td>${rowData.type}</td>
       <td>${formatRupiah(total)}</td>
-      <td class="status-${rowData.status.toLowerCase()}">
+      <td class="status-label ${
+        rowData.status.toLowerCase() === "paid"
+          ? "status-paid"
+          : "status-unpaid"
+      }">
         ${rowData.status.charAt(0).toUpperCase() + rowData.status.slice(1)}
       </td>
       <td>${dateText}</td>

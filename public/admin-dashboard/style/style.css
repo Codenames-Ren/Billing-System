@@ -197,12 +197,12 @@ select.status-select {
   transition: color 0.3s ease;
   font-weight: bold;
 }
-.status-active {
+.status-paid {
   color: #28a745;
   font-weight: 600;
 }
-.status-pending {
-  color: #ffc107;
+.status-unpaid {
+  color: #ff0000;
   font-weight: 600;
 }
 .filter-container {
