@@ -15,6 +15,41 @@ document.addEventListener("DOMContentLoaded", async () => {
     }).format(value);
   }
 
+  let currentPage = 1;
+  const rowsPerPage = 8;
+  let allClients = [];
+
+  function paginateData(data, page = 1, rows = 8) {
+    const start = (page - 1) * rows;
+    return data.slice(start, start + rows);
+  }
+
+  function renderPagination(totalitems, rows = 8) {
+    const totalPages = Math.ceil(totalitems / rows);
+    const paginationContainer = document.getElementById("pagination");
+    paginationContainer.innerHTML = "";
+
+    if (totalPages <= 1) return;
+
+    for (let i = 1; i <= totalPages; i++) {
+      const btn = document.createElement("button");
+      btn.innerText = i;
+      btn.className = "btn";
+      btn.style.margin = "0 5px";
+      if (i === currentPage) {
+        btn.style.backgroundColor = "#555";
+        btn.style.color = "#fff";
+      }
+
+      btn.addEventListener("click", () => {
+        currentPage = i;
+        renderTable(allClients, filterSelect.value);
+      });
+
+      paginationContainer.appendChild(btn);
+    }
+  }
+
   // Fetch clients data from API
   async function fetchClients() {
     try {
@@ -46,12 +81,32 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function renderTable(clients, filterStatus = "") {
     tableBody.innerHTML = "";
 
-    const filtered = filterStatus
-      ? clients.filter((c) => {
-          const status = c?.Billings?.[0]?.Status || c?.billings?.[0]?.Status;
-          return status && status.toLowerCase() === filterStatus;
-        })
-      : clients;
+    // const filtered = filterStatus
+    //   ? clients.filter((c) => {
+    //       const status = c?.Billings?.[0]?.Status || c?.billings?.[0]?.Status;
+    //       return status && status.toLowerCase() === filterStatus;
+    //     })
+    //   : clients;
+
+    const searchQuery =
+      document.getElementById("search-input")?.value.toLowerCase() || "";
+
+    let filtered = clients;
+
+    if (filterStatus) {
+      filtered = filtered.filter((c) => {
+        const status = c?.Billings?.[0]?.Status || c?.billings?.[0]?.Status;
+        return status && status.toLowerCase() === filterStatus;
+      });
+    }
+
+    if (searchQuery) {
+      filtered = filtered.filter((c) =>
+        (c.Name || c.name || "").toLowerCase().includes(searchQuery)
+      );
+    }
+
+    const paginated = paginateData(filtered, currentPage, rowsPerPage);
 
     if (filtered.length === 0) {
       tableBody.innerHTML =
@@ -59,7 +114,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    filtered.forEach((client) => {
+    paginated.forEach((client) => {
       const billing = client.Billings?.[0] || client.billings?.[0];
       if (!billing) return;
 
@@ -157,6 +212,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       });
     });
+    renderPagination(filtered.length, rowsPerPage);
   }
 
   // Render sidebar based on user role
@@ -222,8 +278,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       setupLogout();
 
       // Fetch and render client data
-      const allClients = await fetchClients();
+      allClients = await fetchClients();
       await renderTable(allClients);
+
+      const searchInput = document.getElementById("search-input");
+      if (searchInput) {
+        searchInput.addEventListener("input", () => {
+          currentPage = 1;
+          renderTable(allClients, filterSelect.value);
+        });
+      }
 
       // Setup filter functionality
       if (filterBtn) {
