@@ -51,3 +51,14 @@ func DeleteUser(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "User deleted successfully!"})
 }
+
+//get client (pelanggan)
+func GetAllClients(c *gin.Context) {
+	var clients []models.Client
+	if err := database.DB.Preload("Billings").Find(&clients).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H {"error": "Failed to fecth client data"})
+		return
+	}
+
+	c.JSON(http.StatusOK, clients)
+}

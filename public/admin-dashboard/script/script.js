@@ -1,4 +1,4 @@
-let ticketSalesData = [];
+let wifiSalesData = [];
 let currentPage = 1;
 const itemsPerPage = 8;
 
@@ -10,22 +10,85 @@ function formatRupiah(angka) {
     minimumFractionDigits: 0,
   }).format(angka);
 }
+let chartInstance = null;
 
-// Create monthly sales chart
+function updateChart(data) {
+  //array
+  const monthlySales = Array(12).fill(0);
+
+  data.forEach((sale) => {
+    const date = new Date(sale.CreatedAt);
+    const monthIndex = date.getMonth();
+    const amount = (sale.OrderCount || 0) * (sale.TicketPrice || 0);
+    monthlySales[monthIndex] += amount;
+  });
+
+  const ctx = document.getElementById("sales-bar-chart").getContext("2d");
+  if (!ctx) {
+    console.warn("Canvas element for chart not found");
+    return;
+  }
+
+  const labels = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "Mei",
+    "Jun",
+    "Jul",
+    "Agu",
+    "Sep",
+    "Okt",
+    "Nov",
+    "Des",
+  ];
+
+  if (chartInstance) {
+    chartInstance.data.datasets[0].data = monthlySales;
+    chartInstance.update();
+  } else {
+    chartInstance = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: "Omset Bulanan (Rp)",
+            backgroundColor: "#4e73df",
+            borderColor: "#4e73df",
+            data: monthlySales,
+            borderRadius: 5,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: "top",
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: function (value) {
+                return "Rp " + value.toLocaleString("id-ID");
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+}
+
+// Display placeholder chart
 function createMonthlyChart() {
-  // This is a placeholder since we can't render actual charts in this environment
-  const chartContainer = document.getElementById("monthly-chart");
-  chartContainer.innerHTML = `
-        <div style="text-align: center; padding: 50px 0;">
-          <p style="font-size: 16px; color: #666;">
-            [Grafik Batang: Omset Penjualan Bulanan]
-          </p>
-          <p style="font-size: 14px; color: #888;">
-            Data Bulan: Jan - Des 2025<br>
-            Range Omset: Rp 125.000.000 - Rp 450.000.000
-          </p>
-        </div>
-      `;
+  console.log("Canvas chart berhasil di load");
 }
 
 // Filter and paginate sales data
@@ -34,8 +97,7 @@ function filterAndPaginateSales() {
   const dayFilter = document.getElementById("day-filter").value;
   const statusFilter = document.getElementById("status-filter").value;
 
-  // Apply filters
-  let filteredData = [...ticketSalesData];
+  let filteredData = [...wifiSalesData];
 
   if (monthFilter) {
     filteredData = filteredData.filter((sale) => {
@@ -65,7 +127,6 @@ function filterAndPaginateSales() {
     "total-sales"
   ).textContent = `Total Omset Penjualan: ${formatRupiah(totalSales)}`;
 
-  // Apply pagination
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   updatePagination(totalPages);
 
@@ -75,7 +136,6 @@ function filterAndPaginateSales() {
     startIndex + itemsPerPage
   );
 
-  // Update table
   populateSalesTable(paginatedData);
 
   return { filteredData, totalPages };
@@ -105,10 +165,8 @@ function updatePagination(totalPages) {
     pagination.appendChild(pageItem);
   }
 
-  // Add next arrow
   pagination.appendChild(nextArrow.cloneNode(true));
 
-  // Set up arrow event listeners
   pagination.querySelector("#prev-page").addEventListener("click", () => {
     if (currentPage > 1) {
       currentPage--;
@@ -124,28 +182,74 @@ function updatePagination(totalPages) {
   });
 }
 
+async function fetchAllClients() {
+  try {
+    const res = await fetch("/admin/clients", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+      },
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || "Gagal mengambil data pelanggan.");
+    }
+
+    const clients = await res.json();
+
+    const salesData = [];
+    clients.forEach((client) => {
+      const billing = client.billings?.[0];
+
+      if (!billing) return; // Lewat kalau billing kosong
+
+      //push data
+      salesData.push({
+        id: billing.InvoiceNo || billing.invoice_no || "-",
+        name: client.Name || client.name || "-", // sesuaikan field casing
+        package: billing.Package || billing.package || "-",
+        price: billing.Total || billing.total || 0,
+        type: client.Type || client.type || "-",
+        status: billing.Status || billing.status || "unpaid",
+        date: billing.DueDate || billing.due_date || null,
+      });
+    });
+
+    return salesData;
+  } catch (err) {
+    Swal.fire("Error", err.message || "Gagal mengambil data", "error");
+    return [];
+  }
+}
+
 // Populate sales table with data
 function populateSalesTable(data) {
   const tableBody = document.getElementById("sales-data");
   tableBody.innerHTML = "";
 
-  data.forEach((sale) => {
-    const total = sale.quantity * sale.price;
+  data.forEach((rowData) => {
+    const total = rowData.price;
 
-    const row = document.createElement("tr");
-    row.innerHTML = `
-          <td>${sale.id}</td>
-          <td>${sale.concert}</td>
-          <td>${sale.type}</td>
-          <td>${sale.quantity}</td>
-          <td>${formatRupiah(sale.price)}</td>
-          <td>${formatRupiah(total)}</td>
-          <td class="status-${sale.status.toLowerCase()}">${
-      sale.status.charAt(0).toUpperCase() + sale.status.slice(1)
-    }</td>
-          <td>${moment(sale.date).format("DD MMM YYYY")}</td>
-        `;
-    tableBody.appendChild(row);
+    // Tentukan format tanggal
+    let dateText = "-";
+    if (rowData.date) {
+      const m = moment(rowData.date);
+      dateText = m.isValid() ? m.format("DD MMM YYYY") : "-";
+    }
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${rowData.id}</td>
+      <td>${rowData.name}</td>
+      <td>${rowData.package}</td>
+      <td>${formatRupiah(rowData.price)}</td>
+      <td>${rowData.type}</td>
+      <td>${formatRupiah(total)}</td>
+      <td class="status-${rowData.status.toLowerCase()}">
+        ${rowData.status.charAt(0).toUpperCase() + rowData.status.slice(1)}
+      </td>
+      <td>${dateText}</td>
+    `;
+    tableBody.appendChild(tr);
   });
 }
 
@@ -155,22 +259,19 @@ function exportData() {
   // In a real implementation, this would generate and download a CSV file
 }
 
-// Initialize the dashboard
-function initDashboard() {
-  // Display current date
+async function initDashboard() {
   const now = new Date();
   document.getElementById("current-date").textContent =
     moment(now).format("dddd, DD MMMM YYYY");
 
-  // Create chart
   createMonthlyChart();
 
-  // Initialize table with pagination
+  wifiSalesData = await fetchAllClients();
+
   filterAndPaginateSales();
 
-  // Add event listeners
   document.getElementById("filter-btn").addEventListener("click", () => {
-    currentPage = 1; // Reset to first page on filter
+    currentPage = 1;
     filterAndPaginateSales();
   });
 

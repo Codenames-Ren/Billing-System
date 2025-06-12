@@ -21,4 +21,10 @@ func ClientRoutes(router *gin.Engine) {
 		clientProtected.POST("/", controllers.CreateNewClient)
 	}
 
+	//only admin for dashboard
+	admin := router.Group("/admin", middlewares.AuthMiddleware(), middlewares.AdminMiddleware())
+	{
+		admin.GET("/clients", controllers.GetAllClients)
+	}
+
 }

@@ -90,14 +90,19 @@
       <!-- Main Content Area -->
       <div class="main-content">
         <div class="header">
-          <h1 class="page-title">Dashboard Penjualan Bulanan</h1>
+          <h1 class="page-title">Dashboard Penjualan Paket Umroh</h1>
           <div>
             <span id="current-date"></span>
           </div>
         </div>
 
         <div class="card">
-          <h2 class="card-title">Grafik Omset Bulanan</h2>
+          <h2
+            class="card-title"
+            style="text-align: center; margin-bottom: 20px"
+          >
+            Grafik Omset Penjualan Bulanan
+          </h2>
           <div
             class="chart-container"
             id="monthly-chart"
@@ -108,7 +113,12 @@
         </div>
 
         <div class="card">
-          <h2 class="card-title">Daftar Pelanggan</h2>
+          <h2
+            class="card-title"
+            style="text-align: center; margin-bottom: 20px"
+          >
+            Daftar Penjualan
+          </h2>
           <div class="filter-container">
             <div>
               <label for="month-filter">Bulan:</label>
@@ -150,10 +160,12 @@
             <table id="sales-table">
               <thead>
                 <tr>
-                  <th>ID Pelanggan</th>
+                  <th>No Invoice</th>
                   <th>Nama Pelanggan</th>
                   <th>Paket Yang Dipilih</th>
                   <th>Harga Perbulan</th>
+                  <th>Tipe Langganan</th>
+                  <th>Total Tagihan</th>
                   <th>Status Pembayaran</th>
                   <th>Tanggal Pembayaran</th>
                 </tr>
