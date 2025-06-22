@@ -389,7 +389,11 @@ function renderSidebarByRole(role) {
 window.addEventListener("DOMContentLoaded", () => {
   const token = localStorage.getItem("auth_token");
   const role = localStorage.getItem("user_role");
-  // Logout button
+  if (!token || !role) {
+    window.location.href = "/login";
+    return;
+  }
+
   const logoutBtn = document.getElementById("logout-btn");
   if (logoutBtn) {
     logoutBtn.addEventListener("click", function () {
@@ -402,7 +406,7 @@ window.addEventListener("DOMContentLoaded", () => {
         text: "Berhasil Logout",
         confirmButtonText: "OK",
       }).then(() => {
-        window.location.href("/login");
+        window.location.href = "/login";
       });
     });
   }
