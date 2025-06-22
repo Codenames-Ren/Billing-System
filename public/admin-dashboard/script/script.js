@@ -121,7 +121,7 @@ function filterAndPaginateSales() {
   // Calculate total sales for all filtered data
   let totalSales = 0;
   filteredData.forEach((sale) => {
-    totalSales += sale.quantity * sale.price;
+    totalSales += sale.price || 0;
   });
   document.getElementById(
     "total-sales"
@@ -259,7 +259,11 @@ function populateSalesTable(data) {
 
 // Export data function
 function exportData() {
-  alert("Data berhasil diekspor ke CSV");
+  Swal.fire({
+    title: "Berhasil!",
+    text: "Data berhasil di export!",
+    icon: "success",
+  });
   // In a real implementation, this would generate and download a CSV file
 }
 
@@ -293,70 +297,6 @@ async function initDashboard() {
 
   document.getElementById("export-btn").addEventListener("click", exportData);
 }
-
-// Auth related functions
-// function setupAuth() {
-//   const loginBtn = document.getElementById("login-btn");
-//   loginBtn.addEventListener("click", async () => {
-//     const username = document.getElementById("username").value.trim();
-//     const password = document.getElementById("password").value.trim();
-
-//     if (!username || !password) {
-//       Swal.fire("Error", "Username dan password wajib diisi", "error");
-//       return;
-//     }
-
-//     try {
-//       const res = await fetch("/users/login", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({ username, password }),
-//       });
-
-//       if (!res.ok) {
-//         const err = await res.json();
-//         throw new Error(err.message || "Login Gagal");
-//       }
-
-//       const data = await res.json();
-//       const { token, role } = data;
-
-//       //save token and role via local storage
-//       localStorage.setItem("auth_token", token);
-//       localStorage.setItem("user_role", role);
-
-//       document.getElementById("login-page").style.display = "none";
-//       document.getElementById("dashboard").style.display = "flex";
-
-//       initDashboard();
-//       renderSidebarByRole(role);
-
-//       Swal.fire({
-//         icon: "success",
-//         title: "Berhasil!",
-//         text: "Login sukses",
-//         confirmButtonText: "OK",
-//       }).then(() => {
-//         setTimeout(() => {
-//           if (role === "admin") {
-//             window.location.href = "/home";
-//           } else if (role === "kasir") {
-//             window.location.href = "/client";
-//           } else if (role === "teknisi") {
-//             window.location.href = "/client";
-//           } else {
-//             Swal.fire("Error", "Login bermasalah. Hubungi Admin", "error");
-//           }
-//         }, 300);
-//       });
-//     } catch (err) {
-//       console.error("Login error:", err);
-//       Swal.fire("Login Gagal!", err.message, "error");
-//     }
-//   });
-// }
 
 function renderSidebarByRole(role) {
   const menuItems = document.querySelectorAll(".sidebar-menu .menu-item");
