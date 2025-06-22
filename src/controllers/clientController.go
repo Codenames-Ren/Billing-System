@@ -10,19 +10,18 @@ import (
 	"ren/backend-api/src/models"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 )
 
 func CreateNewClient(c *gin.Context) {
 	var req struct {
-		Name     string `json:"name" binding:"required"`
-		Address  string `json:"address" binding:"required"`
-		Region   string `json:"region" binding:"required"`
-		Whatsapp string `json:"whatsapp" binding:"required"`
-		Type     string `json:"type" binding:"required"` // prepaid or postpaid
-		Package  string `json:"package" binding:"required"`
-		Total    int    `json:"total" binding:"required"`
-		DueDate  string `json:"due_date" binding:"required"` // format: 2025-06-01
+		Name     string 	`json:"name" binding:"required"`
+		Address  string 	`json:"address" binding:"required"`
+		Region   string 	`json:"region" binding:"required"`
+		Whatsapp string 	`json:"whatsapp" binding:"required"`
+		Type     string 	`json:"type" binding:"required"` // prepaid or postpaid
+		PackageID  string 	`json:"package_id" binding:"required"`
+		// Total    int    	`json:"total" binding:"required"`
+		DueDate  string 	`json:"due_date" binding:"required"` // format: 2025-06-01
 	}
 
 	// input validation
@@ -31,8 +30,22 @@ func CreateNewClient(c *gin.Context) {
 		return
 	}
 
+	var pkg models.Package
+	if err := database.DB.First(&pkg, "id = ?", req.PackageID).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Paket tidak ditemukan"})
+		return
+	}
+
+	var count int64
+	if err := database.DB.Model(&models.Client{}).Count(&count).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal menghitung data client"})
+		return
+	}
+
+	newID := fmt.Sprintf("CL-%03d", count+1)
+
 	// Generate ID and parse date
-	clientID := uuid.New().String()
+	clientID := newID
 	dueDate, err := time.Parse("2006-01-02", req.DueDate)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Format tanggal jatuh tempo harus YYYY-MM-DD"})
@@ -55,13 +68,14 @@ func CreateNewClient(c *gin.Context) {
 	// Generate First Bill
 	invoiceNo := fmt.Sprintf("INV-%s", time.Now().Format("20060102-150405"))
 	billing := models.Billing{
-		ClientID:  clientID,
-		InvoiceNo: invoiceNo,
-		Status:    "unpaid",
-		Package:   req.Package,
-		Total:     req.Total,
-		DueDate:   dueDate,
+		ClientID:  		clientID,
+		InvoiceNo: 		invoiceNo,
+		Status:    		"unpaid",
+		PackageID:   	req.PackageID,
+		Total:     		pkg.Price,
+		DueDate:   		dueDate,
 	}
+
 	if err := database.DB.Create(&billing).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal menyimpan tagihan awal"})
 		return

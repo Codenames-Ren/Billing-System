@@ -25,6 +25,7 @@ func main() {
 		&models.User{},
 		&models.Client{},
 		&models.Billing{},
+		&models.Package{},
 	)
 
 	//Inisialisasi Server
@@ -61,6 +62,7 @@ func main() {
 	routes.UserRoutes(router, database.DB)
 	routes.ClientRoutes(router)
 	routes.BillingRoutes(router)
+	routes.PackageRoutes(router)
 
 	//Server berjalan di port 8080
 	port := os.Getenv("PORT")

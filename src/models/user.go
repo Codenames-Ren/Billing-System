@@ -37,11 +37,23 @@ type Billing struct {
 	ID         	uint      `gorm:"primaryKey"`
 	ClientID   	string    
 	Client     	Client    `gorm:"foreignKey:ClientID"`
+	PackageID 	string
+	Package		Package	  `gorm:"foreignKey:PackageID"`
 	InvoiceNo  	string    
 	Status     	string    
-	Package 	string
 	Total      	int       
 	DueDate    	time.Time 
 	CreatedAt  	time.Time
 	UpdatedAt  	time.Time
+}
+
+type Package struct {
+	ID			string `gorm:"primaryKey"`
+	Name		string `gorm:"unique;not null"` //contoh : "Paket 10Mbps"
+	Speed		string //Contoh : "10Mbps"
+	Price		int		//Harga Perbulan
+	CreatedAt 	time.Time
+	UpdatedAt	time.Time
+
+	Billings	[]Billing `gorm:"foreigKey:PackageID"`
 }
