@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  if (window.location.pathname !== "/client") return;
+
   const token = localStorage.getItem("auth_token");
   const role = localStorage.getItem("user_role");
   const tableBody = document.getElementById("client-table-body");
@@ -264,7 +266,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           text: "Berhasil Logout",
           confirmButtonText: "OK",
         }).then(() => {
-          window.location.href = "/home";
+          window.location.href = "/login";
         });
       });
     }
@@ -274,8 +276,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function initClientPage() {
     try {
       if (!token || !role) {
-        window.location.href = "/home";
-        return;
+        if (window.location.pathname === "/client") {
+          window.location.href = "/login";
+          return;
+        }
       }
 
       renderSidebarByRole(role);

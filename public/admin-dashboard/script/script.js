@@ -295,57 +295,68 @@ async function initDashboard() {
 }
 
 // Auth related functions
-function setupAuth() {
-  const loginBtn = document.getElementById("login-btn");
-  loginBtn.addEventListener("click", async () => {
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
+// function setupAuth() {
+//   const loginBtn = document.getElementById("login-btn");
+//   loginBtn.addEventListener("click", async () => {
+//     const username = document.getElementById("username").value.trim();
+//     const password = document.getElementById("password").value.trim();
 
-    if (!username || !password) {
-      Swal.fire("Error", "Username dan password wajib diisi", "error");
-      return;
-    }
+//     if (!username || !password) {
+//       Swal.fire("Error", "Username dan password wajib diisi", "error");
+//       return;
+//     }
 
-    try {
-      const res = await fetch("/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
+//     try {
+//       const res = await fetch("/users/login", {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify({ username, password }),
+//       });
 
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.message || "Login Gagal");
-      }
+//       if (!res.ok) {
+//         const err = await res.json();
+//         throw new Error(err.message || "Login Gagal");
+//       }
 
-      const data = await res.json();
-      const { token, role } = data;
+//       const data = await res.json();
+//       const { token, role } = data;
 
-      //save token and role via local storage
-      localStorage.setItem("auth_token", token);
-      localStorage.setItem("user_role", role);
+//       //save token and role via local storage
+//       localStorage.setItem("auth_token", token);
+//       localStorage.setItem("user_role", role);
 
-      document.getElementById("login-page").style.display = "none";
-      document.getElementById("dashboard").style.display = "flex";
+//       document.getElementById("login-page").style.display = "none";
+//       document.getElementById("dashboard").style.display = "flex";
 
-      initDashboard();
-      renderSidebarByRole(role);
-      Swal.fire({
-        icon: "success",
-        title: "Berhasil!",
-        text: "Login sukses",
-        confirmButtonText: "OK",
-      }).then(() => {
-        window.location.href = "/home";
-      });
-    } catch (err) {
-      console.error("Login error:", err);
-      Swal.fire("Login Gagal!", err.message, "error");
-    }
-  });
-}
+//       initDashboard();
+//       renderSidebarByRole(role);
+
+//       Swal.fire({
+//         icon: "success",
+//         title: "Berhasil!",
+//         text: "Login sukses",
+//         confirmButtonText: "OK",
+//       }).then(() => {
+//         setTimeout(() => {
+//           if (role === "admin") {
+//             window.location.href = "/home";
+//           } else if (role === "kasir") {
+//             window.location.href = "/client";
+//           } else if (role === "teknisi") {
+//             window.location.href = "/client";
+//           } else {
+//             Swal.fire("Error", "Login bermasalah. Hubungi Admin", "error");
+//           }
+//         }, 300);
+//       });
+//     } catch (err) {
+//       console.error("Login error:", err);
+//       Swal.fire("Login Gagal!", err.message, "error");
+//     }
+//   });
+// }
 
 function renderSidebarByRole(role) {
   const menuItems = document.querySelectorAll(".sidebar-menu .menu-item");
@@ -385,27 +396,23 @@ window.addEventListener("DOMContentLoaded", () => {
       localStorage.removeItem("auth_token");
       localStorage.removeItem("user_role");
 
-      document.getElementById("dashboard").style.display = "none";
-      document.getElementById("login-page").style.display = "flex";
-      document.getElementById("username").value = "";
-      document.getElementById("password").value = "";
       Swal.fire({
         icon: "success",
         title: "Berhasil!",
         text: "Berhasil Logout",
         confirmButtonText: "OK",
       }).then(() => {
-        window.location.href = "/home";
+        window.location.href("/login");
       });
     });
   }
 
   if (token && role) {
-    document.getElementById("login-page").style.display = "none";
-    document.getElementById("dashboard").style.display = "flex";
-    initDashboard();
-    renderSidebarByRole(role);
-  } else {
-    setupAuth();
+    const dashboard = document.getElementById("dashboard");
+    if (dashboard) {
+      dashboard.style.display = "flex";
+      initDashboard();
+      renderSidebarByRole(role);
+    }
   }
 });

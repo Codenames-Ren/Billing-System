@@ -11,7 +11,11 @@ func ViewRoute(router *gin.Engine) {
 	router.Static("/public", "./public")
 
 	router.GET("/", func(c *gin.Context) {
-		c.Redirect(302, "/home")
+		c.Redirect(302, "/login")
+	})
+
+	router.GET("/login", func(c *gin.Context) {
+		c.File("./public/admin-dashboard/login.html")
 	})
 
 	router.GET("/home", func(c *gin.Context) {
