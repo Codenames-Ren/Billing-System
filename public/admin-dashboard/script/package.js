@@ -1,3 +1,29 @@
+document.addEventListener("DOMContentLoaded", function () {
+  const token = localStorage.getItem("auth_token");
+  const role = localStorage.getItem("user_role");
+
+  if (!token || !role) {
+    window.location.href = "/login";
+    return;
+  }
+
+  if (role !== "admin" && role !== "teknisi") {
+    Swal.fire(
+      "Akses Ditolak",
+      "Anda tidak punya akses ke halaman ini",
+      "error"
+    ).then(() => {
+      window.location.href = "/client";
+    });
+    return;
+  }
+
+  updateCurrentDate();
+  loadPackages();
+  setupEventListeners();
+  renderSidebarByRole(role);
+});
+
 // Global variables
 let packages = [];
 let filteredPackages = [];
@@ -292,6 +318,33 @@ function changePage(page) {
   renderPackages();
 }
 
+function renderSidebarByRole(role) {
+  const menuItems = document.querySelectorAll(".sidebar-menu .menu-item");
+
+  menuItems.forEach((item) => {
+    const text = item.innerText.trim().toLowerCase();
+
+    if (
+      role === "kasir" &&
+      !["data pelanggan", "laporan", "logout"].includes(text)
+    ) {
+      item.style.display = "none";
+    } else if (
+      role === "teknisi" &&
+      !["data pelanggan", "setup mikrotik", "paket wifi", "logout"].includes(
+        text
+      )
+    ) {
+      item.style.display = "none";
+    } else {
+      item.style.display = "flex";
+    }
+  });
+
+  const displayName = role.charAt(0).toUpperCase() + role.slice(1);
+  document.querySelector(".user-name").innerText = displayName;
+}
+
 // Handle logout
 function handleLogout() {
   Swal.fire({
@@ -305,6 +358,11 @@ function handleLogout() {
     cancelButtonText: "Batal",
   }).then((result) => {
     if (result.isConfirmed) {
+      Swal.fire({
+        title: "Berhasil!",
+        text: "Logout Berhasil",
+        icon: "success",
+      });
       window.location.href = "/login";
     }
   });
@@ -317,3 +375,15 @@ window.onclick = function (event) {
     closeModal();
   }
 };
+
+document.addEventListener("DOMContentLoaded", function () {
+  updateCurrentDate();
+  loadPackages();
+  setupEventListeners();
+
+  // Tambahkan baris ini:
+  const role = localStorage.getItem("user_role");
+  if (role) {
+    renderSidebarByRole(role);
+  }
+});
