@@ -30,21 +30,23 @@ type Client struct {
 	CreatedAt 			time.Time
 	UpdatedAt 			time.Time
 	
-	Billings []Billing	`json:"billings,omitempty"`
+	Billings 			[]Billing 		`gorm:"foreignKey:ClientID;references:ID" json:"billings,omitempty"`
 }
 
 type Billing struct {
-	ID         	uint      `gorm:"primaryKey"`
-	ClientID   	string    
-	Client     	Client    `gorm:"foreignKey:ClientID"`
-	PackageID 	string
-	Package		Package	  `gorm:"foreignKey:PackageID"`
-	InvoiceNo  	string    
-	Status     	string    
-	Total      	int       
-	DueDate    	time.Time 
-	CreatedAt  	time.Time
-	UpdatedAt  	time.Time
+	ID         uint      `gorm:"primaryKey"`
+	ClientID   string
+	PackageID  string
+
+	Client     Client  `gorm:"foreignKey:ClientID;references:ID"`
+	Package    Package `gorm:"foreignKey:PackageID;references:ID"`
+
+	InvoiceNo  string
+	Status     string
+	Total      int
+	DueDate    time.Time
+	CreatedAt  time.Time
+	UpdatedAt  time.Time
 }
 
 type Package struct {
@@ -55,5 +57,5 @@ type Package struct {
 	CreatedAt 	time.Time
 	UpdatedAt	time.Time
 
-	Billings	[]Billing `gorm:"foreigKey:PackageID"`
+	Billings	[]Billing `gorm:"foreignKey:PackageID"`
 }

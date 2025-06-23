@@ -10,18 +10,21 @@ import (
 
 func GetBillingByRegion(c *gin.Context) {
 	role, _ := c.Get("role")
-	region, _:= c.Get("region")
+	region, _ := c.Get("region")
 
 	var billings []models.Billing
-	query := database.DB.Joins("JOIN clients ON clients.id = billings.client_id").Preload("Client")
+	query := database.DB.
+		Joins("JOIN clients ON clients.id = billings.client_id").
+		Preload("Client").
+		Preload("Package") // ⬅️ Tambahkan ini
 
 	if role == "kasir" {
-	query = query.Where("clients.region = ?", region)
+		query = query.Where("clients.region = ?", region)
 	}
 
 	if err := query.Find(&billings).Error; err != nil {
-	c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get billing data"})
-	return
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get billing data"})
+		return
 	}
 
 	c.JSON(http.StatusOK, billings)

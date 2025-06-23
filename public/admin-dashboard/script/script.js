@@ -201,19 +201,23 @@ async function fetchAllClients() {
       const billing = client.billings?.[0];
 
       if (!billing) return; // Lewat kalau billing kosong
+      console.log("billing:", billing);
+      console.log("package name:", billing.Package?.Name);
+      console.log("billing package full:", billing.Package);
 
       //push data
       salesData.push({
         id: billing.InvoiceNo || billing.invoice_no || "-",
         name: client.Name || client.name || "-", // sesuaikan field casing
-        package: billing.Package || billing.package || "-",
+        package:
+          billing.Package && billing.Package.Name ? billing.Package.Name : "-",
         price: billing.Total || billing.total || 0,
         type: client.Type || client.type || "-",
         status: billing.Status || billing.status || "unpaid",
         date: billing.DueDate || billing.due_date || null,
       });
     });
-
+    console.log("clients:", clients);
     return salesData;
   } catch (err) {
     Swal.fire("Error", err.message || "Gagal mengambil data", "error");

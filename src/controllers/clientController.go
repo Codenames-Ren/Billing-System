@@ -81,6 +81,15 @@ func CreateNewClient(c *gin.Context) {
 		return
 	}
 
+		var fullBilling models.Billing
+		if err := database.DB.
+			Preload("Package").
+			Where("id = ?", billing.ID).
+			First(&fullBilling).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal mengambil billing lengkap"})
+		return
+	}
+
 	c.JSON(http.StatusCreated, gin.H{
 		"message": "New client created successfully!",
 		"client": gin.H{
@@ -94,37 +103,37 @@ func CreateNewClient(c *gin.Context) {
 			"updated_at": client.UpdatedAt,
 			"billings": []gin.H{
 				{
-					"id":         billing.ID,
-					"client_id":  billing.ClientID,
-					"invoice_no": billing.InvoiceNo,
-					"status":     billing.Status,
-					"package":    billing.Package,
-					"total":      billing.Total,
-					"due_date":   billing.DueDate,
-					"created_at": billing.CreatedAt,
-					"updated_at": billing.UpdatedAt,
+					"id":         fullBilling.ID,
+					"client_id":  fullBilling.ClientID,
+					"invoice_no": fullBilling.InvoiceNo,
+					"status":     fullBilling.Status,
+					"package":    fullBilling.Package,
+					"total":      fullBilling.Total,
+					"due_date":   fullBilling.DueDate,
+					"created_at": fullBilling.CreatedAt,
+					"updated_at": fullBilling.UpdatedAt,
 				},
 			},
 		},
 		"billing": gin.H{
-			"id":         billing.ID,
-			"client_id":  billing.ClientID,
-			"invoice_no": billing.InvoiceNo,
-			"status":     billing.Status,
-			"package":    billing.Package,
-			"total":      billing.Total,
-			"due_date":   billing.DueDate,
-			"created_at": billing.CreatedAt,
-			"updated_at": billing.UpdatedAt,
-			"client": gin.H{
-				"id":        client.ID,
-				"name":      client.Name,
-				"address":   client.Address,
-				"region":    client.Region,
-				"whatsapp":  client.Whatsapp,
-				"type":      client.Type,
-				"created_at": client.CreatedAt,
-				"updated_at": client.UpdatedAt,
+					"id":         fullBilling.ID,
+					"client_id":  fullBilling.ClientID,
+					"invoice_no": fullBilling.InvoiceNo,
+					"status":     fullBilling.Status,
+					"package":    fullBilling.Package,
+					"total":      fullBilling.Total,
+					"due_date":   fullBilling.DueDate,
+					"created_at": fullBilling.CreatedAt,
+					"updated_at": fullBilling.UpdatedAt,
+					"client": gin.H{
+						"id":        client.ID,
+						"name":      client.Name,
+						"address":   client.Address,
+						"region":    client.Region,
+						"whatsapp":  client.Whatsapp,
+						"type":      client.Type,
+						"created_at": client.CreatedAt,
+						"updated_at": client.UpdatedAt,
 			},
 		},
 	})
@@ -145,7 +154,8 @@ func GetClientsByRegion(c *gin.Context) {
 	
 	var clients []models.Client
 
-	query := database.DB.Preload("Billings").Preload("Billings.Client")
+	query := database.DB.Preload("Billings").Preload("Billings.Package")
+
 
 	// Gunakan strings.ToLower untuk case-insensitive comparison
 	if strings.ToLower(role) == "kasir" {
