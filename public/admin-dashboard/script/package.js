@@ -408,8 +408,16 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
+  // ⬇️ Sembunyikan card form tambah paket jika bukan admin
+  if (role !== "admin") {
+    const addPackageCard = document.getElementById("add-package-card");
+    if (addPackageCard) {
+      addPackageCard.style.display = "none";
+    }
+  }
+
   updateCurrentDate();
   loadPackages();
-  setupEventListeners(role); // ✅ kirim role ke fungsi
+  setupEventListeners(role);
   renderSidebarByRole(role);
 });
