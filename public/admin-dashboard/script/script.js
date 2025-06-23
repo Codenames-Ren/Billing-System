@@ -200,15 +200,12 @@ async function fetchAllClients() {
     clients.forEach((client) => {
       const billing = client.billings?.[0];
 
-      if (!billing) return; // Lewat kalau billing kosong
-      console.log("billing:", billing);
-      console.log("package name:", billing.Package?.Name);
-      console.log("billing package full:", billing.Package);
+      if (!billing) return;
 
       //push data
       salesData.push({
         id: billing.InvoiceNo || billing.invoice_no || "-",
-        name: client.Name || client.name || "-", // sesuaikan field casing
+        name: client.Name || client.name || "-",
         package:
           billing.Package && billing.Package.Name ? billing.Package.Name : "-",
         price: billing.Total || billing.total || 0,

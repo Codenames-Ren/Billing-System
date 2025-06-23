@@ -19,7 +19,6 @@ func main() {
 
 	//Koneksi ke Database
 	database.ConnectDB()
-	database.DB = database.DB.Debug()
 
 	//automigrate
 	database.DB.AutoMigrate(

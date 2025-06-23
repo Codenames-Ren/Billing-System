@@ -120,7 +120,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         <td>${client.Address || client.address || "-"}</td>
         <td>${client.Region || client.region || "-"}</td>
         <td>${client.Whatsapp || client.whatsapp || "-"}</td>
-        <td>${billing.Package || billing.package || "-"}</td>
+        <td>${
+          billing.Package && billing.Package.Name ? billing.Package.Name : "-"
+        }</td>
         <td>
           <select data-id="${client.ID || client.id}" class="type-select">
             <option value="prepaid" ${
