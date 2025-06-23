@@ -1,29 +1,3 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const token = localStorage.getItem("auth_token");
-  const role = localStorage.getItem("user_role");
-
-  if (!token || !role) {
-    window.location.href = "/login";
-    return;
-  }
-
-  if (role !== "admin" && role !== "teknisi") {
-    Swal.fire(
-      "Akses Ditolak",
-      "Anda tidak punya akses ke halaman ini",
-      "error"
-    ).then(() => {
-      window.location.href = "/client";
-    });
-    return;
-  }
-
-  updateCurrentDate();
-  loadPackages();
-  setupEventListeners();
-  renderSidebarByRole(role);
-});
-
 // Global variables
 let packages = [];
 let filteredPackages = [];
@@ -46,33 +20,39 @@ function updateCurrentDate() {
 }
 
 // Setup event listeners
-function setupEventListeners() {
-  // Form submission
+function setupEventListeners(role) {
+  // ✅ proteksi form untuk non-admin
+  if (role !== "admin") {
+    const submitBtn = document.querySelector(
+      "#package-form button[type='submit']"
+    );
+    const resetBtn = document.getElementById("reset-form-btn");
+    if (submitBtn) submitBtn.disabled = true;
+    if (resetBtn) resetBtn.disabled = true;
+  }
+
   document
     .getElementById("package-form")
     .addEventListener("submit", handleAddPackage);
 
-  // Buttons
   document
     .getElementById("reset-form-btn")
     .addEventListener("click", resetForm);
+
   document
     .getElementById("filter-btn")
     .addEventListener("click", filterPackages);
   document.getElementById("reset-btn").addEventListener("click", resetFilter);
 
-  // Modal
   document.getElementById("close-modal").addEventListener("click", closeModal);
   document
     .getElementById("cancel-edit-btn")
     .addEventListener("click", closeModal);
 
-  // Search input
   document
     .getElementById("search-input")
     .addEventListener("input", filterPackages);
 
-  // Logout
   document.getElementById("logout-btn").addEventListener("click", handleLogout);
 }
 
@@ -102,6 +82,21 @@ async function loadPackages() {
 async function handleAddPackage(e) {
   e.preventDefault();
 
+  const role = localStorage.getItem("user_role");
+  const isEditing = editingPackageId !== null;
+
+  // Validasi interaktif: hanya admin yang boleh tambah/edit
+  if (role !== "admin") {
+    Swal.fire(
+      "Akses Ditolak",
+      isEditing
+        ? "Hanya admin yang boleh mengedit paket."
+        : "Hanya admin yang boleh menambah paket.",
+      "error"
+    );
+    return;
+  }
+
   const formData = new FormData(e.target);
   const packageData = {
     name: formData.get("name"),
@@ -109,7 +104,6 @@ async function handleAddPackage(e) {
     price: parseInt(formData.get("price")),
   };
 
-  const isEditing = editingPackageId !== null;
   const url = isEditing ? `/package/${editingPackageId}` : `/package`;
   const method = isEditing ? "PUT" : "POST";
 
@@ -143,6 +137,17 @@ async function handleAddPackage(e) {
 
 // Handle delete package
 async function handleDeletePackage(packageId) {
+  const role = localStorage.getItem("user_role");
+
+  if (role !== "admin") {
+    Swal.fire(
+      "Akses Ditolak",
+      "Hanya admin yang bisa menghapus paket",
+      "error"
+    );
+    return;
+  }
+
   const result = await Swal.fire({
     title: "Konfirmasi Hapus",
     text: "Apakah Anda yakin ingin menghapus paket ini?",
@@ -179,6 +184,13 @@ async function handleDeletePackage(packageId) {
 
 // Open edit modal
 function openEditModal(pkg) {
+  const role = localStorage.getItem("user_role");
+
+  if (role !== "admin") {
+    Swal.fire("Akses Ditolak", "Hanya admin yang bisa mengedit paket", "error");
+    return;
+  }
+
   editingPackageId = pkg.ID;
   document.getElementById("package-name").value = pkg.Name;
   document.getElementById("package-speed").value = pkg.Speed || "";
@@ -377,13 +389,27 @@ window.onclick = function (event) {
 };
 
 document.addEventListener("DOMContentLoaded", function () {
+  const token = localStorage.getItem("auth_token");
+  const role = localStorage.getItem("user_role");
+
+  if (!token || !role) {
+    window.location.href = "/login";
+    return;
+  }
+
+  if (role !== "admin" && role !== "teknisi") {
+    Swal.fire(
+      "Akses Ditolak",
+      "Anda tidak punya akses ke halaman ini",
+      "error"
+    ).then(() => {
+      window.location.href = "/client";
+    });
+    return;
+  }
+
   updateCurrentDate();
   loadPackages();
-  setupEventListeners();
-
-  // Tambahkan baris ini:
-  const role = localStorage.getItem("user_role");
-  if (role) {
-    renderSidebarByRole(role);
-  }
+  setupEventListeners(role); // ✅ kirim role ke fungsi
+  renderSidebarByRole(role);
 });
