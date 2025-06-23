@@ -2,6 +2,7 @@
 let packages = [];
 let filteredPackages = [];
 let currentPage = 1;
+let editingPackageId = null;
 const itemsPerPage = 10;
 
 // Initialize page
@@ -24,9 +25,6 @@ function setupEventListeners() {
   document
     .getElementById("package-form")
     .addEventListener("submit", handleAddPackage);
-  document
-    .getElementById("edit-package-form")
-    .addEventListener("submit", handleEditPackage);
 
   // Buttons
   document
@@ -85,9 +83,13 @@ async function handleAddPackage(e) {
     price: parseInt(formData.get("price")),
   };
 
+  const isEditing = editingPackageId !== null;
+  const url = isEditing ? `/package/${editingPackageId}` : `/package`;
+  const method = isEditing ? "PUT" : "POST";
+
   try {
-    const response = await fetch("/package", {
-      method: "POST",
+    const response = await fetch(url, {
+      method,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
@@ -96,52 +98,20 @@ async function handleAddPackage(e) {
     });
 
     if (response.ok) {
-      Swal.fire("Berhasil", "Paket berhasil ditambahkan", "success");
+      Swal.fire(
+        "Berhasil",
+        isEditing ? "Paket berhasil diperbarui" : "Paket berhasil ditambahkan",
+        "success"
+      );
       resetForm();
       loadPackages();
     } else {
       const error = await response.json();
-      throw new Error(error.error || "Failed to add package");
+      throw new Error(error.error || "Gagal simpan data paket");
     }
   } catch (error) {
-    console.error("Error adding package:", error);
-    Swal.fire("Error", "Gagal menambahkan paket", "error");
-  }
-}
-
-// Handle edit package
-async function handleEditPackage(e) {
-  e.preventDefault();
-
-  const packageId = document.getElementById("edit-package-id").value;
-  const formData = new FormData(e.target);
-  const packageData = {
-    name: formData.get("name"),
-    speed: formData.get("speed"),
-    price: parseInt(formData.get("price")),
-  };
-
-  try {
-    const response = await fetch(`/package/${packageId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
-      },
-      body: JSON.stringify(packageData),
-    });
-
-    if (response.ok) {
-      Swal.fire("Berhasil", "Paket berhasil diupdate", "success");
-      closeModal();
-      loadPackages();
-    } else {
-      const error = await response.json();
-      throw new Error(error.error || "Failed to update package");
-    }
-  } catch (error) {
-    console.error("Error updating package:", error);
-    Swal.fire("Error", "Gagal mengupdate paket", "error");
+    console.error("Error saving package:", error);
+    Swal.fire("Error", "Gagal menyimpan data paket", "error");
   }
 }
 
@@ -183,11 +153,17 @@ async function handleDeletePackage(packageId) {
 
 // Open edit modal
 function openEditModal(pkg) {
-  document.getElementById("edit-package-id").value = pkg.ID;
-  document.getElementById("edit-package-name").value = pkg.Name;
-  document.getElementById("edit-package-speed").value = pkg.Speed || "";
-  document.getElementById("edit-package-price").value = pkg.Price;
-  document.getElementById("edit-modal").style.display = "block";
+  editingPackageId = pkg.ID;
+  document.getElementById("package-name").value = pkg.Name;
+  document.getElementById("package-speed").value = pkg.Speed || "";
+  document.getElementById("package-price").value = pkg.Price;
+
+  const submitBtn = document.querySelector(
+    "#package-form button[type='submit']"
+  );
+  submitBtn.innerHTML = `<i class="fas fa-save"></i> Simpan Perubahan`;
+  submitBtn.classList.remove("btn-primary");
+  submitBtn.classList.add("btn-warning");
 }
 
 // Close modal
@@ -198,6 +174,17 @@ function closeModal() {
 // Reset form
 function resetForm() {
   document.getElementById("package-form").reset();
+  editingPackageId = null;
+
+  const submitBtn = document.querySelector(
+    "#package-form button[type='submit']"
+  );
+  submitBtn.innerHTML = `<i class="fas fa-plus"></i> Tambah Paket`;
+  submitBtn.classList.remove("btn-warning");
+  submitBtn.classList.add("btn-primary");
+
+  // Fokuskan kembali ke input pertama (opsional)
+  document.getElementById("package-name").focus();
 }
 
 // Filter packages
