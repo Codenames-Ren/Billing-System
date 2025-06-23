@@ -55,7 +55,12 @@ function setupEventListeners() {
 // Load packages from API
 async function loadPackages() {
   try {
-    const response = await fetch("/api/packages");
+    const response = await fetch("/package", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+      },
+    });
+
     if (response.ok) {
       packages = await response.json();
       filteredPackages = [...packages];
@@ -81,10 +86,11 @@ async function handleAddPackage(e) {
   };
 
   try {
-    const response = await fetch("/api/packages", {
+    const response = await fetch("/package", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
       },
       body: JSON.stringify(packageData),
     });
@@ -116,10 +122,11 @@ async function handleEditPackage(e) {
   };
 
   try {
-    const response = await fetch(`/api/packages/${packageId}`, {
+    const response = await fetch(`/package/${packageId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
       },
       body: JSON.stringify(packageData),
     });
@@ -153,8 +160,11 @@ async function handleDeletePackage(packageId) {
 
   if (result.isConfirmed) {
     try {
-      const response = await fetch(`/api/packages/${packageId}`, {
+      const response = await fetch(`/package/${packageId}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+        },
       });
 
       if (response.ok) {
