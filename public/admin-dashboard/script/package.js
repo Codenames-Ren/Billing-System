@@ -250,11 +250,12 @@ function renderPackages() {
               ).replace(/"/g, "&quot;")})">
                 <i class="fas fa-edit"></i> Edit
               </button>
-              <button class="btn btn-sm btn-danger" onclick="handleDeletePackage('${
-                pkg.ID
-              }')">
-                <i class="fas fa-trash"></i> Hapus
               </button>
+            <button class="btn btn-sm btn-danger" onclick="handleDeletePackage('${
+              pkg.ID
+            }')">
+            <i class="fas fa-trash"></i> Hapus
+            </button>
             </td>
           `;
     tbody.appendChild(row);
