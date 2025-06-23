@@ -21,7 +21,12 @@ func ViewRoute(router *gin.Engine) {
 	router.GET("/home", func(c *gin.Context) {
 		c.File("./public/admin-dashboard/index.html")
 	})
+
 	router.GET("/client", func(c *gin.Context) {
 		c.File("./public/admin-dashboard/clients.html")
+	})
+
+	router.GET("/packages", func(c *gin.Context) {
+		c.File("./public/admin-dashboard/package.html")
 	})
 } 

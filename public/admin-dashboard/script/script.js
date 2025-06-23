@@ -214,7 +214,7 @@ async function fetchAllClients() {
         date: billing.DueDate || billing.due_date || null,
       });
     });
-    console.log("clients:", clients);
+
     return salesData;
   } catch (err) {
     Swal.fire("Error", err.message || "Gagal mengambil data", "error");

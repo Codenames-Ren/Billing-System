@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paket WiFi - Admin Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/public/admin-dashboard/style/style.css" />
+  </head>
+  <body>
+    <div id="dashboard" style="width: 100%">
+      <!-- Sidebar Navigation -->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-logo">Admin Dashboard</div>
+        </div>
+        <div class="sidebar-menu">
+          <a href="/home" class="menu-item">
+            <i class="fas fa-chart-line"></i>
+            <span class="menu-text">Dashboard</span>
+          </a>
+          <a href="#" class="menu-item">
+            <i class="fas fa-users"></i>
+            <span class="menu-text">Manajemen User</span>
+          </a>
+          <a href="#" class="menu-item">
+            <i class="fa-solid fa-wrench"></i>
+            <span class="menu-text">Setup Mikrotik</span>
+          </a>
+          <a href="/client" class="menu-item">
+            <i class="fa-solid fa-person"></i>
+            <span class="menu-text">Data Pelanggan</span>
+          </a>
+          <a href="/packages" class="menu-item active">
+            <i class="fas fa-wifi"></i>
+            <span class="menu-text">Paket Wifi</span>
+          </a>
+          <a href="#" class="menu-item">
+            <i class="fas fa-file-alt"></i>
+            <span class="menu-text">Laporan</span>
+          </a>
+          <a href="#" class="menu-item">
+            <i class="fas fa-cog"></i>
+            <span class="menu-text">Pengaturan</span>
+          </a>
+        </div>
+        <div class="user-info">
+          <div class="user-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="user-name" id="user-name">User</div>
+          <button class="logout-btn" id="logout-btn">
+            <i class="fas fa-sign-out-alt"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <div class="header">
+          <h1 class="page-title">Paket WiFi</h1>
+          <div id="current-date"></div>
+        </div>
+
+        <!-- Add Package Form -->
+        <div class="card">
+          <div class="card-title">Tambah Paket Baru</div>
+          <form id="package-form" class="form-grid">
+            <div class="form-group">
+              <label for="package-name">Nama Paket:</label>
+              <input
+                type="text"
+                id="package-name"
+                name="name"
+                required
+                placeholder="Contoh: Paket Premium"
+              />
+            </div>
+            <div class="form-group">
+              <label for="package-speed">Kecepatan:</label>
+              <input
+                type="text"
+                id="package-speed"
+                name="speed"
+                placeholder="Contoh: 50 Mbps"
+              />
+            </div>
+            <div class="form-group">
+              <label for="package-price">Harga (Rp):</label>
+              <input
+                type="number"
+                id="package-price"
+                name="price"
+                required
+                placeholder="Contoh: 250000"
+              />
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Tambah Paket
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                id="reset-form-btn"
+              >
+                <i class="fas fa-undo"></i> Reset
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Package List -->
+        <div class="card">
+          <div class="card-title">Daftar Paket WiFi</div>
+
+          <div class="filter-container">
+            <input
+              type="text"
+              id="search-input"
+              placeholder="Cari Paket"
+              style="padding: 0.5rem"
+            />
+            <button class="btn" id="filter-btn">Filter</button>
+            <button class="btn" id="reset-btn">Reset</button>
+          </div>
+
+          <div class="table-wrapper">
+            <table id="package-table">
+              <thead>
+                <tr>
+                  <th>ID Paket</th>
+                  <th>Nama Paket</th>
+                  <th>Kecepatan</th>
+                  <th>Harga</th>
+                  <th>Jumlah Pelanggan</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="package-table-body">
+                <!-- Data will be populated here -->
+              </tbody>
+            </table>
+          </div>
+          <div
+            id="pagination"
+            style="margin-top: 1rem; text-align: center"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Package Modal -->
+    <div id="edit-modal" class="modal" style="display: none">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Edit Paket</h3>
+          <span class="close" id="close-modal">&times;</span>
+        </div>
+        <form id="edit-package-form">
+          <input type="hidden" id="edit-package-id" />
+          <div class="form-group">
+            <label for="edit-package-name">Nama Paket:</label>
+            <input type="text" id="edit-package-name" name="name" required />
+          </div>
+          <div class="form-group">
+            <label for="edit-package-speed">Kecepatan:</label>
+            <input type="text" id="edit-package-speed" name="speed" />
+          </div>
+          <div class="form-group">
+            <label for="edit-package-price">Harga (Rp):</label>
+            <input
+              type="number"
+              id="edit-package-price"
+              name="price"
+              required
+            />
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-save"></i> Simpan
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              id="cancel-edit-btn"
+            >
+              <i class="fas fa-times"></i> Batal
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="/public/admin-dashboard/script/package.js"></script>
+  </body>
+</html>
