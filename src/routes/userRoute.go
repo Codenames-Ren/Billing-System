@@ -12,10 +12,7 @@ func UserRoutes(router *gin.Engine, db *gorm.DB) {
 
 	userGroup := router.Group("/users")
 	{
-		//Endpoint for Register with OTP
-		userGroup.POST("/register", middlewares.AdminMiddleware(), controllers.Register)
-
-		//Endpoint for login with otp
+		//Endpoint for login
 		userGroup.POST("/login", controllers.Login)
 
 		//Endpoint for reset password
@@ -65,8 +62,11 @@ func UserRoutes(router *gin.Engine, db *gorm.DB) {
 	//admin
 	AdminGroup := router.Group("/admin", middlewares.AuthMiddleware(), middlewares.AdminMiddleware())
 	{
+		//Endpoint for Register
+		AdminGroup.POST("/register", controllers.Register)
 		AdminGroup.GET("/users", controllers.GetAllUsers)
 		AdminGroup.GET("/users/:id", controllers.GetAllUsersById)
+		AdminGroup.PUT("/users/:id", controllers.UpdateUser)
 		AdminGroup.DELETE("/users/:id", controllers.DeleteUser)
 	}
 }

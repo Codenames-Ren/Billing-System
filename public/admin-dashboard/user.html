@@ -10,7 +10,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
     />
-    <link rel="stylesheet" href="/public/admin-dashboard/style/package.css" />
+    <link rel="stylesheet" href="/public/admin-dashboard/style/user.css" />
   </head>
   <body>
     <div id="dashboard" style="width: 100%">
@@ -70,32 +70,32 @@
         <!-- Add User Form -->
         <div class="card" id="add-package-card">
           <div class="card-title">Tambah User Baru</div>
-          <form id="package-form" class="form-grid">
+          <form id="user-form" class="form-grid">
             <div class="form-group">
-              <label for="package-name">Username:</label>
+              <label for="username">Username:</label>
               <input
                 type="text"
-                id="package-name"
+                id="username"
                 name="username"
                 required
                 placeholder="Contoh: john_doe"
               />
             </div>
             <div class="form-group">
-              <label for="package-speed">Email:</label>
+              <label for="user-email">Email:</label>
               <input
                 type="email"
-                id="package-speed"
+                id="user-email"
                 name="email"
                 required
                 placeholder="Contoh: john@example.com"
               />
             </div>
             <div class="form-group">
-              <label for="package-price">Password:</label>
+              <label for="user-password">Password:</label>
               <input
                 type="password"
-                id="package-price"
+                id="user-password"
                 name="password"
                 required
                 placeholder="Minimal 8 karakter"
@@ -172,65 +172,6 @@
             style="margin-top: 1rem; text-align: center"
           ></div>
         </div>
-      </div>
-    </div>
-
-    <!-- Edit User Modal -->
-    <div id="edit-modal" class="modal" style="display: none">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3>Edit User</h3>
-          <span class="close" id="close-modal">&times;</span>
-        </div>
-        <form id="edit-package-form">
-          <input type="hidden" id="edit-package-id" />
-          <div class="form-group">
-            <label for="edit-package-name">Username:</label>
-            <input
-              type="text"
-              id="edit-package-name"
-              name="username"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label for="edit-package-speed">Email:</label>
-            <input type="email" id="edit-package-speed" name="email" required />
-          </div>
-          <div class="form-group">
-            <label for="edit-package-price">Password Baru:</label>
-            <input
-              type="password"
-              id="edit-package-price"
-              name="password"
-              placeholder="Kosongkan jika tidak ingin mengubah password"
-            />
-          </div>
-          <div class="form-group">
-            <label for="edit-user-region">Region:</label>
-            <input type="text" id="edit-user-region" name="region" required />
-          </div>
-          <div class="form-group">
-            <label for="edit-user-role">Role:</label>
-            <select id="edit-user-role" name="role" required>
-              <option value="">Pilih Role</option>
-              <option value="kasir">Kasir</option>
-              <option value="teknisi">Teknisi</option>
-            </select>
-          </div>
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary">
-              <i class="fas fa-save"></i> Simpan
-            </button>
-            <button
-              type="button"
-              class="btn btn-secondary"
-              id="cancel-edit-btn"
-            >
-              <i class="fas fa-times"></i> Batal
-            </button>
-          </div>
-        </form>
       </div>
     </div>
     <script src="/public/admin-dashboard/script/user.js"></script>

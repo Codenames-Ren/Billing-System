@@ -5,13 +5,6 @@ let currentPage = 1;
 let editingPackageId = null;
 const itemsPerPage = 10;
 
-// Initialize page
-document.addEventListener("DOMContentLoaded", function () {
-  updateCurrentDate();
-  loadusers();
-  setupEventListeners();
-});
-
 // Update current date
 function updateCurrentDate() {
   const now = moment();
@@ -21,10 +14,9 @@ function updateCurrentDate() {
 
 // Setup event listeners
 function setupEventListeners(role) {
-  // ✅ proteksi form untuk non-admin
   if (role !== "admin") {
     const submitBtn = document.querySelector(
-      "#package-form button[type='submit']"
+      "#user-form button[type='submit']"
     );
     const resetBtn = document.getElementById("reset-form-btn");
     if (submitBtn) submitBtn.disabled = true;
@@ -32,7 +24,7 @@ function setupEventListeners(role) {
   }
 
   document
-    .getElementById("package-form")
+    .getElementById("user-form")
     .addEventListener("submit", handleAddUser);
 
   document
@@ -41,11 +33,6 @@ function setupEventListeners(role) {
 
   document.getElementById("filter-btn").addEventListener("click", filterUsers);
   document.getElementById("reset-btn").addEventListener("click", resetFilter);
-
-  document.getElementById("close-modal").addEventListener("click", closeModal);
-  document
-    .getElementById("cancel-edit-btn")
-    .addEventListener("click", closeModal);
 
   document
     .getElementById("search-input")
@@ -86,18 +73,6 @@ async function handleAddUser(e) {
   const role = localStorage.getItem("user_role");
   const isEditing = editingPackageId !== null;
 
-  // Validasi interaktif: hanya admin yang boleh tambah/edit
-  if (role !== "admin") {
-    Swal.fire(
-      "Akses Ditolak",
-      isEditing
-        ? "Hanya admin yang boleh mengedit user."
-        : "Hanya admin yang boleh menambah user.",
-      "error"
-    );
-    return;
-  }
-
   const formData = new FormData(e.target);
   const userData = {
     username: formData.get("username"),
@@ -107,6 +82,12 @@ async function handleAddUser(e) {
     role: formData.get("role"),
   };
 
+  // ✅ Validasi SETELAH deklarasi userData
+  if (!userData.username) {
+    Swal.fire("Error", "Username tidak boleh kosong", "error");
+    return;
+  }
+
   // Untuk edit, jangan kirim password jika kosong
   if (isEditing && !userData.password) {
     delete userData.password;
@@ -114,7 +95,7 @@ async function handleAddUser(e) {
 
   const url = isEditing
     ? `/admin/users/${editingPackageId}`
-    : `/users/register`;
+    : `/admin/register`;
   const method = isEditing ? "PUT" : "POST";
 
   try {
@@ -139,12 +120,55 @@ async function handleAddUser(e) {
       resetForm();
       loadusers();
     } else {
-      const error = await response.json();
+      const errorText = await response.text();
+      console.error("Raw error:", errorText);
+      const error = JSON.parse(errorText);
       throw new Error(error.error || "Gagal simpan data user");
     }
   } catch (error) {
     console.error("Error saving user:", error);
     Swal.fire("Error", error.message || "Gagal menyimpan data user", "error");
+  }
+}
+
+async function handleEditUser(e) {
+  e.preventDefault();
+
+  const userId = document.getElementById("edit-user-id").value;
+  const formData = new FormData(e.target);
+
+  const updatedUser = {
+    username: formData.get("username"),
+    email: formData.get("email"),
+    password: formData.get("password"), // kosong jika tidak diisi
+    region: formData.get("region"),
+    role: formData.get("role"),
+  };
+
+  if (!updatedUser.password) {
+    delete updatedUser.password;
+  }
+
+  try {
+    const response = await fetch(`/admin/users/${userId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+      },
+      body: JSON.stringify(updatedUser),
+    });
+
+    if (response.ok) {
+      Swal.fire("Berhasil", "User berhasil diperbarui", "success");
+      loadusers();
+    } else {
+      const err = await response.json();
+      throw new Error(err.error || "Gagal update user");
+    }
+  } catch (error) {
+    console.error("Error updating user:", error);
+    Swal.fire("Error", error.message, "error");
   }
 }
 
@@ -201,39 +225,60 @@ function openEditModal(user) {
   }
 
   editingPackageId = user.ID;
-  document.getElementById("package-name").value = user.Username;
-  document.getElementById("package-speed").value = user.Email;
-  document.getElementById("package-price").value = ""; // Kosongkan password
-  document.getElementById("user-region").value = user.Region;
-  document.getElementById("user-role").value = user.Role;
 
-  const submitBtn = document.querySelector(
-    "#package-form button[type='submit']"
-  );
-  submitBtn.innerHTML = `<i class="fas fa-save"></i> Simpan Perubahan`;
-  submitBtn.classList.remove("btn-primary");
-  submitBtn.classList.add("btn-warning");
-}
+  const usernameField = document.getElementById("username");
+  const emailField = document.getElementById("user-email");
+  const passwordField = document.getElementById("user-password");
+  const regionField = document.getElementById("user-region");
+  const roleField = document.getElementById("user-role");
 
-// Close modal
-function closeModal() {
-  document.getElementById("edit-modal").style.display = "none";
+  // Set values dengan logging
+  if (usernameField) {
+    usernameField.value = user.Username || "";
+  } else {
+    Swal.Fire({
+      title: "Warning",
+      text: "Username tidak ditemukan",
+      icon: "warning",
+    });
+  }
+
+  if (emailField) {
+    emailField.value = user.Email || "";
+  }
+
+  if (passwordField) {
+    passwordField.value = ""; // Kosongkan password
+  }
+
+  if (regionField) {
+    regionField.value = user.Region || "";
+  }
+
+  if (roleField) {
+    roleField.value = user.Role || "";
+  }
+
+  const submitBtn = document.querySelector("#user-form button[type='submit']");
+  if (submitBtn) {
+    submitBtn.innerHTML = `<i class="fas fa-save"></i> Simpan Perubahan`;
+    submitBtn.classList.remove("btn-primary");
+    submitBtn.classList.add("btn-warning");
+  }
 }
 
 // Reset form
 function resetForm() {
-  document.getElementById("package-form").reset();
+  document.getElementById("user-form").reset();
   editingPackageId = null;
 
-  const submitBtn = document.querySelector(
-    "#package-form button[type='submit']"
-  );
+  const submitBtn = document.querySelector("#user-form button[type='submit']");
   submitBtn.innerHTML = `<i class="fas fa-plus"></i> Tambah User`;
   submitBtn.classList.remove("btn-warning");
   submitBtn.classList.add("btn-primary");
 
   // Fokuskan kembali ke input pertama (opsional)
-  document.getElementById("package-name").focus();
+  document.getElementById("username").focus();
 }
 
 // Filter users
@@ -263,7 +308,18 @@ function resetFilter() {
   renderUsers();
 }
 
-// Render users table
+function handleEditButtonClick(button) {
+  const user = {
+    ID: button.dataset.id,
+    Username: button.dataset.username,
+    Email: button.dataset.email,
+    Region: button.dataset.region,
+    Role: button.dataset.role,
+  };
+
+  openEditModal(user);
+}
+
 function renderUsers() {
   const tbody = document.getElementById("package-table-body");
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -294,14 +350,18 @@ function renderUsers() {
             <td>${roleBadge}</td>
             <td>${statusBadge}</td>
             <td>
-              <button class="btn btn-sm btn-warning" onclick="openEditModal(${JSON.stringify(
-                user
-              ).replace(/"/g, "&quot;")})">
-                <i class="fas fa-edit"></i> Edit
-              </button>
-              <button class="btn btn-sm btn-danger" onclick="handleDeleteUser('${
-                user.ID
-              }')">
+            <button
+            class="btn btn-sm btn-warning"
+            data-id="${user.ID}"
+            data-username="${user.Username}"
+            data-email="${user.Email}"
+            data-region="${user.Region}"
+            data-role="${user.Role}"
+            onclick="handleEditButtonClick(this)"
+            >
+            <i class="fas fa-edit"></i> Edit
+            </button>
+              <button class="btn btn-sm btn-danger" onclick="handleDeleteUser('${user.ID}')">
                 <i class="fas fa-trash"></i> Hapus
               </button>
             </td>
@@ -401,14 +461,6 @@ function handleLogout() {
   });
 }
 
-// Close modal when clicking outside
-window.onclick = function (event) {
-  const modal = document.getElementById("edit-modal");
-  if (event.target === modal) {
-    closeModal();
-  }
-};
-
 document.addEventListener("DOMContentLoaded", function () {
   const token = localStorage.getItem("auth_token");
   const role = localStorage.getItem("user_role");
@@ -429,14 +481,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
-  //Sembunyikan card form tambah user jika bukan admin
-  if (role !== "admin") {
-    const addPackageCard = document.getElementById("add-package-card");
-    if (addPackageCard) {
-      addPackageCard.style.display = "none";
-    }
-  }
-
+  // Render & load data
   updateCurrentDate();
   loadusers();
   setupEventListeners(role);
