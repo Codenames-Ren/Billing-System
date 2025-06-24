@@ -1,3 +1,5 @@
+//Note: belum ada validasi khusus jika saat update ada username yang sama
+
 // Global variables
 let users = [];
 let filteredUsers = [];
@@ -455,8 +457,14 @@ function handleLogout() {
     if (result.isConfirmed) {
       localStorage.removeItem("auth_token");
       localStorage.removeItem("user_role");
-      Swal.fire("Berhasil!", "Logout Berhasil", "success");
-      window.location.href = "/login";
+
+      Swal.fire({
+        title: "Berhasil!",
+        text: "Logout Berhasil",
+        icon: "success",
+      }).then(() => {
+        window.location.href = "/login";
+      });
     }
   });
 }
@@ -470,7 +478,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
-  if (role !== "admin") {
+  if (role !== "admin" && role !== "teknisi") {
     Swal.fire(
       "Akses Ditolak",
       "Anda tidak punya akses ke halaman ini",
@@ -481,7 +489,14 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
-  // Render & load data
+  //Sembunyikan card form tambah paket jika bukan admin
+  if (role !== "admin") {
+    const addPackageCard = document.getElementById("add-package-card");
+    if (addPackageCard) {
+      addPackageCard.style.display = "none";
+    }
+  }
+
   updateCurrentDate();
   loadusers();
   setupEventListeners(role);

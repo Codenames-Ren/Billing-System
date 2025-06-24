@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
       Swal.fire({
         icon: "success",
         title: "Berhasil!",
-        text: "Login sukses",
+        text: `Selamat datang ${role}`,
         confirmButtonText: "OK",
       }).then(() => {
         // Redirect ke halaman sesuai role

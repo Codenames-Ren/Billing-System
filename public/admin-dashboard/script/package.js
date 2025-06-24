@@ -370,12 +370,16 @@ function handleLogout() {
     cancelButtonText: "Batal",
   }).then((result) => {
     if (result.isConfirmed) {
+      localStorage.removeItem("auth_token");
+      localStorage.removeItem("user_role");
+
       Swal.fire({
         title: "Berhasil!",
         text: "Logout Berhasil",
         icon: "success",
+      }).then(() => {
+        window.location.href = "/login";
       });
-      window.location.href = "/login";
     }
   });
 }
