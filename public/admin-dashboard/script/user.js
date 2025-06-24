@@ -1,6 +1,6 @@
 // Global variables
-let packages = [];
-let filteredPackages = [];
+let users = [];
+let filteredUsers = [];
 let currentPage = 1;
 let editingPackageId = null;
 const itemsPerPage = 10;
@@ -8,7 +8,7 @@ const itemsPerPage = 10;
 // Initialize page
 document.addEventListener("DOMContentLoaded", function () {
   updateCurrentDate();
-  loadPackages();
+  loadusers();
   setupEventListeners();
 });
 
@@ -33,15 +33,13 @@ function setupEventListeners(role) {
 
   document
     .getElementById("package-form")
-    .addEventListener("submit", handleAddPackage);
+    .addEventListener("submit", handleAddUser);
 
   document
     .getElementById("reset-form-btn")
     .addEventListener("click", resetForm);
 
-  document
-    .getElementById("filter-btn")
-    .addEventListener("click", filterPackages);
+  document.getElementById("filter-btn").addEventListener("click", filterUsers);
   document.getElementById("reset-btn").addEventListener("click", resetFilter);
 
   document.getElementById("close-modal").addEventListener("click", closeModal);
@@ -51,35 +49,38 @@ function setupEventListeners(role) {
 
   document
     .getElementById("search-input")
-    .addEventListener("input", filterPackages);
+    .addEventListener("input", filterUsers);
 
   document.getElementById("logout-btn").addEventListener("click", handleLogout);
 }
 
-// Load packages from API
-async function loadPackages() {
+// Load users from API
+async function loadusers() {
   try {
-    const response = await fetch("/package", {
+    const response = await fetch("/admin/users", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
       },
     });
 
     if (response.ok) {
-      packages = await response.json();
-      filteredPackages = [...packages];
-      renderPackages();
+      const result = await response.json();
+
+      users = result.users || [];
+      filteredUsers = [...users];
+
+      renderUsers();
     } else {
-      throw new Error("Failed to load packages");
+      throw new Error("Failed to load users");
     }
   } catch (error) {
-    console.error("Error loading packages:", error);
-    Swal.fire("Error", "Gagal memuat data paket", "error");
+    console.error("Error loading users:", error);
+    Swal.fire("Error", "Gagal memuat data user", "error");
   }
 }
 
-// Handle add package
-async function handleAddPackage(e) {
+// Handle add user
+async function handleAddUser(e) {
   e.preventDefault();
 
   const role = localStorage.getItem("user_role");
@@ -90,21 +91,30 @@ async function handleAddPackage(e) {
     Swal.fire(
       "Akses Ditolak",
       isEditing
-        ? "Hanya admin yang boleh mengedit paket."
-        : "Hanya admin yang boleh menambah paket.",
+        ? "Hanya admin yang boleh mengedit user."
+        : "Hanya admin yang boleh menambah user.",
       "error"
     );
     return;
   }
 
   const formData = new FormData(e.target);
-  const packageData = {
-    name: formData.get("name"),
-    speed: formData.get("speed"),
-    price: parseInt(formData.get("price")),
+  const userData = {
+    username: formData.get("username"),
+    email: formData.get("email"),
+    password: formData.get("password"),
+    region: formData.get("region"),
+    role: formData.get("role"),
   };
 
-  const url = isEditing ? `/package/${editingPackageId}` : `/package`;
+  // Untuk edit, jangan kirim password jika kosong
+  if (isEditing && !userData.password) {
+    delete userData.password;
+  }
+
+  const url = isEditing
+    ? `/admin/users/${editingPackageId}`
+    : `/users/register`;
   const method = isEditing ? "PUT" : "POST";
 
   try {
@@ -114,43 +124,42 @@ async function handleAddPackage(e) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
       },
-      body: JSON.stringify(packageData),
+      body: JSON.stringify(userData),
     });
 
     if (response.ok) {
+      const result = await response.json();
       Swal.fire(
         "Berhasil",
-        isEditing ? "Paket berhasil diperbarui" : "Paket berhasil ditambahkan",
+        isEditing
+          ? "User berhasil diperbarui"
+          : `User berhasil ditambahkan dengan ID: ${result.id}`,
         "success"
       );
       resetForm();
-      loadPackages();
+      loadusers();
     } else {
       const error = await response.json();
-      throw new Error(error.error || "Gagal simpan data paket");
+      throw new Error(error.error || "Gagal simpan data user");
     }
   } catch (error) {
-    console.error("Error saving package:", error);
-    Swal.fire("Error", "Gagal menyimpan data paket", "error");
+    console.error("Error saving user:", error);
+    Swal.fire("Error", error.message || "Gagal menyimpan data user", "error");
   }
 }
 
-// Handle delete package
-async function handleDeletePackage(packageId) {
+// Handle delete user
+async function handleDeleteUser(userId) {
   const role = localStorage.getItem("user_role");
 
   if (role !== "admin") {
-    Swal.fire(
-      "Akses Ditolak",
-      "Hanya admin yang bisa menghapus paket",
-      "error"
-    );
+    Swal.fire("Akses Ditolak", "Hanya admin yang bisa menghapus user", "error");
     return;
   }
 
   const result = await Swal.fire({
     title: "Konfirmasi Hapus",
-    text: "Apakah Anda yakin ingin menghapus paket ini?",
+    text: "Apakah Anda yakin ingin menghapus user ini?",
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#d33",
@@ -161,7 +170,7 @@ async function handleDeletePackage(packageId) {
 
   if (result.isConfirmed) {
     try {
-      const response = await fetch(`/package/${packageId}`, {
+      const response = await fetch(`/admin/users/${userId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
@@ -169,32 +178,34 @@ async function handleDeletePackage(packageId) {
       });
 
       if (response.ok) {
-        Swal.fire("Berhasil", "Paket berhasil dihapus", "success");
-        loadPackages();
+        Swal.fire("Berhasil", "User berhasil dihapus", "success");
+        loadusers();
       } else {
         const error = await response.json();
-        throw new Error(error.error || "Failed to delete package");
+        throw new Error(error.error || "Failed to delete user");
       }
     } catch (error) {
-      console.error("Error deleting package:", error);
-      Swal.fire("Error", "Gagal menghapus paket", "error");
+      console.error("Error deleting user:", error);
+      Swal.fire("Error", "Gagal menghapus user", "error");
     }
   }
 }
 
 // Open edit modal
-function openEditModal(pkg) {
+function openEditModal(user) {
   const role = localStorage.getItem("user_role");
 
   if (role !== "admin") {
-    Swal.fire("Akses Ditolak", "Hanya admin yang bisa mengedit paket", "error");
+    Swal.fire("Akses Ditolak", "Hanya admin yang bisa mengedit user", "error");
     return;
   }
 
-  editingPackageId = pkg.ID;
-  document.getElementById("package-name").value = pkg.Name;
-  document.getElementById("package-speed").value = pkg.Speed || "";
-  document.getElementById("package-price").value = pkg.Price;
+  editingPackageId = user.ID;
+  document.getElementById("package-name").value = user.Username;
+  document.getElementById("package-speed").value = user.Email;
+  document.getElementById("package-price").value = ""; // Kosongkan password
+  document.getElementById("user-region").value = user.Region;
+  document.getElementById("user-role").value = user.Role;
 
   const submitBtn = document.querySelector(
     "#package-form button[type='submit']"
@@ -217,7 +228,7 @@ function resetForm() {
   const submitBtn = document.querySelector(
     "#package-form button[type='submit']"
   );
-  submitBtn.innerHTML = `<i class="fas fa-plus"></i> Tambah Paket`;
+  submitBtn.innerHTML = `<i class="fas fa-plus"></i> Tambah User`;
   submitBtn.classList.remove("btn-warning");
   submitBtn.classList.add("btn-primary");
 
@@ -225,21 +236,23 @@ function resetForm() {
   document.getElementById("package-name").focus();
 }
 
-// Filter packages
-function filterPackages() {
+// Filter users
+function filterUsers() {
   const searchTerm = document
     .getElementById("search-input")
     .value.toLowerCase();
 
-  filteredPackages = packages.filter(
-    (pkg) =>
-      pkg.Name.toLowerCase().includes(searchTerm) ||
-      pkg.Speed.toLowerCase().includes(searchTerm) ||
-      pkg.ID.toLowerCase().includes(searchTerm)
+  filteredUsers = users.filter(
+    (user) =>
+      user.Username.toLowerCase().includes(searchTerm) ||
+      user.Email.toLowerCase().includes(searchTerm) ||
+      user.ID.toLowerCase().includes(searchTerm) ||
+      user.Region.toLowerCase().includes(searchTerm) ||
+      user.Role.toLowerCase().includes(searchTerm)
   );
 
   currentPage = 1;
-  renderPackages();
+  renderUsers();
 }
 
 // Reset filter
@@ -247,40 +260,50 @@ function resetFilter() {
   document.getElementById("search-input").value = "";
   filteredPackages = [...packages];
   currentPage = 1;
-  renderPackages();
+  renderUsers();
 }
 
-// Render packages table
-function renderPackages() {
+// Render users table
+function renderUsers() {
   const tbody = document.getElementById("package-table-body");
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedPackages = filteredPackages.slice(startIndex, endIndex);
+  const paginatedPackages = filteredUsers.slice(startIndex, endIndex);
 
   tbody.innerHTML = "";
 
-  paginatedPackages.forEach((pkg) => {
+  paginatedPackages.forEach((user) => {
     const row = document.createElement("tr");
-    const billingCount = pkg.Billings ? pkg.Billings.length : 0;
+    const statusBadge =
+      user.Status === "active"
+        ? '<span style="background: #28a745; color: white; padding: 0.2rem 0.5rem; border-radius: 0.25rem; font-size: 0.8rem;">Aktif</span>'
+        : '<span style="background: #dc3545; color: white; padding: 0.2rem 0.5rem; border-radius: 0.25rem; font-size: 0.8rem;">Nonaktif</span>';
+
+    const roleBadge =
+      user.Role === "admin"
+        ? '<span style="background: #007bff; color: white; padding: 0.2rem 0.5rem; border-radius: 0.25rem; font-size: 0.8rem;">Admin</span>'
+        : user.Role === "teknisi"
+        ? '<span style="background: #17a2b8; color: white; padding: 0.2rem 0.5rem; border-radius: 0.25rem; font-size: 0.8rem;">Teknisi</span>'
+        : '<span style="background: #6c757d; color: white; padding: 0.2rem 0.5rem; border-radius: 0.25rem; font-size: 0.8rem;">Kasir</span>';
 
     row.innerHTML = `
-            <td>${pkg.ID}</td>
-            <td>${pkg.Name}</td>
-            <td>${pkg.Speed || "-"}</td>
-            <td>Rp ${pkg.Price.toLocaleString("id-ID")}</td>
-            <td>${billingCount} pelanggan</td>
+            <td>${user.ID}</td>
+            <td>${user.Username}</td>
+            <td>${user.Email}</td>
+            <td>${user.Region}</td>
+            <td>${roleBadge}</td>
+            <td>${statusBadge}</td>
             <td>
               <button class="btn btn-sm btn-warning" onclick="openEditModal(${JSON.stringify(
-                pkg
+                user
               ).replace(/"/g, "&quot;")})">
                 <i class="fas fa-edit"></i> Edit
               </button>
+              <button class="btn btn-sm btn-danger" onclick="handleDeleteUser('${
+                user.ID
+              }')">
+                <i class="fas fa-trash"></i> Hapus
               </button>
-            <button class="btn btn-sm btn-danger" onclick="handleDeletePackage('${
-              pkg.ID
-            }')">
-            <i class="fas fa-trash"></i> Hapus
-            </button>
             </td>
           `;
     tbody.appendChild(row);
@@ -291,7 +314,7 @@ function renderPackages() {
 
 // Render pagination
 function renderPagination() {
-  const totalPages = Math.ceil(filteredPackages.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
   const pagination = document.getElementById("pagination");
 
   if (totalPages <= 1) {
@@ -327,7 +350,7 @@ function renderPagination() {
 // Change page
 function changePage(page) {
   currentPage = page;
-  renderPackages();
+  renderUsers();
 }
 
 function renderSidebarByRole(role) {
@@ -370,11 +393,9 @@ function handleLogout() {
     cancelButtonText: "Batal",
   }).then((result) => {
     if (result.isConfirmed) {
-      Swal.fire({
-        title: "Berhasil!",
-        text: "Logout Berhasil",
-        icon: "success",
-      });
+      localStorage.removeItem("auth_token");
+      localStorage.removeItem("user_role");
+      Swal.fire("Berhasil!", "Logout Berhasil", "success");
       window.location.href = "/login";
     }
   });
@@ -397,7 +418,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
-  if (role !== "admin" && role !== "teknisi") {
+  if (role !== "admin") {
     Swal.fire(
       "Akses Ditolak",
       "Anda tidak punya akses ke halaman ini",
@@ -408,7 +429,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
-  //Sembunyikan card form tambah paket jika bukan admin
+  //Sembunyikan card form tambah user jika bukan admin
   if (role !== "admin") {
     const addPackageCard = document.getElementById("add-package-card");
     if (addPackageCard) {
@@ -417,7 +438,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   updateCurrentDate();
-  loadPackages();
+  loadusers();
   setupEventListeners(role);
   renderSidebarByRole(role);
 });

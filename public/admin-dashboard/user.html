@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Paket WiFi - Admin Dashboard</title>
+    <title>Manajemen User - Admin Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <link
@@ -24,7 +24,7 @@
             <i class="fas fa-chart-line"></i>
             <span class="menu-text">Dashboard</span>
           </a>
-          <a href="manage-users" class="menu-item">
+          <a href="/manage-users" class="menu-item active">
             <i class="fas fa-users"></i>
             <span class="menu-text">Manajemen User</span>
           </a>
@@ -36,7 +36,7 @@
             <i class="fa-solid fa-person"></i>
             <span class="menu-text">Data Pelanggan</span>
           </a>
-          <a href="/packages" class="menu-item active">
+          <a href="/packages" class="menu-item">
             <i class="fas fa-wifi"></i>
             <span class="menu-text">Paket Wifi</span>
           </a>
@@ -63,46 +63,65 @@
       <!-- Main Content -->
       <div class="main-content">
         <div class="header">
-          <h1 class="page-title">Paket WiFi</h1>
+          <h1 class="page-title">Manajemen User</h1>
           <div id="current-date"></div>
         </div>
 
-        <!-- Add Package Form -->
+        <!-- Add User Form -->
         <div class="card" id="add-package-card">
-          <div class="card-title">Tambah Paket Baru</div>
+          <div class="card-title">Tambah User Baru</div>
           <form id="package-form" class="form-grid">
             <div class="form-group">
-              <label for="package-name">Nama Paket:</label>
+              <label for="package-name">Username:</label>
               <input
                 type="text"
                 id="package-name"
-                name="name"
+                name="username"
                 required
-                placeholder="Contoh: Paket Premium"
+                placeholder="Contoh: john_doe"
               />
             </div>
             <div class="form-group">
-              <label for="package-speed">Kecepatan:</label>
+              <label for="package-speed">Email:</label>
+              <input
+                type="email"
+                id="package-speed"
+                name="email"
+                required
+                placeholder="Contoh: john@example.com"
+              />
+            </div>
+            <div class="form-group">
+              <label for="package-price">Password:</label>
+              <input
+                type="password"
+                id="package-price"
+                name="password"
+                required
+                placeholder="Minimal 8 karakter"
+              />
+            </div>
+            <div class="form-group">
+              <label for="user-region">Region:</label>
               <input
                 type="text"
-                id="package-speed"
-                name="speed"
-                placeholder="Contoh: 50 Mbps"
+                id="user-region"
+                name="region"
+                required
+                placeholder="Contoh: Jakarta"
               />
             </div>
             <div class="form-group">
-              <label for="package-price">Harga (Rp):</label>
-              <input
-                type="number"
-                id="package-price"
-                name="price"
-                required
-                placeholder="Contoh: 250000"
-              />
+              <label for="user-role">Role:</label>
+              <select id="user-role" name="role" required>
+                <option value="">Pilih Role</option>
+                <option value="kasir">Kasir</option>
+                <option value="teknisi">Teknisi</option>
+              </select>
             </div>
             <div class="form-actions">
               <button type="submit" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Tambah Paket
+                <i class="fas fa-plus"></i> Tambah User
               </button>
               <button
                 type="button"
@@ -115,15 +134,15 @@
           </form>
         </div>
 
-        <!-- Package List -->
+        <!-- User List -->
         <div class="card">
-          <div class="card-title">Daftar Paket WiFi</div>
+          <div class="card-title">Daftar User</div>
 
           <div class="filter-container">
             <input
               type="text"
               id="search-input"
-              placeholder="Cari Paket"
+              placeholder="Cari User"
               style="padding: 0.5rem"
             />
             <button class="btn" id="filter-btn">Filter</button>
@@ -134,11 +153,12 @@
             <table id="package-table">
               <thead>
                 <tr>
-                  <th>ID Paket</th>
-                  <th>Nama Paket</th>
-                  <th>Kecepatan</th>
-                  <th>Harga</th>
-                  <th>Jumlah Pelanggan</th>
+                  <th>ID User</th>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>Region</th>
+                  <th>Role</th>
+                  <th>Status</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -155,31 +175,48 @@
       </div>
     </div>
 
-    <!-- Edit Package Modal -->
+    <!-- Edit User Modal -->
     <div id="edit-modal" class="modal" style="display: none">
       <div class="modal-content">
         <div class="modal-header">
-          <h3>Edit Paket</h3>
+          <h3>Edit User</h3>
           <span class="close" id="close-modal">&times;</span>
         </div>
         <form id="edit-package-form">
           <input type="hidden" id="edit-package-id" />
           <div class="form-group">
-            <label for="edit-package-name">Nama Paket:</label>
-            <input type="text" id="edit-package-name" name="name" required />
-          </div>
-          <div class="form-group">
-            <label for="edit-package-speed">Kecepatan:</label>
-            <input type="text" id="edit-package-speed" name="speed" />
-          </div>
-          <div class="form-group">
-            <label for="edit-package-price">Harga (Rp):</label>
+            <label for="edit-package-name">Username:</label>
             <input
-              type="number"
-              id="edit-package-price"
-              name="price"
+              type="text"
+              id="edit-package-name"
+              name="username"
               required
             />
+          </div>
+          <div class="form-group">
+            <label for="edit-package-speed">Email:</label>
+            <input type="email" id="edit-package-speed" name="email" required />
+          </div>
+          <div class="form-group">
+            <label for="edit-package-price">Password Baru:</label>
+            <input
+              type="password"
+              id="edit-package-price"
+              name="password"
+              placeholder="Kosongkan jika tidak ingin mengubah password"
+            />
+          </div>
+          <div class="form-group">
+            <label for="edit-user-region">Region:</label>
+            <input type="text" id="edit-user-region" name="region" required />
+          </div>
+          <div class="form-group">
+            <label for="edit-user-role">Role:</label>
+            <select id="edit-user-role" name="role" required>
+              <option value="">Pilih Role</option>
+              <option value="kasir">Kasir</option>
+              <option value="teknisi">Teknisi</option>
+            </select>
           </div>
           <div class="form-actions">
             <button type="submit" class="btn btn-primary">
@@ -196,6 +233,6 @@
         </form>
       </div>
     </div>
-    <script src="/public/admin-dashboard/script/package.js"></script>
+    <script src="/public/admin-dashboard/script/user.js"></script>
   </body>
 </html>

@@ -29,4 +29,8 @@ func ViewRoute(router *gin.Engine) {
 	router.GET("/packages", func(c *gin.Context) {
 		c.File("./public/admin-dashboard/package.html")
 	})
+
+	router.GET("/manage-users", func(c *gin.Context) {
+		c.File("./public/admin-dashboard/user.html")
+	})
 } 
