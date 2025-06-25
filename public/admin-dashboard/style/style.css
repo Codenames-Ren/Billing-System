@@ -371,7 +371,7 @@ input {
     content: "Nama";
   }
   td:nth-of-type(3)::before {
-    content: "Paket Pilihan";
+    content: "Paket\APilihan";
   }
   td:nth-of-type(4)::before {
     content: "Harga";
@@ -380,13 +380,13 @@ input {
     content: "Subscription";
   }
   td:nth-of-type(6)::before {
-    content: "Total Taghan";
+    content: "Total\ATaghan";
   }
   td:nth-of-type(7)::before {
     content: "Status";
   }
   td:nth-of-type(8)::before {
-    content: "Jatuh Tempo";
+    content: "Jatuh\ATempo";
   }
 }
 
@@ -458,7 +458,7 @@ input {
     content: "Nama";
   }
   td:nth-of-type(3)::before {
-    content: "Paket Pilihan";
+    content: "Paket\APilihan";
   }
   td:nth-of-type(4)::before {
     content: "Harga";
@@ -467,13 +467,13 @@ input {
     content: "Subscription";
   }
   td:nth-of-type(6)::before {
-    content: "Total Taghan";
+    content: "Total\ATaghan";
   }
   td:nth-of-type(7)::before {
     content: "Status";
   }
   td:nth-of-type(8)::before {
-    content: "Jatuh Tempo";
+    content: "Jatuh\ATempo";
   }
 }
 
