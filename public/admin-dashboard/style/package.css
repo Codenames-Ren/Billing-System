@@ -301,6 +301,9 @@ input {
   .user-name {
     display: none;
   }
+  .header {
+    display: block;
+  }
   .main-content {
     margin-left: 70px;
     width: calc(100% - 70px);
@@ -403,6 +406,9 @@ input {
   .menu-text,
   .user-name {
     display: none;
+  }
+  .header {
+    display: block;
   }
   .main-content {
     margin-left: 70px;

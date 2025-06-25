@@ -52,6 +52,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+  function updateCurrentDate() {
+    const now = moment();
+    document.getElementById("current-date").textContent =
+      now.format("dddd, DD MMMM YYYY");
+  }
+
   // Fetch clients data from API
   async function fetchClients() {
     try {
@@ -299,6 +305,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       renderSidebarByRole(role);
       setupLogout();
+      updateCurrentDate();
 
       // Fetch and render client data
       allClients = await fetchClients();
