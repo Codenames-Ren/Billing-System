@@ -185,13 +185,13 @@ Admin:
 Username: admin
 Password: admin123
 
-Manager:
-Username: manager
-Password: manager123
+Teknisi:
+Username: teknisi
+Password: teknisi123
 
-Operator:
-Username: operator
-Password: operator123
+Kasir:
+Username: kasir
+Password: kasir123
 ```
 
 ### Konfigurasi MikroTik
