@@ -370,7 +370,6 @@ Sumber daya dan tools yang membantu pengembangan proyek ini:
 - [Gin Web Framework](https://gin-gonic.com/)
 - [GORM](https://gorm.io/)
 - [Chart.js](https://www.chartjs.org/)
-- [Bootstrap](https://getbootstrap.com/)
 - [MikroTik RouterOS API](https://help.mikrotik.com/docs/display/ROS/API)
 - [Go PDF Library](https://github.com/jung-kurt/gofpdf)
 - [GitHub Pages](https://pages.github.com)
