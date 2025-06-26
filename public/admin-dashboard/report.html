@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Laporan Pembayaran - Admin Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <link
+      rel="icon"
+      href="/public/admin-dashboard/image/download.webp"
+      type="image/x-icon"
+    />
+    <link
+      rel="shortcut icon"
+      href="/public/admin-dashboard/image/download.webp"
+      type="image/x-icon"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/public/admin-dashboard/style/clients.css" />
+  </head>
+  <body>
+    <div id="dashboard" style="width: 100%">
+      <!-- Sidebar Navigation -->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-logo">
+            <i class="fa-solid fa-house-signal" style="margin-right: 8px"></i
+            >Amang Wifi
+          </div>
+        </div>
+        <div class="sidebar-menu">
+          <a href="/home" class="menu-item">
+            <i class="fas fa-chart-line"></i>
+            <span class="menu-text">Dashboard</span>
+          </a>
+          <a href="manage-users" class="menu-item">
+            <i class="fas fa-users"></i>
+            <span class="menu-text">Manajemen User</span>
+          </a>
+          <a href="#" class="menu-item">
+            <i class="fa-solid fa-wrench"></i>
+            <span class="menu-text">Setup Mikrotik</span>
+          </a>
+          <a href="/client" class="menu-item">
+            <i class="fa-solid fa-person"></i>
+            <span class="menu-text">Data Pelanggan</span>
+          </a>
+          <a href="/packages" class="menu-item">
+            <i class="fas fa-wifi"></i>
+            <span class="menu-text">Paket Wifi</span>
+          </a>
+          <a href="/laporan" class="menu-item active">
+            <i class="fas fa-file-alt"></i>
+            <span class="menu-text">Laporan</span>
+          </a>
+          <a href="#" class="menu-item">
+            <i class="fas fa-cog"></i>
+            <span class="menu-text">Pengaturan</span>
+          </a>
+        </div>
+        <div class="user-info">
+          <div class="user-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="user-name" id="user-name">User</div>
+          <button class="logout-btn" id="logout-btn">
+            <i class="fas fa-sign-out-alt"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <div class="header">
+          <h1 class="page-title">Laporan Pembayaran</h1>
+          <div id="current-date"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Filter Laporan</div>
+
+          <div class="filter-container">
+            <label for="period-filter">Periode:</label>
+            <select id="period-filter">
+              <option value="daily">Per Hari</option>
+              <option value="weekly">Per Minggu</option>
+              <option value="monthly">Per Bulan</option>
+            </select>
+
+            <label for="date-from" style="margin-left: 1rem">Dari:</label>
+            <input
+              type="date"
+              id="date-from"
+              style="margin-left: 0.5rem; padding: 0.5rem"
+            />
+
+            <label for="date-to" style="margin-left: 1rem">Sampai:</label>
+            <input
+              type="date"
+              id="date-to"
+              style="margin-left: 0.5rem; padding: 0.5rem"
+            />
+
+            <button class="btn" id="filter-btn" style="margin-left: 1rem">
+              Filter
+            </button>
+            <button class="btn" id="reset-btn">Reset</button>
+            <button
+              class="btn btn-export"
+              id="export-pdf-btn"
+              style="margin-left: 1rem"
+            >
+              <i class="fas fa-file-pdf"></i> Cetak PDF
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            Laporan Pembayaran
+            <span
+              id="report-summary"
+              style="font-size: 0.9em; color: #666; margin-left: 1rem"
+            ></span>
+          </div>
+
+          <div class="table-wrapper">
+            <table id="report-table">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Nama Klien</th>
+                  <th>Region</th>
+                  <th>Paket</th>
+                  <th>Total</th>
+                  <th>Tanggal Bayar</th>
+                </tr>
+              </thead>
+              <tbody id="report-table-body">
+                <!-- Data will be populated here -->
+              </tbody>
+            </table>
+          </div>
+
+          <div
+            class="table-wrapper"
+            style="
+              margin-top: 1rem;
+              border-top: 2px solid #ddd;
+              padding-top: 1rem;
+            "
+          >
+            <table style="width: 100%; max-width: 400px; margin-left: auto">
+              <tbody>
+                <tr>
+                  <td
+                    style="
+                      font-weight: bold;
+                      text-align: right;
+                      padding: 0.5rem;
+                    "
+                  >
+                    Total Transaksi:
+                  </td>
+                  <td
+                    style="
+                      font-weight: bold;
+                      text-align: right;
+                      padding: 0.5rem;
+                    "
+                    id="total-transactions"
+                  >
+                    0
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style="
+                      font-weight: bold;
+                      text-align: right;
+                      padding: 0.5rem;
+                    "
+                  >
+                    Total Pendapatan:
+                  </td>
+                  <td
+                    style="
+                      font-weight: bold;
+                      text-align: right;
+                      padding: 0.5rem;
+                      color: green;
+                    "
+                    id="total-revenue"
+                  >
+                    Rp 0
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div
+            id="pagination"
+            style="margin-top: 1rem; text-align: center"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/public/admin-dashboard/script/report.js"></script>
+  </body>
+</html>
