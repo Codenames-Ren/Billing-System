@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  if (window.location.pathname !== "/laporan") return;
+  if (window.location.pathname !== "/report") return;
 
   const token = localStorage.getItem("auth_token");
   const role = localStorage.getItem("user_role");
