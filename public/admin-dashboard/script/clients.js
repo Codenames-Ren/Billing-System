@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const filterBtn = document.getElementById("filter-btn");
   const resetBtn = document.getElementById("reset-btn");
 
+  initDarkMode();
   // Format currency function
   function formatRupiah(value) {
     return new Intl.NumberFormat("id-ID", {
@@ -93,6 +94,35 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch (err) {
       Swal.fire("Gagal", err.message, "error");
       return [];
+    }
+  }
+
+  // Dark Mode Toggle Function
+  function initDarkMode() {
+    const themeToggle = document.getElementById("theme-toggle-checkbox");
+    const body = document.body;
+
+    // Load saved theme from localStorage
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "dark") {
+      body.classList.add("dark-mode");
+      if (themeToggle) {
+        themeToggle.checked = true;
+      }
+    }
+
+    // Add event listener for theme toggle
+    if (themeToggle) {
+      themeToggle.addEventListener("change", function () {
+        if (this.checked) {
+          body.classList.add("dark-mode");
+          localStorage.setItem("theme", "dark");
+        } else {
+          body.classList.remove("dark-mode");
+          localStorage.setItem("theme", "light");
+        }
+      });
     }
   }
 
