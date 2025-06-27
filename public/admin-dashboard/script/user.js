@@ -7,6 +7,35 @@ let currentPage = 1;
 let editingPackageId = null;
 const itemsPerPage = 10;
 
+// Dark Mode Toggle Function
+function initDarkMode() {
+  const themeToggle = document.getElementById("theme-toggle-checkbox");
+  const body = document.body;
+
+  // Load saved theme from localStorage
+  const savedTheme = localStorage.getItem("theme");
+
+  if (savedTheme === "dark") {
+    body.classList.add("dark-mode");
+    if (themeToggle) {
+      themeToggle.checked = true;
+    }
+  }
+
+  // Add event listener for theme toggle
+  if (themeToggle) {
+    themeToggle.addEventListener("change", function () {
+      if (this.checked) {
+        body.classList.add("dark-mode");
+        localStorage.setItem("theme", "dark");
+      } else {
+        body.classList.remove("dark-mode");
+        localStorage.setItem("theme", "light");
+      }
+    });
+  }
+}
+
 // Update current date
 function updateCurrentDate() {
   const now = moment();
@@ -483,6 +512,8 @@ function handleLogout() {
 document.addEventListener("DOMContentLoaded", function () {
   const token = localStorage.getItem("auth_token");
   const role = localStorage.getItem("user_role");
+
+  initDarkMode();
 
   if (!token || !role) {
     window.location.href = "/login";
