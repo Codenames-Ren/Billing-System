@@ -67,6 +67,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         },
       });
 
+      if (res.status === 401 || res.status === 403) {
+        Swal.fire("Session Expired", "Silakan login ulang.", "warning").then(
+          () => {
+            localStorage.removeItem("auth_token");
+            localStorage.removeItem("user_role");
+            window.location.href = "/login";
+          }
+        );
+        return [];
+      }
+
       if (!res.ok) {
         const err = await res.json();
         throw new Error(err.error || "Gagal memuat data pelanggan.");
