@@ -63,6 +63,7 @@ func main() {
 	routes.ClientRoutes(router)
 	routes.BillingRoutes(router)
 	routes.PackageRoutes(router)
+	routes.ReportRoutes(router)
 
 	//Server berjalan di port 8080
 	port := os.Getenv("PORT")

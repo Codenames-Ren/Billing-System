@@ -1,0 +1,106 @@
+{{define "report"}}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Laporan Pembayaran</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    p {
+      text-align: center;
+      margin-top: 0;
+      font-size: 11px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #999;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    tfoot td {
+      font-weight: bold;
+      background-color: #eee;
+    }
+
+    .footer {
+      margin-top: 30px;
+      font-size: 11px;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+  <h2>Laporan Pembayaran</h2>
+  <p>Periode: {{.DateFrom}} s.d. {{.DateTo}} | Dibuat pada: {{now}}</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Nama Klien</th>
+        <th>Wilayah</th>
+        <th>Paket</th>
+        <th>Total</th>
+        <th>Tanggal Bayar</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{range $i, $b := .Billings}}
+      <tr>
+        <td>{{add $i 1}}</td>
+        <td>{{$b.Client.Name}}</td>
+        <td>{{$b.Client.Region}}</td>
+        <td>{{$b.Package.Name}}</td>
+        <td>{{formatRupiah $b.Total}}</td>
+        <td>{{$b.UpdatedAt.Format "02 Jan 2006"}}</td>
+      </tr>
+      {{else}}
+      <tr>
+        <td colspan="6" style="text-align:center;">Tidak ada data</td>
+      </tr>
+      {{end}}
+    </tbody>
+    {{if gt (len .Billings) 0}}
+    <tfoot>
+      <tr>
+        <td colspan="4">Total Transaksi</td>
+        <td colspan="2">{{len .Billings}}</td>
+      </tr>
+      <tr>
+        <td colspan="4">Total Pendapatan</td>
+        <td colspan="2">
+          {{/* kamu bisa hitung manual di controller dan kirim ke template juga kalau mau */}}
+        </td>
+      </tr>
+    </tfoot>
+    {{end}}
+  </table>
+
+  <div class="footer">
+    Laporan ini dibuat secara otomatis oleh sistem pada {{now}}
+  </div>
+</body>
+</html>
+{{end}}
