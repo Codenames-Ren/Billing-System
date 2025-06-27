@@ -311,6 +311,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       }
 
+      if (res.status === 401 || res.status === 403) {
+        Swal.fire("Session Expired", "Silakan login ulang.", "warning").then(
+          () => {
+            localStorage.removeItem("auth_token");
+            localStorage.removeItem("user_role");
+            window.location.href = "/login";
+          }
+        );
+        return [];
+      }
+
       renderSidebarByRole(role);
       setupLogout();
       updateCurrentDate();
