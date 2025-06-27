@@ -52,7 +52,7 @@ async function loadusers() {
       },
     });
 
-    if (res.status === 401 || res.status === 403) {
+    if (response.status === 401 || response.status === 403) {
       Swal.fire("Session Expired", "Silakan login ulang.", "warning").then(
         () => {
           localStorage.removeItem("auth_token");

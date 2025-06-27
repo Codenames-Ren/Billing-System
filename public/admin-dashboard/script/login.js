@@ -48,7 +48,11 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     } catch (err) {
       console.error("Login error:", err);
-      Swal.fire("Username atau Password Salah!");
+      Swal.fire({
+        title: "Warning",
+        text: "Username atau Password Salah!",
+        icon: "warning",
+      });
     }
   });
 });
