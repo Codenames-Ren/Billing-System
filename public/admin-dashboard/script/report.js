@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const resetBtn = document.getElementById("reset-btn");
   const exportPdfBtn = document.getElementById("export-pdf-btn");
 
+  initDarkMode();
+
   // Format currency function
   function formatRupiah(value) {
     return new Intl.NumberFormat("id-ID", {
@@ -184,6 +186,35 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById(
       "report-summary"
     ).textContent = `(${periodText}: ${dateFromInput.value} - ${dateToInput.value})`;
+  }
+
+  // Dark Mode Toggle Function
+  function initDarkMode() {
+    const themeToggle = document.getElementById("theme-toggle-checkbox");
+    const body = document.body;
+
+    // Load saved theme from localStorage
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "dark") {
+      body.classList.add("dark-mode");
+      if (themeToggle) {
+        themeToggle.checked = true;
+      }
+    }
+
+    // Add event listener for theme toggle
+    if (themeToggle) {
+      themeToggle.addEventListener("change", function () {
+        if (this.checked) {
+          body.classList.add("dark-mode");
+          localStorage.setItem("theme", "dark");
+        } else {
+          body.classList.remove("dark-mode");
+          localStorage.setItem("theme", "light");
+        }
+      });
+    }
   }
 
   // Export to PDF function
