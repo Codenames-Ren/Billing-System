@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     } catch (err) {
       console.error("Login error:", err);
-      Swal.fire("Login Gagal!", err.message, "error");
+      Swal.fire("Username atau Password Salah!");
     }
   });
 });
