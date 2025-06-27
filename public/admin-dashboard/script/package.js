@@ -65,6 +65,17 @@ async function loadPackages() {
       },
     });
 
+    if (res.status === 401 || res.status === 403) {
+      Swal.fire("Session Expired", "Silakan login ulang.", "warning").then(
+        () => {
+          localStorage.removeItem("auth_token");
+          localStorage.removeItem("user_role");
+          window.location.href = "/login";
+        }
+      );
+      return [];
+    }
+
     if (response.ok) {
       packages = await response.json();
       filteredPackages = [...packages];
