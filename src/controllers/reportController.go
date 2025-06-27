@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"bytes"
-	"log"
 	"net/http"
 	"strings"
 	"text/template"
@@ -17,8 +16,6 @@ import (
 )
 
 func GenerateReportPDF(c *gin.Context) {
-	log.Println("==> Start GenerateReportPDF")
-
 	role := c.GetString("user_role")
 	region := c.GetString("user_region")
 	period := c.Query("period")
@@ -28,7 +25,6 @@ func GenerateReportPDF(c *gin.Context) {
 	startDate, err1 := time.Parse("2006-01-02", dateFrom)
 	endDate, err2 := time.Parse("2006-01-02", dateTo)
 	if err1 != nil || err2 != nil {
-		log.Println("❌ Error parsing tanggal:", err1, err2)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Format tanggal tidak valid"})
 		return
 	}
@@ -42,12 +38,9 @@ func GenerateReportPDF(c *gin.Context) {
 	}
 
 	if err := db.Find(&billings).Error; err != nil {
-		log.Println("❌ Error ambil billing:", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal mengambil data billing"})
 		return
 	}
-
-	log.Println("✅ Jumlah billing ditemukan:", len(billings))
 
 	tmpl, err := template.New("report").Funcs(template.FuncMap{
 		"formatRupiah": func(v interface{}) string {
@@ -66,7 +59,6 @@ func GenerateReportPDF(c *gin.Context) {
 	}).ParseFiles("src/template/reportPayment.gohtml")
 
 	if err != nil {
-		log.Println("❌ Error parsing template:", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal parsing template"})
 		return
 	}
@@ -80,16 +72,12 @@ func GenerateReportPDF(c *gin.Context) {
 	})
 	
 	if err != nil {
-		log.Println("❌ Error render template:", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal merender html"})
 		return
 	}
 
-	log.Println("✅ Template berhasil dirender")
-
 	pdfg, err := wkhtmltopdf.NewPDFGenerator()
 	if err != nil {
-		log.Println("❌ Error init PDF:", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal inisialisasi pdf"})
 		return
 	}
@@ -99,12 +87,9 @@ func GenerateReportPDF(c *gin.Context) {
 	pdfg.PageSize.Set(wkhtmltopdf.PageSizeA4)
 
 	if err = pdfg.Create(); err != nil {
-		log.Println("❌ Error create PDF:", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal membuat PDF"})
 		return
 	}
-
-	log.Println("✅ PDF berhasil dibuat, mengirim ke client")
 
 	c.Header("Content-Disposition", "attachment; filename=laporan-pembayaran.pdf")
 	c.Data(http.StatusCreated, "application/pdf", pdfg.Bytes())
