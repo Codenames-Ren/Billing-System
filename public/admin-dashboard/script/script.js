@@ -303,7 +303,7 @@ function renderSidebarByRole(role) {
   const menuItems = document.querySelectorAll(".sidebar-menu .menu-item");
 
   menuItems.forEach((item) => {
-    const text = item.innerText.trim().toLowerCase();
+    const text = item.dataset.menu?.toLowerCase() || "";
 
     if (
       role === "kasir" &&
