@@ -189,17 +189,28 @@ async function fetchAllClients() {
         Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
       },
     });
+
+    if (res.status === 401 || res.status === 403) {
+      Swal.fire("Session Expired", "Silakan login ulang.", "warning").then(
+        () => {
+          localStorage.removeItem("auth_token");
+          localStorage.removeItem("user_role");
+          window.location.href = "/login";
+        }
+      );
+      return [];
+    }
+
     if (!res.ok) {
       const err = await res.json();
       throw new Error(err.error || "Gagal mengambil data pelanggan.");
     }
 
     const clients = await res.json();
-
     const salesData = [];
+
     clients.forEach((client) => {
       const billing = client.billings?.[0];
-
       if (!billing) return;
 
       //push data
