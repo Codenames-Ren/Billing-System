@@ -37,4 +37,8 @@ func ViewRoute(router *gin.Engine) {
 	router.GET("/report", func(c *gin.Context) {
 		c.File("./public/admin-dashboard/report.html")
 	})
+
+	router.GET("/message", func(c *gin.Context) {
+		c.File("./public/admin-dashboard/message.html")
+	})
 } 

@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"bytes"
+	"fmt"
 	"net/http"
 	"strings"
 	"text/template"
@@ -16,8 +17,18 @@ import (
 )
 
 func GenerateReportPDF(c *gin.Context) {
-	role := c.GetString("user_role")
-	region := c.GetString("user_region")
+	roleInterface, _ := c.Get("role")
+	regionInterface, _ := c.Get("region")
+
+	var role, region string
+	if roleInterface != nil {
+		role = fmt.Sprintf("%v", roleInterface)
+	}
+
+	if regionInterface != nil {
+		region = fmt.Sprintf("%v", regionInterface)
+	}
+
 	period := c.Query("period")
 	dateFrom := c.Query("date_from")
 	dateTo := c.Query("date_to")
@@ -31,7 +42,7 @@ func GenerateReportPDF(c *gin.Context) {
 
 	var billings []models.Billing
 
-	db := database.DB.Preload("Client").Preload("Package").Where("status = ? AND updated_at BETWEEN ? AND ?", "paid", startDate, endDate)
+	db := database.DB.Preload("Client").Preload("Package").Where("billings.status = ? AND billings.updated_at BETWEEN ? AND ?", "paid", startDate, endDate)
 
 	if role == "kasir" {
 		db = db.Joins("JOIN clients ON clients.id = billings.client_id").Where("clients.region = ?", region)
@@ -96,8 +107,18 @@ func GenerateReportPDF(c *gin.Context) {
 }
 
 func GetPaymentReports(c *gin.Context) {
-	role := c.GetString("user_role")
-	region := c.GetString("user_region")
+	roleInterface, _ := c.Get("role")
+	regionInterface, _ := c.Get("region")
+
+	var role, region string
+	if roleInterface != nil {
+		role = fmt.Sprintf("%v", roleInterface)
+	}
+
+	if regionInterface != nil {
+		region = fmt.Sprintf("%v", regionInterface)
+	}
+
 	dateFrom := c.Query("date_from")
 	dateTo := c.Query("date_to")
 
@@ -110,11 +131,17 @@ func GetPaymentReports(c *gin.Context) {
 
 	var billings []models.Billing
 
-	db := database.DB.Preload("Client").Preload("Package").Where("status = ? AND updated_at BETWEEN ? AND ?", "paid", startDate, endDate)
+	db := database.DB.Model(&models.Billing{}).
+		  Joins("JOIN clients ON clients.id =  billings.client_id").
+		  Joins("JOIN packages ON packages.id = billings.package_id").
+		  Where("billings.status = ? AND billings.updated_at BETWEEN ? AND ?", "paid", startDate, endDate)
 
 	if role == "kasir" {
-		db = db.Joins("JOIN clients ON clients.id = billings.client_id").Where("clients.region = ? ", region)
+		db = db.Where("clients.region = ?", region)
 	}
+
+	db = db.Select("billings.*, clients.name as client_name, clients.region as client_region, packages.name as package_name").
+		 Preload("Client").Preload("Package")
 
 	if err := db.Find(&billings).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal mengambil data billing"})

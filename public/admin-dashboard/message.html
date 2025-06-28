@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Data Pelanggan - Admin Dashboard</title>
+    <title>Generate Pesan - Admin Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <link
@@ -20,7 +20,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
     />
-    <link rel="stylesheet" href="/public/admin-dashboard/style/clients.css" />
+    <link rel="stylesheet" href="/public/admin-dashboard/style/message.css" />
   </head>
   <body>
     <div id="dashboard" style="width: 100%">
@@ -60,7 +60,7 @@
             <i class="fa-solid fa-wrench"></i>
             <span class="menu-text">Setup Mikrotik</span>
           </a>
-          <a href="/client" class="menu-item active" data-menu="data pelanggan">
+          <a href="/client" class="menu-item" data-menu="data pelanggan">
             <i class="fa-solid fa-person"></i>
             <span class="menu-text">Data Pelanggan</span>
           </a>
@@ -72,7 +72,7 @@
             <i class="fas fa-file-alt"></i>
             <span class="menu-text">Laporan</span>
           </a>
-          <a href="/message" class="menu-item" data-menu="pesan">
+          <a href="/message" class="menu-item active" data-menu="pesan">
             <i class="fa-brands fa-whatsapp"></i>
             <span class="menu-text">Generate Pesan</span>
           </a>
@@ -91,47 +91,74 @@
       <!-- Main Content -->
       <div class="main-content">
         <div class="header">
-          <h1 class="page-title">Data Pelanggan</h1>
+          <h1 class="page-title">Generate Pesan WhatsApp</h1>
           <div id="current-date"></div>
         </div>
 
         <div class="card">
-          <div class="card-title">Daftar Pelanggan & Tagihan</div>
+          <div class="card-title">
+            <i
+              class="fa-brands fa-whatsapp"
+              style="margin-right: 8px; color: #25d366"
+            ></i>
+            Reminder & Konfirmasi Pembayaran
+          </div>
 
           <div class="filter-container">
-            <label for="status-filter">Status:</label>
-            <select id="status-filter">
-              <option value="">Semua</option>
-              <option value="paid">Paid</option>
-              <option value="unpaid">Unpaid</option>
-            </select>
+            <div class="filter-buttons">
+              <button class="btn filter-btn active" data-filter="">
+                <i class="fas fa-list"></i> Semua
+              </button>
+              <button class="btn filter-btn btn-success" data-filter="paid">
+                <i class="fas fa-check-circle"></i> Sudah Bayar
+              </button>
+              <button class="btn filter-btn btn-danger" data-filter="unpaid">
+                <i class="fas fa-exclamation-circle"></i> Belum Bayar
+              </button>
+            </div>
             <input
               type="text"
               id="search-input"
-              placeholder="Cari Pelanggan"
-              style="margin-left: 1rem; padding: 0.5rem"
+              placeholder="Cari nama pelanggan..."
+              style="
+                margin-left: 1rem;
+                padding: 0.5rem;
+                flex: 1;
+                max-width: 300px;
+              "
             />
-            <button class="btn" id="filter-btn">Filter</button>
-            <button class="btn" id="reset-btn">Reset</button>
+          </div>
+
+          <div class="stats-summary">
+            <div class="stat-item">
+              <span class="stat-label">Total Pelanggan:</span>
+              <span class="stat-value" id="total-clients">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Sudah Bayar:</span>
+              <span class="stat-value stat-paid" id="paid-clients">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Belum Bayar:</span>
+              <span class="stat-value stat-unpaid" id="unpaid-clients">0</span>
+            </div>
           </div>
 
           <div class="table-wrapper">
-            <table id="client-table">
+            <table id="reminder-table">
               <thead>
                 <tr>
-                  <th>Nama</th>
-                  <th>Alamat</th>
+                  <th>No</th>
+                  <th>Nama Pelanggan</th>
                   <th>Wilayah</th>
-                  <th>Whatsapp</th>
-                  <th>Paket</th>
-                  <th>Tipe Langganan</th>
-                  <th>Tagihan</th>
+                  <th>WhatsApp</th>
                   <th>Status</th>
+                  <th>Total Tagihan</th>
                   <th>Jatuh Tempo</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
-              <tbody id="client-table-body">
+              <tbody id="reminder-table-body">
                 <!-- Data will be populated here -->
               </tbody>
             </table>
@@ -144,6 +171,38 @@
       </div>
     </div>
 
-    <script src="/public/admin-dashboard/script/clients.js"></script>
+    <!-- Modal untuk menampilkan pesan -->
+    <div id="message-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modal-title">Pesan WhatsApp</h3>
+          <span class="close" id="close-modal">&times;</span>
+        </div>
+        <div class="modal-body">
+          <div class="client-info">
+            <p><strong>Pelanggan:</strong> <span id="client-name"></span></p>
+            <p><strong>WhatsApp:</strong> <span id="client-whatsapp"></span></p>
+            <p><strong>Status:</strong> <span id="client-status"></span></p>
+          </div>
+          <label for="message-text">Pesan:</label>
+          <textarea
+            id="message-text"
+            rows="8"
+            readonly
+            placeholder="Pesan akan ditampilkan di sini..."
+          ></textarea>
+          <div class="modal-actions">
+            <button class="btn btn-success" id="copy-message">
+              <i class="fas fa-copy"></i> Salin ke Clipboard
+            </button>
+            <button class="btn" id="whatsapp-link">
+              <i class="fa-brands fa-whatsapp"></i> Buka WhatsApp
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/public/admin-dashboard/script/message.js"></script>
   </body>
 </html>
