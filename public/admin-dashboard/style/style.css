@@ -438,6 +438,126 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover {
   background: var(--table-hover);
 }
 
+/* SweetAlert2 Dark/Light Mode Styling */
+/* Light Mode SweetAlert */
+.swal2-popup {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.swal2-title {
+  color: var(--text-secondary) !important;
+}
+
+.swal2-content {
+  color: var(--text-primary) !important;
+}
+
+.swal2-input {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color-secondary) !important;
+}
+
+.swal2-input:focus {
+  border-color: var(--button-primary) !important;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2) !important;
+}
+
+/* SweetAlert Buttons */
+.swal2-confirm {
+  background-color: var(--button-primary) !important;
+  border: none !important;
+}
+
+.swal2-confirm:hover {
+  background-color: var(--button-primary-hover) !important;
+}
+
+.swal2-cancel {
+  background-color: #6c757d !important;
+  border: none !important;
+}
+
+.swal2-cancel:hover {
+  background-color: #5a6268 !important;
+}
+
+.swal2-deny {
+  background-color: #dc3545 !important;
+  border: none !important;
+}
+
+.swal2-deny:hover {
+  background-color: #c82333 !important;
+}
+
+/* Dark Mode Specific Overrides */
+body.dark-mode .swal2-popup {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+body.dark-mode .swal2-title {
+  color: var(--text-primary) !important;
+}
+
+body.dark-mode .swal2-content {
+  color: var(--text-primary) !important;
+}
+
+body.dark-mode .swal2-input {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color-secondary) !important;
+}
+
+body.dark-mode .swal2-input::placeholder {
+  color: #888 !important;
+}
+
+/* SweetAlert Icons Dark Mode */
+body.dark-mode .swal2-icon.swal2-success .swal2-success-ring {
+  border-color: var(--button-success) !important;
+}
+
+body.dark-mode .swal2-icon.swal2-error .swal2-x-mark-line-left,
+body.dark-mode .swal2-icon.swal2-error .swal2-x-mark-line-right {
+  background-color: #dc3545 !important;
+}
+
+body.dark-mode .swal2-icon.swal2-warning {
+  border-color: #ffc107 !important;
+  color: #ffc107 !important;
+}
+
+body.dark-mode .swal2-icon.swal2-info {
+  border-color: var(--button-primary) !important;
+  color: var(--button-primary) !important;
+}
+
+body.dark-mode .swal2-icon.swal2-question {
+  border-color: var(--button-primary) !important;
+  color: var(--button-primary) !important;
+}
+
+/* SweetAlert Footer */
+body.dark-mode .swal2-footer {
+  border-top: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+/* SweetAlert Close Button */
+body.dark-mode .swal2-close {
+  color: var(--text-primary) !important;
+}
+
+body.dark-mode .swal2-close:hover {
+  color: var(--text-secondary) !important;
+}
+
 @media (max-width: 450px) {
   .sidebar {
     width: 70px;
