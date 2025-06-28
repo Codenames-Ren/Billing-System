@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  if (window.location.pathname !== "/reminder") return;
+  if (window.location.pathname !== "/message") return;
 
   const token = localStorage.getItem("auth_token");
   const role = localStorage.getItem("user_role");
@@ -10,6 +10,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const closeModal = document.getElementById("close-modal");
   const copyBtn = document.getElementById("copy-message");
   const whatsappBtn = document.getElementById("whatsapp-link");
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "dark") {
+    document.body.classList.add("dark-mode");
+  }
 
   initDarkMode();
 
@@ -422,10 +426,19 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function initReminderPage() {
     try {
       if (!token || !role) {
-        if (window.location.pathname === "/reminder") {
-          window.location.href = "/login";
-          return;
-        }
+        window.location.href = "/login";
+        return;
+      }
+
+      if (role !== "admin") {
+        Swal.fire(
+          "Akses Ditolak",
+          "Halaman ini hanya untuk admin",
+          "error"
+        ).then(() => {
+          window.location.href = "/home";
+        });
+        return;
       }
 
       renderSidebarByRole(role);
