@@ -25,6 +25,7 @@ func ClientRoutes(router *gin.Engine) {
 	admin := router.Group("/admin", middlewares.AuthMiddleware(), middlewares.AdminMiddleware())
 	{
 		admin.GET("/clients", controllers.GetAllClients)
+		admin.GET("/clients-with-billing", controllers.GetClientsWithLatestBilling)
 	}
 
 }

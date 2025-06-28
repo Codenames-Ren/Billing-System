@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Fetch clients with billing data from API
   async function fetchClientsWithBilling() {
     try {
-      const res = await fetch("/api/clients-with-billing", {
+      const res = await fetch("/admin/clients-with-billing", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -336,7 +336,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           text: "Pesan berhasil disalin ke clipboard",
           icon: "success",
           timer: 2000,
-          showConfirmButton: false,
+          showConfirmButton: true,
         });
       } catch (err) {
         // Fallback for older browsers
