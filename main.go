@@ -48,16 +48,6 @@ func main() {
 
 	routes.ViewRoute(router)
 
-	// //setup email service
-	// smtpPort, _ := strconv.Atoi(os.Getenv("SMTP_PORT"))
-	// emailService := service.EmailService{
-	// 	SMTPHost: os.Getenv("SMTP_HOST"),
-	// 	SMTPPort: smtpPort,
-	// 	Username: os.Getenv("SMTP_USERNAME"),
-	// 	Password: os.Getenv("SMTP_PASSWORD"),
-	// }
-
-
 	//Setup Routing
 	routes.UserRoutes(router, database.DB)
 	routes.ClientRoutes(router)
