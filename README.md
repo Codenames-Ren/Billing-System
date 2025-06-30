@@ -351,7 +351,7 @@ Jika Anda memiliki saran untuk membuat proyek ini lebih baik, silakan fork repo 
 
 ## Lisensi
 
-Didistribusikan di bawah Lisensi MIT. Lihat `LICENSE.txt` untuk informasi lebih lanjut.
+Didistribusikan di bawah Lisensi MIT. Lihat `LICENSE` untuk informasi lebih lanjut.
 
 <!-- KONTAK -->
 
@@ -385,8 +385,8 @@ Sumber daya dan tools yang membantu pengembangan proyek ini:
 [stars-url]: https://github.com/Codenames-Ren/Billing-System/stargazers
 [issues-shield]: https://img.shields.io/github/issues/Codenames-Ren/Billing-System.svg?style=for-the-badge
 [issues-url]: https://github.com/Codenames-Ren/Billing-System/issues
-[license-shield]: https://img.shields.io/github/license/Codenames-Ren/Billing-System.svg?style=for-the-badge
-[license-url]: https://github.com/Codenames-Ren/Billing-System/blob/master/LICENSE.txt
+[license-shield]: https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge
+[license-url]: https://github.com/Codenames-Ren/Billing-System/blob/master/LICENSE
 [PostgreSQL.com]: https://img.shields.io/badge/postgresql-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white
 [PostgreSQL-url]: https://www.postgresql.org/
 [Go.dev]: https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white
