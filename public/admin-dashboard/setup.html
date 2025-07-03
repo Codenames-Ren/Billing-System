@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add User - Admin Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <link
+      rel="icon"
+      href="/public/admin-dashboard/image/download.webp"
+      type="image/x-icon"
+    />
+    <link
+      rel="shortcut icon"
+      href="/public/admin-dashboard/image/download.webp"
+      type="image/x-icon"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/public/admin-dashboard/style/clients.css" />
+    <link rel="stylesheet" href="/public/admin-dashboard/style/setup.css" />
+  </head>
+  <body>
+    <div id="dashboard" style="width: 100%">
+      <!-- Sidebar Navigation -->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-logo">
+            <i class="fa-solid fa-house-signal" style="margin-right: 8px"></i
+            >Amang Wifi
+          </div>
+        </div>
+        <div class="theme-toggle-container">
+          <div class="theme-toggle">
+            <input
+              type="checkbox"
+              id="theme-toggle-checkbox"
+              class="theme-toggle-checkbox"
+            />
+            <label for="theme-toggle-checkbox" class="theme-toggle-label">
+              <span class="theme-toggle-slider">
+                <i class="fas fa-sun theme-icon sun-icon"></i>
+                <i class="fas fa-moon theme-icon moon-icon"></i>
+              </span>
+            </label>
+          </div>
+        </div>
+        <div class="sidebar-menu">
+          <a href="/home" class="menu-item" data-menu="dashboard">
+            <i class="fas fa-chart-line"></i>
+            <span class="menu-text">Dashboard</span>
+          </a>
+          <a
+            href="manage-users"
+            class="menu-item active"
+            data-menu="manajemen user"
+          >
+            <i class="fas fa-users"></i>
+            <span class="menu-text">Manajemen User</span>
+          </a>
+          <a href="#" class="menu-item" data-menu="setup mikrotik">
+            <i class="fa-solid fa-wrench"></i>
+            <span class="menu-text">Setup Mikrotik</span>
+          </a>
+          <a href="/client" class="menu-item" data-menu="data pelanggan">
+            <i class="fa-solid fa-person"></i>
+            <span class="menu-text">Data Pelanggan</span>
+          </a>
+          <a href="/packages" class="menu-item" data-menu="paket wifi">
+            <i class="fas fa-wifi"></i>
+            <span class="menu-text">Paket Wifi</span>
+          </a>
+          <a href="/report" class="menu-item" data-menu="laporan">
+            <i class="fas fa-file-alt"></i>
+            <span class="menu-text">Laporan</span>
+          </a>
+          <a href="/message" class="menu-item" data-menu="pesan">
+            <i class="fa-brands fa-whatsapp"></i>
+            <span class="menu-text">Generate Pesan</span>
+          </a>
+        </div>
+        <div class="user-info">
+          <div class="user-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="user-name" id="user-name">Admin</div>
+          <button class="logout-btn" id="logout-btn">
+            <i class="fas fa-sign-out-alt"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <div class="header">
+          <h1 class="page-title">Manajemen User</h1>
+          <div id="current-date"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Daftar User PPPoE</div>
+
+          <div class="filter-container">
+            <button class="btn btn-export" id="add-user-btn">
+              <i class="fas fa-plus"></i> Add User
+            </button>
+            <input
+              type="text"
+              id="search-input"
+              placeholder="Cari User"
+              style="margin-left: 1rem; padding: 0.5rem"
+            />
+            <button class="btn" id="filter-btn">Filter</button>
+            <button class="btn" id="reset-btn">Reset</button>
+          </div>
+
+          <div class="table-wrapper">
+            <table id="user-table">
+              <thead>
+                <tr>
+                  <th>Username</th>
+                  <th>Type</th>
+                  <th>Package</th>
+                  <th>Full Name</th>
+                  <th>Status</th>
+                  <th>Created</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="user-table-body">
+                <tr>
+                  <td>user001</td>
+                  <td>PPPoE</td>
+                  <td>Paket A</td>
+                  <td>John Doe</td>
+                  <td><span class="status-paid">Active</span></td>
+                  <td>01 Jan 2025</td>
+                  <td>
+                    <button class="btn">Edit</button>
+                    <button class="btn btn-danger">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Multistep Form -->
+    <div class="modal-overlay" id="modal-overlay">
+      <div class="modal-container">
+        <div class="modal-header">
+          <h2 class="modal-title">Add New User</h2>
+          <button class="modal-close" id="modal-close">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+          <div class="progress-bar">
+            <div class="progress-step active" data-step="1">
+              <div class="step-number">1</div>
+              <div class="step-label">Account</div>
+            </div>
+            <div class="progress-step" data-step="2">
+              <div class="step-number">2</div>
+              <div class="step-label">Member</div>
+            </div>
+            <div class="progress-step" data-step="3">
+              <div class="step-number">3</div>
+              <div class="step-label">Payment</div>
+            </div>
+            <div class="progress-step" data-step="4">
+              <div class="step-number">4</div>
+              <div class="step-label">Review</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-body">
+          <form id="multistep-form">
+            <!-- Step 1: Account -->
+            <div class="form-step active" data-step="1">
+              <h3 class="step-title">Account Information</h3>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="user-type"
+                    >Type User <span class="required">*</span></label
+                  >
+                  <select id="user-type" name="userType" required>
+                    <option value="">Select Type</option>
+                    <option value="pppoe">PPPoE</option>
+                    <option value="dhcp">DHCP</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="username"
+                    >Username <span class="required">*</span></label
+                  >
+                  <input type="text" id="username" name="username" required />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="password"
+                    >Password <span class="required">*</span></label
+                  >
+                  <div class="password-container">
+                    <input
+                      type="password"
+                      id="password"
+                      name="password"
+                      required
+                    />
+                    <button
+                      type="button"
+                      class="password-toggle"
+                      id="password-toggle"
+                    >
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="package"
+                    >Pilih Paket <span class="required">*</span></label
+                  >
+                  <select id="package" name="package" required>
+                    <option value="">Select Package</option>
+                    <option value="paket-a">Paket A - 10 Mbps</option>
+                    <option value="paket-b">Paket B - 20 Mbps</option>
+                    <option value="paket-c">Paket C - 50 Mbps</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="nas"
+                    >Pilih NAS <span class="required">*</span></label
+                  >
+                  <select id="nas" name="nas" required>
+                    <option value="">Select NAS</option>
+                    <option value="nas-01">NAS-01 (192.168.1.1)</option>
+                    <option value="nas-02">NAS-02 (192.168.1.2)</option>
+                    <option value="nas-03">NAS-03 (192.168.1.3)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="ip-address">IP Address</label>
+                  <input
+                    type="text"
+                    id="ip-address"
+                    name="ipAddress"
+                    placeholder="192.168.1.100"
+                  />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="service-name">Service Name</label>
+                  <input
+                    type="text"
+                    id="service-name"
+                    name="serviceName"
+                    placeholder="Service Name"
+                  />
+                </div>
+                <div class="form-group checkbox-group">
+                  <label class="checkbox-label">
+                    <input
+                      type="checkbox"
+                      id="add-to-billing"
+                      name="addToBilling"
+                    />
+                    <span class="checkmark"></span>
+                    Add to Billing
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2: Member -->
+            <div class="form-step" data-step="2">
+              <h3 class="step-title">Member Information</h3>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="full-name"
+                    >Full Name <span class="required">*</span></label
+                  >
+                  <input type="text" id="full-name" name="fullName" required />
+                </div>
+                <div class="form-group">
+                  <label for="whatsapp"
+                    >WhatsApp Number <span class="required">*</span></label
+                  >
+                  <input
+                    type="tel"
+                    id="whatsapp"
+                    name="whatsapp"
+                    placeholder="08123456789"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="address"
+                  >Address <span class="required">*</span></label
+                >
+                <textarea
+                  id="address"
+                  name="address"
+                  rows="3"
+                  required
+                ></textarea>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="id-card">ID Card Number</label>
+                  <input
+                    type="text"
+                    id="id-card"
+                    name="idCard"
+                    placeholder="3201234567890001"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="user@example.com"
+                  />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="latitude">Latitude</label>
+                  <input
+                    type="text"
+                    id="latitude"
+                    name="latitude"
+                    placeholder="-6.175392"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="longitude">Longitude</label>
+                  <input
+                    type="text"
+                    id="longitude"
+                    name="longitude"
+                    placeholder="106.827153"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 3: Payment -->
+            <div class="form-step" data-step="3">
+              <h3 class="step-title">Payment Information</h3>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="payment-type"
+                    >Payment Type <span class="required">*</span></label
+                  >
+                  <select id="payment-type" name="paymentType" required>
+                    <option value="">Select Payment Type</option>
+                    <option value="prepaid">Prepaid</option>
+                    <option value="postpaid">Postpaid</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="active-date"
+                    >Active Date <span class="required">*</span></label
+                  >
+                  <input
+                    type="date"
+                    id="active-date"
+                    name="activeDate"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="billing-period"
+                    >Billing Period <span class="required">*</span></label
+                  >
+                  <select id="billing-period" name="billingPeriod" required>
+                    <option value="">Select Billing Period</option>
+                    <option value="fixed-date">Fixed Date</option>
+                    <option value="dynamic">Dynamic</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="quarterly">Quarterly</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="invoice-status"
+                    >Invoice Status <span class="required">*</span></label
+                  >
+                  <select id="invoice-status" name="invoiceStatus" required>
+                    <option value="">Select Status</option>
+                    <option value="paid">Paid</option>
+                    <option value="unpaid">Unpaid</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group checkbox-group">
+                <label class="checkbox-label">
+                  <input
+                    type="checkbox"
+                    id="generate-invoice"
+                    name="generateInvoice"
+                  />
+                  <span class="checkmark"></span>
+                  Generate Invoice
+                </label>
+              </div>
+            </div>
+
+            <!-- Step 4: Review -->
+            <div class="form-step" data-step="4">
+              <h3 class="step-title">Review Information</h3>
+
+              <div class="review-section">
+                <h4>Account Information</h4>
+                <div class="review-grid">
+                  <div class="review-item">
+                    <span class="review-label">Type User:</span>
+                    <span class="review-value" id="review-user-type">-</span>
+                  </div>
+                  <div class="review-item">
+                    <span class="review-label">Username:</span>
+                    <span class="review-value" id="review-username">-</span>
+                  </div>
+                  <div class="review-item">
+                    <span class="review-label">Package:</span>
+                    <span class="review-value" id="review-package">-</span>
+                  </div>
+                  <div class="review-item">
+                    <span class="review-label">NAS:</span>
+                    <span class="review-value" id="review-nas">-</span>
+                  </div>
+                  <div class="review-item">
+                    <span class="review-label">IP Address:</span>
+                    <span class="review-value" id="review-ip-address">-</span>
+                  </div>
+                  <div class="review-item">
+                    <span class="review-label">Add to Billing:</span>
+                    <span class="review-value" id="review-add-to-billing"
+                      >-</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="review-section">
+                <h4>Member Information</h4>
+                <div class="review-grid">
+                  <div class="review-item">
+                    <span class="review-label">Full Name:</span>
+                    <span class="review-value" id="review-full-name">-</span>
+                  </div>
+                  <div class="review-item">
+                    <span class="review-label">WhatsApp:</span>
+                    <span class="review-value" id="review-whatsapp">-</span>
+                  </div>
+                  <div class="review-item">
+                    <span class="review-label">Address:</span>
+                    <span class="review-value" id="review-address">-</span>
+                  </div>
+                  <div class="review-item">
+                    <span class="review-label">Email:</span>
+                    <span class="review-value" id="review-email">-</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="review-section">
+                <h4>Payment Information</h4>
+                <div class="review-grid">
+                  <div class="review-item">
+                    <span class="review-label">Payment Type:</span>
+                    <span class="review-value" id="review-payment-type">-</span>
+                  </div>
+                  <div class="review-item">
+                    <span class="review-label">Active Date:</span>
+                    <span class="review-value" id="review-active-date">-</span>
+                  </div>
+                  <div class="review-item">
+                    <span class="review-label">Billing Period:</span>
+                    <span class="review-value" id="review-billing-period"
+                      >-</span
+                    >
+                  </div>
+                  <div class="review-item">
+                    <span class="review-label">Invoice Status:</span>
+                    <span class="review-value" id="review-invoice-status"
+                      >-</span
+                    >
+                  </div>
+                  <div class="review-item">
+                    <span class="review-label">Generate Invoice:</span>
+                    <span class="review-value" id="review-generate-invoice"
+                      >-</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            id="prev-btn"
+            style="display: none"
+          >
+            <i class="fas fa-arrow-left"></i> Previous
+          </button>
+          <button type="button" class="btn btn-export" id="next-btn">
+            Next <i class="fas fa-arrow-right"></i>
+          </button>
+          <button
+            type="button"
+            class="btn btn-export"
+            id="submit-btn"
+            style="display: none"
+          >
+            <i class="fas fa-paper-plane"></i> Submit
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="/public/admin-dashboard/script/clients.js"></script>
+    <script src="/public/admin-dashboard/script/setup.js"></script>
+  </body>
+</html>
