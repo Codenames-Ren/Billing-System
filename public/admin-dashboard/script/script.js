@@ -98,15 +98,37 @@ function updateChart(data) {
           legend: {
             display: true,
             position: "top",
+            labels: {
+              color: "#ffffff", // Warna label legend (Omset Bulanan)
+              font: {
+                size: 14,
+                weight: "bold",
+              },
+            },
           },
         },
         scales: {
+          x: {
+            ticks: {
+              color: "#ffffff", // Warna label bawah (Jan, Feb, dst)
+              font: {
+                size: 12,
+              },
+            },
+            grid: {
+              color: "rgba(255,255,255,0.1)", // Garis grid horisontal tipis
+            },
+          },
           y: {
             beginAtZero: true,
             ticks: {
+              color: "#ffffff", // Warna angka kiri (Rp ...)
               callback: function (value) {
                 return "Rp " + value.toLocaleString("id-ID");
               },
+            },
+            grid: {
+              color: "rgba(255,255,255,0.1)",
             },
           },
         },
