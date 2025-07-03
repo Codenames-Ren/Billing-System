@@ -5,8 +5,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,7 +23,7 @@
 
 /* Modal Container */
 .modal-container {
-  background: var(--card-bg);
+  background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
   width: 90%;
@@ -32,6 +32,7 @@
   overflow-y: auto;
   transform: scale(0.8);
   transition: transform 0.3s ease;
+  border: 1px solid #e2e8f0;
 }
 
 .modal-overlay.active .modal-container {
@@ -44,8 +45,8 @@
   justify-content: between;
   align-items: center;
   padding: 1.5rem 2rem;
-  border-bottom: 1px solid var(--border-color);
-  background: var(--card-bg);
+  border-bottom: 1px solid #e2e8f0;
+  background: #ffffff;
   border-radius: 12px 12px 0 0;
 }
 
@@ -53,14 +54,14 @@
   margin: 0;
   font-size: 1.5rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: #1a202c;
 }
 
 .modal-close {
   background: none;
   border: none;
   font-size: 1.5rem;
-  color: var(--text-secondary);
+  color: #4a5568;
   cursor: pointer;
   padding: 0.5rem;
   border-radius: 50%;
@@ -69,14 +70,14 @@
 }
 
 .modal-close:hover {
-  background: var(--hover-bg);
-  color: var(--text-primary);
+  background: #f7fafc;
+  color: #1a202c;
 }
 
 /* Progress Bar */
 .progress-container {
   padding: 2rem 2rem 1rem;
-  background: var(--card-bg);
+  background: #ffffff;
 }
 
 .progress-bar {
@@ -93,7 +94,7 @@
   left: 25px;
   right: 25px;
   height: 2px;
-  background: var(--border-color);
+  background: #e2e8f0;
   z-index: 1;
 }
 
@@ -103,7 +104,7 @@
   top: 20px;
   left: 25px;
   height: 2px;
-  background: var(--primary-color);
+  background: #3182ce;
   z-index: 2;
   width: 0%;
   transition: width 0.4s ease;
@@ -134,8 +135,8 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: var(--border-color);
-  color: var(--text-secondary);
+  background: #e2e8f0;
+  color: #4a5568;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -147,34 +148,35 @@
 
 .step-label {
   font-size: 0.8rem;
-  color: var(--text-secondary);
+  color: #4a5568;
   font-weight: 500;
   transition: color 0.3s ease;
 }
 
 .progress-step.active .step-number {
-  background: var(--primary-color);
+  background: #3182ce;
   color: white;
 }
 
 .progress-step.active .step-label {
-  color: var(--primary-color);
+  color: #3182ce;
   font-weight: 600;
 }
 
 .progress-step.completed .step-number {
-  background: var(--success-color);
+  background: #38a169;
   color: white;
 }
 
 .progress-step.completed .step-label {
-  color: var(--success-color);
+  color: #38a169;
 }
 
 /* Modal Body */
 .modal-body {
   padding: 1rem 2rem;
   min-height: 400px;
+  background: #ffffff;
 }
 
 /* Form Steps */
@@ -202,8 +204,8 @@
   margin: 0 0 1.5rem 0;
   font-size: 1.2rem;
   font-weight: 600;
-  color: var(--text-primary);
-  border-bottom: 2px solid var(--primary-color);
+  color: #1a202c;
+  border-bottom: 2px solid #3182ce;
   padding-bottom: 0.5rem;
 }
 
@@ -223,12 +225,12 @@
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 500;
-  color: var(--text-primary);
+  color: #1a202c;
   font-size: 0.9rem;
 }
 
 .required {
-  color: var(--danger-color);
+  color: #e53e3e;
 }
 
 .form-group input,
@@ -236,10 +238,10 @@
 .form-group textarea {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid var(--border-color);
+  border: 1px solid #e2e8f0;
   border-radius: 6px;
-  background: var(--input-bg);
-  color: var(--text-primary);
+  background: #ffffff;
+  color: #1a202c;
   font-size: 0.9rem;
   transition: all 0.2s ease;
 }
@@ -248,8 +250,13 @@
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+  border-color: #3182ce;
+  box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #a0aec0;
 }
 
 .form-group textarea {
@@ -269,7 +276,7 @@
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: var(--text-secondary);
+  color: #4a5568;
   cursor: pointer;
   padding: 0.25rem;
   font-size: 0.9rem;
@@ -277,7 +284,7 @@
 }
 
 .password-toggle:hover {
-  color: var(--text-primary);
+  color: #1a202c;
 }
 
 /* Checkbox Styling */
@@ -292,7 +299,7 @@
   align-items: center;
   cursor: pointer;
   font-size: 0.9rem;
-  color: var(--text-primary);
+  color: #1a202c;
 }
 
 .checkbox-label input[type="checkbox"] {
@@ -302,16 +309,17 @@
 .checkmark {
   width: 18px;
   height: 18px;
-  border: 2px solid var(--border-color);
+  border: 2px solid #e2e8f0;
   border-radius: 3px;
   margin-right: 0.5rem;
   position: relative;
   transition: all 0.2s ease;
+  background: #ffffff;
 }
 
 .checkbox-label input[type="checkbox"]:checked + .checkmark {
-  background: var(--primary-color);
-  border-color: var(--primary-color);
+  background: #3182ce;
+  border-color: #3182ce;
 }
 
 .checkbox-label input[type="checkbox"]:checked + .checkmark::after {
@@ -328,14 +336,14 @@
 .review-section {
   margin-bottom: 2rem;
   padding: 1rem;
-  background: var(--hover-bg);
+  background: #f7fafc;
   border-radius: 8px;
-  border-left: 4px solid var(--primary-color);
+  border-left: 4px solid #3182ce;
 }
 
 .review-section h4 {
   margin: 0 0 1rem 0;
-  color: var(--primary-color);
+  color: #3182ce;
   font-size: 1rem;
   font-weight: 600;
 }
@@ -350,7 +358,7 @@
   display: flex;
   justify-content: space-between;
   padding: 0.5rem 0;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .review-item:last-child {
@@ -359,13 +367,13 @@
 
 .review-label {
   font-weight: 500;
-  color: var(--text-secondary);
+  color: #4a5568;
   font-size: 0.85rem;
 }
 
 .review-value {
   font-weight: 600;
-  color: var(--text-primary);
+  color: #1a202c;
   font-size: 0.85rem;
   text-align: right;
 }
@@ -376,8 +384,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem 2rem;
-  border-top: 1px solid var(--border-color);
-  background: var(--card-bg);
+  border-top: 1px solid #e2e8f0;
+  background: #ffffff;
   border-radius: 0 0 12px 12px;
 }
 
@@ -395,23 +403,56 @@
 }
 
 .btn-secondary {
-  background: var(--hover-bg);
-  color: var(--text-primary);
-  border: 1px solid var(--border-color);
+  background: #f7fafc;
+  color: #1a202c;
+  border: 1px solid #e2e8f0;
 }
 
 .btn-secondary:hover {
-  background: var(--border-color);
+  background: #e2e8f0;
 }
 
 .btn-export {
-  background: var(--primary-color);
+  background: #3182ce;
   color: white;
 }
 
 .btn-export:hover {
-  background: var(--primary-hover);
+  background: #2c5282;
   transform: translateY(-1px);
+}
+
+/* Error States */
+.form-group.error input,
+.form-group.error select,
+.form-group.error textarea {
+  border-color: #e53e3e;
+}
+
+.error-message {
+  color: #e53e3e;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+/* Animation for form validation errors */
+.form-group.error input,
+.form-group.error select,
+.form-group.error textarea {
+  animation: shake 0.3s ease-in-out;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
 }
 
 /* Responsive */
@@ -457,39 +498,239 @@
   }
 }
 
-/* Dark Mode Adjustments */
-[data-theme="dark"] .modal-overlay {
-  background: rgba(0, 0, 0, 0.7);
+/* Scrollbar Styling */
+.modal-container::-webkit-scrollbar {
+  width: 8px;
 }
 
-[data-theme="dark"] .modal-container {
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+.modal-container::-webkit-scrollbar-track {
+  background: #f1f5f9;
 }
 
-/* Animation for form validation errors */
-.form-group.error input,
-.form-group.error select,
-.form-group.error textarea {
-  border-color: var(--danger-color);
+.modal-container::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 4px;
+}
+
+.modal-container::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
+}
+
+/* DARK MODE STYLING */
+.dark-theme .modal-overlay {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.dark-theme .modal-container {
+  background: #2d3748;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  border: 1px solid #4a5568;
+}
+
+.dark-theme .modal-header {
+  background: #2d3748;
+  border-bottom: 1px solid #4a5568;
+}
+
+.dark-theme .modal-title {
+  color: #f7fafc;
+}
+
+.dark-theme .modal-close {
+  color: #a0aec0;
+}
+
+.dark-theme .modal-close:hover {
+  background: #4a5568;
+  color: #f7fafc;
+}
+
+.dark-theme .progress-container {
+  background: #2d3748;
+}
+
+.dark-theme .progress-bar::before {
+  background: #4a5568;
+}
+
+.dark-theme .step-number {
+  background: #4a5568;
+  color: #a0aec0;
+}
+
+.dark-theme .step-label {
+  color: #a0aec0;
+}
+
+.dark-theme .progress-step.active .step-label {
+  color: #63b3ed;
+}
+
+.dark-theme .progress-step.completed .step-label {
+  color: #68d391;
+}
+
+.dark-theme .modal-body {
+  background: #2d3748;
+}
+
+.dark-theme .step-title {
+  color: #f7fafc;
+}
+
+.dark-theme .form-group label {
+  color: #f7fafc;
+}
+
+.dark-theme .form-group input,
+.dark-theme .form-group select,
+.dark-theme .form-group textarea {
+  background: #1a202c;
+  border: 1px solid #4a5568;
+  color: #f7fafc;
+}
+
+.dark-theme .form-group input:focus,
+.dark-theme .form-group select:focus,
+.dark-theme .form-group textarea:focus {
+  border-color: #63b3ed;
+  box-shadow: 0 0 0 3px rgba(99, 179, 237, 0.2);
+}
+
+.dark-theme .form-group input::placeholder,
+.dark-theme .form-group textarea::placeholder {
+  color: #718096;
+}
+
+.dark-theme .password-toggle {
+  color: #a0aec0;
+}
+
+.dark-theme .password-toggle:hover {
+  color: #f7fafc;
+}
+
+.dark-theme .checkbox-label {
+  color: #f7fafc;
+}
+
+.dark-theme .checkmark {
+  border: 2px solid #4a5568;
+  background: #1a202c;
+}
+
+.dark-theme .review-section {
+  background: #1a202c;
+  border-left: 4px solid #63b3ed;
+}
+
+.dark-theme .review-section h4 {
+  color: #63b3ed;
+}
+
+.dark-theme .review-item {
+  border-bottom: 1px solid #4a5568;
+}
+
+.dark-theme .review-label {
+  color: #a0aec0;
+}
+
+.dark-theme .review-value {
+  color: #f7fafc;
+}
+
+.dark-theme .modal-footer {
+  background: #2d3748;
+  border-top: 1px solid #4a5568;
+}
+
+.dark-theme .btn-secondary {
+  background: #4a5568;
+  color: #f7fafc;
+  border: 1px solid #718096;
+}
+
+.dark-theme .btn-secondary:hover {
+  background: #718096;
+}
+
+.dark-theme .btn-export {
+  background: #3182ce;
+  color: white;
+}
+
+.dark-theme .btn-export:hover {
+  background: #2c5282;
+}
+
+/* Dark Mode Error States */
+.dark-theme .form-group.error input,
+.dark-theme .form-group.error select,
+.dark-theme .form-group.error textarea {
+  border-color: #fc8181;
+}
+
+.dark-theme .error-message {
+  color: #fc8181;
+}
+
+/* Dark Mode Select Options */
+.dark-theme .form-group select option {
+  background: #1a202c;
+  color: #f7fafc;
+}
+
+/* Dark Mode Scrollbar */
+.dark-theme .modal-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dark-theme .modal-container::-webkit-scrollbar-track {
+  background: #2d3748;
+}
+
+.dark-theme .modal-container::-webkit-scrollbar-thumb {
+  background: #4a5568;
+  border-radius: 4px;
+}
+
+.dark-theme .modal-container::-webkit-scrollbar-thumb:hover {
+  background: #718096;
+}
+
+/* Animation for form validation errors in dark mode */
+.dark-theme .form-group.error input,
+.dark-theme .form-group.error select,
+.dark-theme .form-group.error textarea {
   animation: shake 0.3s ease-in-out;
 }
 
-@keyframes shake {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  25% {
-    transform: translateX(-5px);
-  }
-  75% {
-    transform: translateX(5px);
-  }
+/* Additional Dark Mode Enhancements */
+.dark-theme .modal-overlay {
+  backdrop-filter: blur(8px);
 }
 
-.error-message {
-  color: var(--danger-color);
-  font-size: 0.8rem;
-  margin-top: 0.25rem;
-  display: block;
+.dark-theme .progress-step.active .step-number {
+  background: #63b3ed;
+  color: #1a202c;
+}
+
+.dark-theme .progress-step.completed .step-number {
+  background: #68d391;
+  color: #1a202c;
+}
+
+/* Dark Mode CSS Variables Override */
+.dark-theme {
+  --card-bg: #2d3748;
+  --text-primary: #f7fafc;
+  --text-secondary: #a0aec0;
+  --border-color: #4a5568;
+  --hover-bg: #1a202c;
+  --input-bg: #1a202c;
+  --primary-color: #63b3ed;
+  --primary-hover: #2c5282;
+  --success-color: #68d391;
+  --danger-color: #fc8181;
 }
