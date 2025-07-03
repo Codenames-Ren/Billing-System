@@ -78,14 +78,16 @@ function updateChart(data) {
     chartInstance.update();
   } else {
     chartInstance = new Chart(ctx, {
-      type: "bar",
+      type: "line",
       data: {
         labels: labels,
         datasets: [
           {
             label: "Omset Bulanan (Rp)",
-            backgroundColor: "#4e73df",
-            borderColor: "#4e73df",
+            backgroundColor: "#8bd450",
+            borderColor: "#8bd450",
+            hoverBackgroundColor: "#fb923c",
+            hoverBorderColor: "#fcd34d",
             data: monthlySales,
             borderRadius: 5,
           },
