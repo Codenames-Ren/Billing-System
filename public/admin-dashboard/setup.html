@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Add User - Admin Dashboard</title>
+    <title>Manage Users - Admin Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <link
@@ -20,7 +20,10 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
     />
-    <link rel="stylesheet" href="/public/admin-dashboard/style/clients.css" />
+    <link
+      rel="stylesheet"
+      href="/public/admin-dashboard/style/pppoe-users.css"
+    />
     <link rel="stylesheet" href="/public/admin-dashboard/style/setup.css" />
   </head>
   <body>
@@ -53,15 +56,11 @@
             <i class="fas fa-chart-line"></i>
             <span class="menu-text">Dashboard</span>
           </a>
-          <a
-            href="manage-users"
-            class="menu-item active"
-            data-menu="manajemen user"
-          >
+          <a href="/manage-users" class="menu-item" data-menu="manajemen user">
             <i class="fas fa-users"></i>
             <span class="menu-text">Manajemen User</span>
           </a>
-          <a href="#" class="menu-item" data-menu="setup mikrotik">
+          <a href="/setup" class="menu-item active" data-menu="setup mikrotik">
             <i class="fa-solid fa-wrench"></i>
             <span class="menu-text">Setup Mikrotik</span>
           </a>
@@ -95,62 +94,146 @@
 
       <!-- Main Content -->
       <div class="main-content">
-        <div class="header">
-          <h1 class="page-title">Manajemen User</h1>
-          <div id="current-date"></div>
+        <!-- Stats Cards -->
+        <div class="stats-container">
+          <div class="stat-card stat-total">
+            <div class="stat-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-info">
+              <div class="stat-number" id="total-users">252</div>
+              <div class="stat-label">Total</div>
+            </div>
+          </div>
+
+          <div class="stat-card stat-active">
+            <div class="stat-icon">
+              <i class="fas fa-user-check"></i>
+            </div>
+            <div class="stat-info">
+              <div class="stat-number" id="active-users">237</div>
+              <div class="stat-label">Active</div>
+            </div>
+          </div>
+
+          <div class="stat-card stat-suspend">
+            <div class="stat-icon">
+              <i class="fas fa-user-times"></i>
+            </div>
+            <div class="stat-info">
+              <div class="stat-number" id="suspend-users">15</div>
+              <div class="stat-label">Suspend</div>
+            </div>
+          </div>
+
+          <div class="stat-card stat-terminate">
+            <div class="stat-icon">
+              <i class="fas fa-user-slash"></i>
+            </div>
+            <div class="stat-info">
+              <div class="stat-number" id="terminate-users">0</div>
+              <div class="stat-label">Terminate</div>
+            </div>
+          </div>
+
+          <div class="stat-card stat-online">
+            <div class="stat-icon">
+              <i class="fas fa-wifi"></i>
+            </div>
+            <div class="stat-info">
+              <div class="stat-number" id="online-users">236</div>
+              <div class="stat-label">Online</div>
+            </div>
+          </div>
         </div>
 
-        <div class="card">
-          <div class="card-title">Daftar User PPPoE</div>
+        <!-- Controls -->
+        <div class="controls-container">
+          <button class="btn btn-primary" id="add-user-btn">
+            <i class="fas fa-plus"></i> Add User
+          </button>
 
-          <div class="filter-container">
-            <button class="btn btn-export" id="add-user-btn">
-              <i class="fas fa-plus"></i> Add User
+          <div class="control-group">
+            <button class="btn btn-secondary">
+              <i class="fas fa-copy"></i>
             </button>
+            <button class="btn btn-secondary">
+              <i class="fas fa-file-excel"></i>
+            </button>
+            <button class="btn btn-danger">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters-container">
+          <select id="nas-filter" class="filter-select">
+            <option value="">Nas</option>
+            <option value="all">all</option>
+            <!-- <option value="davit.net">davit.net</option> -->
+          </select>
+
+          <select id="status-filter" class="filter-select">
+            <option value="">Status</option>
+            <option value="active">active</option>
+            <option value="suspend">suspend</option>
+            <option value="terminate">terminate</option>
+          </select>
+
+          <select id="profile-filter" class="filter-select">
+            <option value="">Profile</option>
+            <option value="Paket Upto10M Rp 150 rb">
+              Paket Upto10M Rp 150 rb
+            </option>
+            <option value="Paket Upto15M Rp 175 rb">
+              Paket Upto15M Rp 175 rb
+            </option>
+            <option value="Paket Upto10M Rp 125 rb">
+              Paket Upto10M Rp 125 rb
+            </option>
+          </select>
+
+          <div class="search-container">
             <input
               type="text"
               id="search-input"
-              placeholder="Cari User"
-              style="margin-left: 1rem; padding: 0.5rem"
+              placeholder="Search"
+              class="search-input"
             />
-            <button class="btn" id="filter-btn">Filter</button>
-            <button class="btn" id="reset-btn">Reset</button>
+            <button class="btn btn-secondary" id="search-btn">
+              <i class="fas fa-search"></i>
+            </button>
           </div>
+        </div>
 
-          <div class="table-wrapper">
-            <table id="user-table">
-              <thead>
-                <tr>
-                  <th>Username</th>
-                  <th>Type</th>
-                  <th>Package</th>
-                  <th>Full Name</th>
-                  <th>Status</th>
-                  <th>Created</th>
-                  <th>Aksi</th>
-                </tr>
-              </thead>
-              <tbody id="user-table-body">
-                <tr>
-                  <td>user001</td>
-                  <td>PPPoE</td>
-                  <td>Paket A</td>
-                  <td>John Doe</td>
-                  <td><span class="status-paid">Active</span></td>
-                  <td>01 Jan 2025</td>
-                  <td>
-                    <button class="btn">Edit</button>
-                    <button class="btn btn-danger">Delete</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        <!-- User Table -->
+        <div class="table-container">
+          <table id="user-table" class="user-table">
+            <thead>
+              <tr>
+                <th class="checkbox-col">
+                  <input type="checkbox" id="select-all" />
+                </th>
+                <th>#</th>
+                <th>Type</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Profile</th>
+                <th>Nas</th>
+                <th>Status</th>
+                <th>Internet</th>
+              </tr>
+            </thead>
+            <tbody id="user-table-body">
+              <!-- Data will be populated by JavaScript -->
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
 
-    <!-- Modal Multistep Form -->
+    <!-- Modal Multistep Form (existing modal from setup.css) -->
     <div class="modal-overlay" id="modal-overlay">
       <div class="modal-container">
         <div class="modal-header">
@@ -532,7 +615,7 @@
             type="button"
             class="btn btn-secondary"
             id="prev-btn"
-            style="display: none"
+            style="display: none; color: white"
           >
             <i class="fas fa-arrow-left"></i> Previous
           </button>
@@ -551,7 +634,7 @@
       </div>
     </div>
 
-    <script src="/public/admin-dashboard/script/clients.js"></script>
+    <script src="/public/admin-dashboard/script/pppoe-users.js"></script>
     <script src="/public/admin-dashboard/script/setup.js"></script>
   </body>
 </html>
