@@ -14,10 +14,6 @@ body {
   display: flex;
 }
 
-#current-date {
-  color: white;
-}
-
 /* Dark theme */
 body.dark-mode {
   background: linear-gradient(135deg, #070a0d 0%, #1a252f 100%);
@@ -64,10 +60,101 @@ body.dark-mode .login-form {
   font-weight: bold;
 }
 
-.theme-toggle-container {
-  padding: 0;
-  text-align: center;
+.form-group {
   margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: white;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  color: white;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.form-group input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+#current-date {
+  color: white;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  width: 260px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 20px 0;
+  position: fixed;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+body.dark-mode .sidebar {
+  background: #141e28e6;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-header {
+  padding: 0 20px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+}
+
+.sidebar-logo {
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle-container {
+  padding: 15px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
   justify-content: center;
 }
@@ -140,104 +227,15 @@ body.dark-mode .login-form {
   opacity: 1;
 }
 
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: 500;
-  color: white;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 10px 15px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-  color: white;
-  font-size: 14px;
-  transition: all 0.3s ease;
-}
-
-.form-group input::placeholder {
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.form-group input:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
-}
-
-.login-btn {
-  width: 100%;
-  padding: 12px 20px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.login-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-/* Sidebar Styles */
-.sidebar {
-  width: 260px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-  border-right: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 20px 0;
-  position: fixed;
-  height: 100vh;
-  left: 0;
-  top: 0;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  transition: all 0.3s ease;
-}
-
-body.dark-mode .sidebar {
-  background: #141e28e6;
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.sidebar-header {
-  padding: 0 20px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.sidebar-logo {
-  color: white;
-  font-size: 20px;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .sidebar-menu {
   flex: 1;
   padding: 0 10px;
 }
 
 .menu-item {
+  padding: 12px 15px;
   display: flex;
   align-items: center;
-  padding: 12px 15px;
   color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
   border-radius: 10px;
@@ -321,7 +319,7 @@ body.dark-mode .sidebar {
   transform: scale(1.1);
 }
 
-/* Main Content Styles */
+/* Main Content */
 .main-content {
   flex: 1;
   margin-left: 250px;
@@ -403,6 +401,7 @@ body.dark-mode .card {
   width: 100%;
 }
 
+/* Table Styles */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -480,6 +479,7 @@ select.status-select {
   font-weight: 600;
 }
 
+/* Controls and Filters */
 .filter-container {
   display: flex;
   gap: 15px;
@@ -528,15 +528,6 @@ input::placeholder {
   color: rgba(255, 255, 255, 0.6);
 }
 
-.btn.btn-danger {
-  background: linear-gradient(135deg, #ff6b6b, #ee5a52);
-  color: white;
-}
-
-.btn.btn-danger:hover {
-  background: linear-gradient(135deg, #ff5252, #e53935);
-}
-
 .btn {
   padding: 12px 20px;
   border: none;
@@ -565,8 +556,13 @@ input::placeholder {
   color: white;
 }
 
-.btn-export:hover {
-  background: linear-gradient(135deg, #0e8c7d, #32e06e);
+.btn.btn-danger {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+  color: white;
+}
+
+.btn.btn-danger:hover {
+  background: linear-gradient(135deg, #ff5252, #e53935);
 }
 
 .summary {
@@ -710,37 +706,6 @@ body.dark-mode .swal2-popup {
 body.dark-mode .swal2-input {
   background: rgba(20, 30, 40, 0.8) !important;
   border-color: rgba(255, 255, 255, 0.1) !important;
-}
-
-/* SweetAlert Icons Dark Mode */
-body.dark-mode .swal2-icon.swal2-success .swal2-success-ring {
-  border-color: #11998e !important;
-}
-
-body.dark-mode .swal2-icon.swal2-error .swal2-x-mark-line-left,
-body.dark-mode .swal2-icon.swal2-error .swal2-x-mark-line-right {
-  background-color: #dc3545 !important;
-}
-
-body.dark-mode .swal2-icon.swal2-warning {
-  border-color: #ffc107 !important;
-  color: #ffc107 !important;
-}
-
-body.dark-mode .swal2-icon.swal2-info {
-  border-color: #667eea !important;
-  color: #667eea !important;
-}
-
-body.dark-mode .swal2-icon.swal2-question {
-  border-color: #667eea !important;
-  color: #667eea !important;
-}
-
-/* SweetAlert Footer */
-body.dark-mode .swal2-footer {
-  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-  color: white !important;
 }
 
 /* Custom scrollbar */
