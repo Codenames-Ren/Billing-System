@@ -193,7 +193,7 @@ body.dark-mode .login-form {
 
 /* Sidebar Styles */
 .sidebar {
-  width: 250px;
+  width: 260px;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(20px);
   border-right: 1px solid rgba(255, 255, 255, 0.2);
