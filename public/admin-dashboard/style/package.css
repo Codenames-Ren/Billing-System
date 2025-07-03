@@ -289,22 +289,20 @@ body.dark-mode .sidebar {
 }
 
 .user-avatar {
-  width: 35px;
-  height: 35px;
-  background: rgba(255, 255, 255, 0.2);
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  margin-right: 10px;
 }
 
 .user-name {
-  color: white;
   font-weight: 500;
+  color: white;
   flex: 1;
-  font-size: 14px;
 }
 
 .logout-btn {
