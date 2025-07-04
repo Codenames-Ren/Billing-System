@@ -300,7 +300,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   function setupAddUserModal() {
     if (addUserBtn) {
       addUserBtn.addEventListener("click", () => {
-        console.log("Add user button clicked");
         if (window.multiStepModal) {
           window.multiStepModal.openModal();
         } else {
@@ -390,8 +389,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       setupSearch();
       setupFilters();
       setupAddUserModal();
-
-      console.log("PPPoE Users Page initialized successfully");
     } catch (error) {
       console.error("Error initializing PPPoE users page:", error);
       Swal.fire("Error", "Gagal memuat halaman", "error");
@@ -410,7 +407,6 @@ class MultiStepModal {
   }
 
   init() {
-    console.log("Initializing MultiStepModal");
     this.bindEvents();
     this.updateProgressBar();
     this.updateButtons();
@@ -428,36 +424,30 @@ class MultiStepModal {
 
     // Modal controls
     modalClose?.addEventListener("click", () => {
-      console.log("Modal close clicked");
       this.closeModal();
     });
 
     modalOverlay?.addEventListener("click", (e) => {
       if (e.target === modalOverlay) {
-        console.log("Modal overlay clicked");
         this.closeModal();
       }
     });
 
     // Navigation buttons
     nextBtn?.addEventListener("click", () => {
-      console.log("Next button clicked");
       this.nextStep();
     });
 
     prevBtn?.addEventListener("click", () => {
-      console.log("Previous button clicked");
       this.prevStep();
     });
 
     submitBtn?.addEventListener("click", () => {
-      console.log("Submit button clicked");
       this.submitForm();
     });
 
     // Password toggle
     passwordToggle?.addEventListener("click", () => {
-      console.log("Password toggle clicked");
       const type = passwordInput.type === "password" ? "text" : "password";
       passwordInput.type = type;
       const icon = passwordToggle.querySelector("i");
@@ -478,12 +468,9 @@ class MultiStepModal {
         this.closeModal();
       }
     });
-
-    console.log("Event listeners bound successfully");
   }
 
   openModal() {
-    console.log("Opening modal");
     const modalOverlay = document.getElementById("modal-overlay");
 
     if (modalOverlay) {
@@ -494,15 +481,12 @@ class MultiStepModal {
       // Reset form and show first step
       this.resetForm();
       this.goToStep(1);
-
-      console.log("Modal opened successfully");
     } else {
       console.error("Modal overlay not found");
     }
   }
 
   closeModal() {
-    console.log("Closing modal");
     const modalOverlay = document.getElementById("modal-overlay");
 
     if (modalOverlay) {
@@ -512,8 +496,6 @@ class MultiStepModal {
 
       this.formData = {};
       this.currentStep = 1;
-
-      console.log("Modal closed successfully");
     }
   }
 
@@ -523,8 +505,6 @@ class MultiStepModal {
   }
 
   showStep(step) {
-    console.log(`Showing step ${step}`);
-
     // Hide all form steps
     const formSteps = document.querySelectorAll(".form-step");
     formSteps.forEach((s) => {
@@ -539,15 +519,12 @@ class MultiStepModal {
     if (currentFormStep) {
       currentFormStep.classList.add("active");
       currentFormStep.style.display = "block";
-      console.log(`Form step ${step} is now visible`);
     } else {
       console.error(`Form step ${step} element not found`);
     }
   }
 
   nextStep() {
-    console.log(`Current step: ${this.currentStep}, validating...`);
-
     if (this.validateCurrentStep()) {
       this.collectCurrentStepData();
 
@@ -568,8 +545,6 @@ class MultiStepModal {
   }
 
   goToStep(step) {
-    console.log(`Going to step ${step}`);
-
     this.currentStep = step;
     this.showStep(step);
     this.updateProgressBar();
@@ -623,16 +598,9 @@ class MultiStepModal {
     const requiredFields = currentFormStep?.querySelectorAll("[required]");
     let isValid = true;
 
-    console.log(
-      `Validating step ${this.currentStep}, found ${
-        requiredFields?.length || 0
-      } required fields`
-    );
-
     requiredFields?.forEach((field) => {
       if (!this.validateField(field)) {
         isValid = false;
-        console.log(`Field ${field.name} is invalid`);
       }
     });
 
@@ -733,13 +701,9 @@ class MultiStepModal {
         this.formData[input.name] = input.value;
       }
     });
-
-    console.log("Current step data collected:", this.formData);
   }
 
   updateReviewSection() {
-    console.log("Updating review section with data:", this.formData);
-
     this.updateReviewField(
       "review-user-type",
       this.getSelectOptionText("user-type")
@@ -822,14 +786,11 @@ class MultiStepModal {
     submitBtn.disabled = true;
 
     try {
-      console.log("Form Data to be submitted:", this.formData);
-
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
       this.showNotification("User created successfully!", "success");
       this.closeModal();
     } catch (error) {
-      console.error("Error submitting form:", error);
       this.showNotification("Error creating user. Please try again.", "error");
     } finally {
       submitBtn.innerHTML = originalText;
@@ -838,8 +799,6 @@ class MultiStepModal {
   }
 
   resetForm() {
-    console.log("Resetting form");
-
     const form = document.getElementById("multistep-form");
     if (form) {
       form.reset();
