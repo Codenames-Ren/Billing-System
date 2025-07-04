@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const addUserBtn = document.getElementById("add-user-btn");
   const selectAllCheckbox = document.getElementById("select-all");
   initDarkMode();
+  updateCurrentDate();
 
   let currentPage = 1;
   const rowsPerPage = 10;
@@ -878,4 +879,10 @@ class MultiStepModal {
       alert(message);
     }
   }
+}
+
+function updateCurrentDate() {
+  const now = moment();
+  document.getElementById("current-date").textContent =
+    now.format("dddd, DD MMMM YYYY");
 }
