@@ -129,6 +129,8 @@ func GetPaymentReports(c *gin.Context) {
 		return
 	}
 
+	endDate = endDate.Add(23*time.Hour + 59*time.Minute + 59*time.Second)
+
 	var billings []models.Billing
 
 	db := database.DB.Model(&models.Billing{}).
