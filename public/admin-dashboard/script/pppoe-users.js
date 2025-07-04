@@ -604,10 +604,6 @@ class MultiStepModal {
       }
     });
 
-    if (!isValid) {
-      this.showNotification("Please fill in all required fields", "error");
-    }
-
     return isValid;
   }
 
