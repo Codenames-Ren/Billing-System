@@ -30,8 +30,6 @@ func main() {
 
 	//Inisialisasi Server
 	router := gin.Default()
-	
-	// routes.ViewRoute(router)
 
 	router.Use(func (c *gin.Context)  {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
@@ -46,9 +44,8 @@ func main() {
 		c.Next()
 	})
 
-	routes.ViewRoute(router)
-
 	//Setup Routing
+	routes.ViewRoute(router)
 	routes.UserRoutes(router, database.DB)
 	routes.ClientRoutes(router)
 	routes.BillingRoutes(router)
@@ -60,5 +57,5 @@ func main() {
 	if port == "" {
 		port = "8080"
 	}
-	router.Run(":" + port)
+	router.Run("0.0.0.0:" + port)
 }

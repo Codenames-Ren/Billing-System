@@ -7,7 +7,7 @@
 }
 
 :root {
-  --bg-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --bg-primary: linear-gradient(135deg, #3052e8 0%, #764ba2 100%);
   --bg-secondary: rgba(255, 255, 255, 0.1);
   --bg-sidebar: rgba(255, 255, 255, 0.1);
   --bg-sidebar-hover: rgba(255, 255, 255, 0.2);
