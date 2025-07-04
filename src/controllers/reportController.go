@@ -40,6 +40,8 @@ func GenerateReportPDF(c *gin.Context) {
 		return
 	}
 
+	endDate = endDate.Add(23*time.Hour + 59*time.Minute + 59*time.Second)
+
 	var billings []models.Billing
 
 	db := database.DB.Preload("Client").Preload("Package").Where("billings.status = ? AND billings.updated_at BETWEEN ? AND ?", "paid", startDate, endDate)
