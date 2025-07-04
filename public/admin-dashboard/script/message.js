@@ -165,7 +165,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("client-name").textContent = clientName;
     document.getElementById("client-whatsapp").textContent = whatsapp;
     document.getElementById("client-status").textContent =
-      status === "paid" ? "Sudah Bayar" : "Belum Bayar";
+      status === "paid" ? "Paid" : "Unpaid";
 
     const message = generateMessage(client, billing);
     document.getElementById("message-text").value = message;
@@ -237,7 +237,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const globalIndex = (currentPage - 1) * rowsPerPage + index + 1;
       const status = billing.Status || billing.status;
       const statusClass = status === "paid" ? "status-paid" : "status-unpaid";
-      const statusText = status === "paid" ? "Sudah Bayar" : "Belum Bayar";
+      const statusText = status === "paid" ? "Paid" : "Unpaid";
 
       const row = document.createElement("tr");
 
