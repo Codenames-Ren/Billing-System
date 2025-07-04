@@ -21,15 +21,15 @@
   visibility: visible;
 }
 
-/* Modal Container */
+/* Modal Container - Glassmorphism Style */
 .modal-container {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(20px);
   border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.2);
   width: 90%;
-  max-width: 800px;
+  max-width: 500px;
   max-height: 90vh;
   overflow-y: auto;
   transform: scale(0.8);
@@ -40,14 +40,14 @@
   transform: scale(1);
 }
 
-/* Modal Header */
+/* Modal Header - Glassmorphism */
 .modal-header {
   display: flex;
-  justify-content: between;
+  justify-content: space-between;
   align-items: center;
   padding: 1.5rem 2rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 20px 20px 0 0;
   backdrop-filter: blur(10px);
 }
@@ -57,12 +57,12 @@
   font-size: 1.5rem;
   font-weight: 600;
   color: #ffffff;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .modal-close {
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   font-size: 1.5rem;
   color: #ffffff;
   cursor: pointer;
@@ -71,17 +71,22 @@
   transition: all 0.2s ease;
   margin-left: auto;
   backdrop-filter: blur(10px);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .modal-close:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.2);
   transform: scale(1.05);
 }
 
-/* Progress Bar */
+/* Progress Bar - Glassmorphism */
 .progress-container {
   padding: 2rem 2rem 1rem;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(10px);
 }
 
@@ -99,7 +104,7 @@
   left: 25px;
   right: 25px;
   height: 2px;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.2);
   z-index: 1;
 }
 
@@ -113,7 +118,7 @@
   z-index: 2;
   width: 0%;
   transition: width 0.4s ease;
-  box-shadow: 0 0 10px rgba(79, 172, 254, 0.5);
+  box-shadow: 0 0 15px rgba(79, 172, 254, 0.6);
 }
 
 .progress-bar[data-current="1"]::after {
@@ -141,7 +146,7 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
   color: #ffffff;
   display: flex;
   align-items: center;
@@ -150,23 +155,23 @@
   font-size: 0.9rem;
   margin-bottom: 0.5rem;
   transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(15px);
 }
 
 .step-label {
   font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.8);
   font-weight: 500;
   transition: color 0.3s ease;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .progress-step.active .step-number {
   background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
   color: white;
-  box-shadow: 0 0 20px rgba(79, 172, 254, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 25px rgba(79, 172, 254, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .progress-step.active .step-label {
@@ -177,18 +182,18 @@
 .progress-step.completed .step-number {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+  box-shadow: 0 0 20px rgba(102, 126, 234, 0.6);
 }
 
 .progress-step.completed .step-label {
   color: #ffffff;
 }
 
-/* Modal Body */
+/* Modal Body - Glassmorphism */
 .modal-body {
   padding: 1rem 2rem;
-  min-height: 400px;
-  background: rgba(255, 255, 255, 0.05);
+  min-height: 300px;
+  background: rgba(255, 255, 255, 0.02);
   backdrop-filter: blur(10px);
 }
 
@@ -218,12 +223,12 @@
   font-size: 1.2rem;
   font-weight: 600;
   color: #ffffff;
-  border-bottom: 2px solid rgba(79, 172, 254, 0.8);
+  border-bottom: 2px solid rgba(79, 172, 254, 0.7);
   padding-bottom: 0.5rem;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* Form Styling */
+/* Form Styling - Glassmorphism */
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -241,12 +246,12 @@
   font-weight: 500;
   color: #ffffff;
   font-size: 0.9rem;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .required {
   color: #ff6b6b;
-  text-shadow: 0 0 5px rgba(255, 107, 107, 0.5);
+  text-shadow: 0 0 8px rgba(255, 107, 107, 0.6);
 }
 
 .form-group input,
@@ -254,32 +259,40 @@
 .form-group textarea {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.1);
   color: #ffffff;
   font-size: 0.9rem;
   transition: all 0.2s ease;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(15px);
+  box-sizing: border-box;
 }
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: rgba(79, 172, 254, 0.8);
-  box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.2);
+  border-color: rgba(79, 172, 254, 0.7);
+  box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.3);
   background: rgba(255, 255, 255, 0.15);
 }
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .form-group textarea {
   resize: vertical;
   min-height: 80px;
+}
+
+/* Select Options - Keep black text for readability */
+.form-group select option {
+  background: rgba(255, 255, 255, 0.9);
+  color: #000000;
+  padding: 0.5rem;
 }
 
 /* Password Container */
@@ -294,7 +307,7 @@
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
   padding: 0.25rem;
   font-size: 0.9rem;
@@ -305,7 +318,7 @@
   color: #ffffff;
 }
 
-/* Checkbox Styling */
+/* Checkbox Styling - Glassmorphism */
 .checkbox-group {
   display: flex;
   align-items: center;
@@ -318,7 +331,7 @@
   cursor: pointer;
   font-size: 0.9rem;
   color: #ffffff;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .checkbox-label input[type="checkbox"] {
@@ -328,7 +341,7 @@
 .checkmark {
   width: 18px;
   height: 18px;
-  border: 2px solid rgba(255, 255, 255, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 4px;
   margin-right: 0.5rem;
   position: relative;
@@ -339,8 +352,8 @@
 
 .checkbox-label input[type="checkbox"]:checked + .checkmark {
   background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  border-color: rgba(79, 172, 254, 0.8);
-  box-shadow: 0 0 10px rgba(79, 172, 254, 0.5);
+  border-color: rgba(79, 172, 254, 0.7);
+  box-shadow: 0 0 15px rgba(79, 172, 254, 0.6);
 }
 
 .checkbox-label input[type="checkbox"]:checked + .checkmark::after {
@@ -353,15 +366,15 @@
   font-size: 12px;
 }
 
-/* Review Section */
+/* Review Section - Glassmorphism */
 .review-section {
   margin-bottom: 2rem;
   padding: 1rem;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 12px;
-  border-left: 4px solid rgba(79, 172, 254, 0.8);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid rgba(79, 172, 254, 0.7);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .review-section h4 {
@@ -369,7 +382,7 @@
   color: #ffffff;
   font-size: 1rem;
   font-weight: 600;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .review-grid {
@@ -382,7 +395,7 @@
   display: flex;
   justify-content: space-between;
   padding: 0.5rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .review-item:last-child {
@@ -391,7 +404,7 @@
 
 .review-label {
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.7);
   font-size: 0.85rem;
 }
 
@@ -402,14 +415,14 @@
   text-align: right;
 }
 
-/* Modal Footer */
+/* Modal Footer - Glassmorphism */
 .modal-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 0 0 20px 20px;
   backdrop-filter: blur(10px);
 }
@@ -429,42 +442,42 @@
 }
 
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
   color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.2);
   transform: translateY(-1px);
 }
 
 .btn-export {
   background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
   color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 4px 16px rgba(79, 172, 254, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 20px rgba(79, 172, 254, 0.4);
 }
 
 .btn-export:hover {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+  box-shadow: 0 6px 25px rgba(79, 172, 254, 0.5);
 }
 
 /* Error States */
 .form-group.error input,
 .form-group.error select,
 .form-group.error textarea {
-  border-color: rgba(255, 107, 107, 0.8);
-  box-shadow: 0 0 10px rgba(255, 107, 107, 0.3);
+  border-color: rgba(255, 107, 107, 0.7);
+  box-shadow: 0 0 15px rgba(255, 107, 107, 0.4);
 }
 
 .error-message {
   color: #ff6b6b;
   font-size: 0.8rem;
   margin-top: 0.25rem;
-  text-shadow: 0 0 5px rgba(255, 107, 107, 0.5);
+  text-shadow: 0 0 8px rgba(255, 107, 107, 0.6);
 }
 
 /* Animation for form validation errors */
@@ -530,251 +543,64 @@
   }
 }
 
-/* Scrollbar Styling */
+/* Scrollbar Styling - Glassmorphism */
 .modal-container::-webkit-scrollbar {
   width: 8px;
 }
 
 .modal-container::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .modal-container::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 4px;
 }
 
 .modal-container::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.3);
 }
 
-/* DARK MODE STYLING (Enhanced Glassmorphism) */
+/* Dark Theme Support (Optional) */
 .dark-theme .modal-overlay {
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(15px);
 }
 
 .dark-theme .modal-container {
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(25px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .dark-theme .modal-header {
-  background: rgba(0, 0, 0, 0.2);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.dark-theme .modal-title {
-  color: #ffffff;
-}
-
-.dark-theme .modal-close {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-}
-
-.dark-theme .modal-close:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.dark-theme .progress-container {
   background: rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.dark-theme .progress-bar::before {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.dark-theme .step-number {
-  background: rgba(255, 255, 255, 0.15);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.dark-theme .step-label {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.dark-theme .progress-step.active .step-label {
-  color: #ffffff;
-}
-
-.dark-theme .progress-step.completed .step-label {
-  color: #ffffff;
-}
-
-.dark-theme .modal-body {
+.dark-theme .modal-footer {
   background: rgba(0, 0, 0, 0.1);
-}
-
-.dark-theme .step-title {
-  color: #ffffff;
-}
-
-.dark-theme .form-group label {
-  color: #ffffff;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .dark-theme .form-group input,
 .dark-theme .form-group select,
 .dark-theme .form-group textarea {
   background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .dark-theme .form-group input:focus,
 .dark-theme .form-group select:focus,
 .dark-theme .form-group textarea:focus {
-  border-color: rgba(79, 172, 254, 0.8);
-  box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.2);
   background: rgba(0, 0, 0, 0.3);
-}
-
-.dark-theme .form-group input::placeholder,
-.dark-theme .form-group textarea::placeholder {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.dark-theme .password-toggle {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.dark-theme .password-toggle:hover {
-  color: #ffffff;
-}
-
-.dark-theme .checkbox-label {
-  color: #ffffff;
-}
-
-.dark-theme .checkmark {
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  background: rgba(0, 0, 0, 0.2);
-}
-
-.dark-theme .review-section {
-  background: rgba(0, 0, 0, 0.2);
-  border-left: 4px solid rgba(79, 172, 254, 0.8);
-}
-
-.dark-theme .review-section h4 {
-  color: #ffffff;
-}
-
-.dark-theme .review-item {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.dark-theme .review-label {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.dark-theme .review-value {
-  color: #ffffff;
-}
-
-.dark-theme .modal-footer {
-  background: rgba(0, 0, 0, 0.2);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.dark-theme .btn-secondary {
-  background: rgba(255, 255, 255, 0.15);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.dark-theme .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.25);
-}
-
-.dark-theme .btn-export {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  color: white;
-}
-
-.dark-theme .btn-export:hover {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-/* Dark Mode Error States */
-.dark-theme .form-group.error input,
-.dark-theme .form-group.error select,
-.dark-theme .form-group.error textarea {
-  border-color: rgba(255, 107, 107, 0.8);
-}
-
-.dark-theme .error-message {
-  color: #ff6b6b;
-}
-
-/* Dark Mode Select Options */
-.dark-theme .form-group select option {
-  background: rgba(0, 0, 0, 0.8);
-  color: #ffffff;
-}
-
-/* Dark Mode Scrollbar */
-.dark-theme .modal-container::-webkit-scrollbar {
-  width: 8px;
-}
-
-.dark-theme .modal-container::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
-}
-
-.dark-theme .modal-container::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
-}
-
-.dark-theme .modal-container::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.4);
-}
-
-/* Animation for form validation errors in dark mode */
-.dark-theme .form-group.error input,
-.dark-theme .form-group.error select,
-.dark-theme .form-group.error textarea {
-  animation: shake 0.3s ease-in-out;
-}
-
-/* Additional Glassmorphism Enhancements */
-.modal-overlay {
-  backdrop-filter: blur(12px);
-}
-
-.dark-theme .modal-overlay {
-  backdrop-filter: blur(20px);
-}
-
-.progress-step.active .step-number {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  color: white;
-}
-
-.progress-step.completed .step-number {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-}
-
-.dark-theme .progress-step.active .step-number {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  color: white;
-}
-
-.dark-theme .progress-step.completed .step-number {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  border-color: rgba(79, 172, 254, 0.7);
 }
 
 /* Glassmorphism CSS Variables */
 :root {
-  --glass-bg: rgba(255, 255, 255, 0.15);
+  --glass-bg: rgba(255, 255, 255, 0.1);
   --glass-border: rgba(255, 255, 255, 0.2);
   --glass-text: #ffffff;
   --glass-blur: blur(20px);
