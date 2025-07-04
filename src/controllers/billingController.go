@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"ren/backend-api/src/database"
 	"ren/backend-api/src/models"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -43,9 +44,28 @@ func UpdateBillingStatus(c *gin.Context) {
 		return
 	}
 
+	var billing models.Billing
+	if err := database.DB.First(&billing, "id = ?", id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Billing not found"})
+		return
+	}
+
+	oldStatus := billing.Status
+	today := time.Now()
+	dueDate := billing.DueDate
+
 	if err := database.DB.Model(&models.Billing{}).Where("id = ?", id).Update("status", req.Status).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update status"})
 		return
+	}
+
+	if oldStatus == "unpaid" && req.Status == "paid" && (today.Equal(dueDate) || today.After(dueDate)) {
+		newDueDate := dueDate.AddDate(0, 1, 0)
+
+		if err := database.DB.Model(&billing).Update("due_date", newDueDate).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update due date"})
+			return
+		}
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Bill status updated successfully!"})
