@@ -50,6 +50,40 @@ body::before {
   z-index: 1;
 }
 
+/* Tambahkan style ini ke login.css */
+
+.password-input-container {
+  position: relative;
+}
+
+.password-input-container input {
+  padding-right: 50px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #9ca3af;
+  font-size: 16px;
+  transition: color 0.3s ease;
+  z-index: 10;
+}
+
+.toggle-password:hover {
+  color: #6366f1;
+}
+
+.toggle-password i {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .login-form {
   background: rgba(45, 45, 45, 0.95);
   backdrop-filter: blur(20px);
