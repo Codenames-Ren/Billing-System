@@ -21,15 +21,15 @@
   visibility: visible;
 }
 
-/* Modal Container - Glassmorphism Style */
+/* Modal Container - Glassmorphism Style - ENLARGED */
 .modal-container {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(20px);
   border-radius: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  width: 90%;
-  max-width: 500px;
+  width: 95%;
+  max-width: 800px; /* Diperbesar dari 500px ke 800px */
   max-height: 90vh;
   overflow-y: auto;
   transform: scale(0.8);
@@ -40,12 +40,12 @@
   transform: scale(1);
 }
 
-/* Modal Header - Glassmorphism */
+/* Modal Header - Glassmorphism - ENLARGED PADDING */
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 2rem;
+  padding: 2rem 3rem; /* Diperbesar dari 1.5rem 2rem */
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(255, 255, 255, 0.05);
   border-radius: 20px 20px 0 0;
@@ -54,7 +54,7 @@
 
 .modal-title {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.8rem; /* Diperbesar dari 1.5rem */
   font-weight: 600;
   color: #ffffff;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -71,8 +71,8 @@
   transition: all 0.2s ease;
   margin-left: auto;
   backdrop-filter: blur(10px);
-  width: 40px;
-  height: 40px;
+  width: 45px; /* Diperbesar dari 40px */
+  height: 45px; /* Diperbesar dari 40px */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -83,9 +83,9 @@
   transform: scale(1.05);
 }
 
-/* Progress Bar - Glassmorphism */
+/* Progress Bar - Glassmorphism - ENLARGED PADDING */
 .progress-container {
-  padding: 2rem 2rem 1rem;
+  padding: 2.5rem 3rem 1.5rem; /* Diperbesar dari 2rem 2rem 1rem */
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(10px);
 }
@@ -94,7 +94,7 @@
   display: flex;
   justify-content: space-between;
   position: relative;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem; /* Diperbesar dari 1rem */
 }
 
 .progress-bar::before {
@@ -143,8 +143,8 @@
 }
 
 .step-number {
-  width: 40px;
-  height: 40px;
+  width: 45px; /* Diperbesar dari 40px */
+  height: 45px; /* Diperbesar dari 40px */
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.1);
   color: #ffffff;
@@ -152,15 +152,15 @@
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  font-size: 0.9rem;
-  margin-bottom: 0.5rem;
+  font-size: 1rem; /* Diperbesar dari 0.9rem */
+  margin-bottom: 0.75rem; /* Diperbesar dari 0.5rem */
   transition: all 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(15px);
 }
 
 .step-label {
-  font-size: 0.8rem;
+  font-size: 0.9rem; /* Diperbesar dari 0.8rem */
   color: rgba(255, 255, 255, 0.8);
   font-weight: 500;
   transition: color 0.3s ease;
@@ -189,10 +189,10 @@
   color: #ffffff;
 }
 
-/* Modal Body - Glassmorphism */
+/* Modal Body - Glassmorphism - ENLARGED PADDING */
 .modal-body {
-  padding: 1rem 2rem;
-  min-height: 300px;
+  padding: 2rem 3rem; /* Diperbesar dari 1rem 2rem */
+  min-height: 400px; /* Diperbesar dari 300px */
   background: rgba(255, 255, 255, 0.02);
   backdrop-filter: blur(10px);
 }
@@ -219,33 +219,33 @@
 }
 
 .step-title {
-  margin: 0 0 1.5rem 0;
-  font-size: 1.2rem;
+  margin: 0 0 2rem 0; /* Diperbesar dari 1.5rem */
+  font-size: 1.4rem; /* Diperbesar dari 1.2rem */
   font-weight: 600;
   color: #ffffff;
   border-bottom: 2px solid rgba(79, 172, 254, 0.7);
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.75rem; /* Diperbesar dari 0.5rem */
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* Form Styling - Glassmorphism */
+/* Form Styling - Glassmorphism - ENLARGED SPACING */
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: 2rem; /* Diperbesar dari 1rem */
+  margin-bottom: 1.5rem; /* Diperbesar dari 1rem */
 }
 
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem; /* Diperbesar dari 1rem */
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem; /* Diperbesar dari 0.5rem */
   font-weight: 500;
   color: #ffffff;
-  font-size: 0.9rem;
+  font-size: 1rem; /* Diperbesar dari 0.9rem */
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
@@ -258,12 +258,12 @@
 .form-group select,
 .form-group textarea {
   width: 100%;
-  padding: 0.75rem;
+  padding: 1rem; /* Diperbesar dari 0.75rem */
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.1);
   color: #ffffff;
-  font-size: 0.9rem;
+  font-size: 1rem; /* Diperbesar dari 0.9rem */
   transition: all 0.2s ease;
   backdrop-filter: blur(15px);
   box-sizing: border-box;
@@ -285,14 +285,14 @@
 
 .form-group textarea {
   resize: vertical;
-  min-height: 80px;
+  min-height: 100px; /* Diperbesar dari 80px */
 }
 
 /* Select Options - Keep black text for readability */
 .form-group select option {
   background: rgba(255, 255, 255, 0.9);
   color: #000000;
-  padding: 0.5rem;
+  padding: 0.75rem; /* Diperbesar dari 0.5rem */
 }
 
 /* Password Container */
@@ -302,15 +302,15 @@
 
 .password-toggle {
   position: absolute;
-  right: 12px;
+  right: 15px; /* Diperbesar dari 12px */
   top: 50%;
   transform: translateY(-50%);
   background: none;
   border: none;
   color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
-  padding: 0.25rem;
-  font-size: 0.9rem;
+  padding: 0.5rem; /* Diperbesar dari 0.25rem */
+  font-size: 1rem; /* Diperbesar dari 0.9rem */
   transition: color 0.2s ease;
 }
 
@@ -318,18 +318,18 @@
   color: #ffffff;
 }
 
-/* Checkbox Styling - Glassmorphism */
+/* Checkbox Styling - Glassmorphism - ENLARGED */
 .checkbox-group {
   display: flex;
   align-items: center;
-  margin-top: 1rem;
+  margin-top: 1.5rem; /* Diperbesar dari 1rem */
 }
 
 .checkbox-label {
   display: flex;
   align-items: center;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 1rem; /* Diperbesar dari 0.9rem */
   color: #ffffff;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
@@ -339,11 +339,11 @@
 }
 
 .checkmark {
-  width: 18px;
-  height: 18px;
+  width: 20px; /* Diperbesar dari 18px */
+  height: 20px; /* Diperbesar dari 18px */
   border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 4px;
-  margin-right: 0.5rem;
+  margin-right: 0.75rem; /* Diperbesar dari 0.5rem */
   position: relative;
   transition: all 0.2s ease;
   background: rgba(255, 255, 255, 0.1);
@@ -363,13 +363,13 @@
   left: 2px;
   color: white;
   font-weight: bold;
-  font-size: 12px;
+  font-size: 14px; /* Diperbesar dari 12px */
 }
 
-/* Review Section - Glassmorphism */
+/* Review Section - Glassmorphism - ENLARGED */
 .review-section {
-  margin-bottom: 2rem;
-  padding: 1rem;
+  margin-bottom: 2.5rem; /* Diperbesar dari 2rem */
+  padding: 1.5rem; /* Diperbesar dari 1rem */
   background: rgba(255, 255, 255, 0.08);
   border-radius: 12px;
   border-left: 4px solid rgba(79, 172, 254, 0.7);
@@ -378,9 +378,9 @@
 }
 
 .review-section h4 {
-  margin: 0 0 1rem 0;
+  margin: 0 0 1.5rem 0; /* Diperbesar dari 1rem */
   color: #ffffff;
-  font-size: 1rem;
+  font-size: 1.2rem; /* Diperbesar dari 1rem */
   font-weight: 600;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
@@ -388,13 +388,13 @@
 .review-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
+  gap: 1.5rem; /* Diperbesar dari 0.75rem */
 }
 
 .review-item {
   display: flex;
   justify-content: space-between;
-  padding: 0.5rem 0;
+  padding: 0.75rem 0; /* Diperbesar dari 0.5rem */
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -405,22 +405,22 @@
 .review-label {
   font-weight: 500;
   color: rgba(255, 255, 255, 0.7);
-  font-size: 0.85rem;
+  font-size: 0.95rem; /* Diperbesar dari 0.85rem */
 }
 
 .review-value {
   font-weight: 600;
   color: #ffffff;
-  font-size: 0.85rem;
+  font-size: 0.95rem; /* Diperbesar dari 0.85rem */
   text-align: right;
 }
 
-/* Modal Footer - Glassmorphism */
+/* Modal Footer - Glassmorphism - ENLARGED PADDING */
 .modal-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 2rem;
+  padding: 2rem 3rem; /* Diperbesar dari 1.5rem 2rem */
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(255, 255, 255, 0.05);
   border-radius: 0 0 20px 20px;
@@ -428,13 +428,13 @@
 }
 
 .modal-footer .btn {
-  padding: 0.75rem 1.5rem;
+  padding: 1rem 2rem; /* Diperbesar dari 0.75rem 1.5rem */
   border-radius: 12px;
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 1rem; /* Diperbesar dari 0.9rem */
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem; /* Diperbesar dari 0.5rem */
   transition: all 0.2s ease;
   cursor: pointer;
   border: none;
@@ -475,8 +475,8 @@
 
 .error-message {
   color: #ff6b6b;
-  font-size: 0.8rem;
-  margin-top: 0.25rem;
+  font-size: 0.9rem; /* Diperbesar dari 0.8rem */
+  margin-top: 0.5rem; /* Diperbesar dari 0.25rem */
   text-shadow: 0 0 8px rgba(255, 107, 107, 0.6);
 }
 
@@ -500,27 +500,28 @@
   }
 }
 
-/* Responsive */
+/* Responsive - UPDATED FOR LARGER SIZES */
 @media (max-width: 768px) {
   .modal-container {
-    width: 95%;
-    margin: 1rem;
+    width: 98%;
+    margin: 0.5rem;
+    max-width: none;
   }
 
   .modal-header,
   .modal-body,
   .modal-footer {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
 
   .progress-container {
-    padding: 1rem;
+    padding: 1.5rem;
   }
 
   .form-row {
     grid-template-columns: 1fr;
-    gap: 0.5rem;
+    gap: 1rem;
   }
 
   .review-grid {
@@ -545,7 +546,7 @@
 
 /* Scrollbar Styling - Glassmorphism */
 .modal-container::-webkit-scrollbar {
-  width: 8px;
+  width: 10px; /* Diperbesar dari 8px */
 }
 
 .modal-container::-webkit-scrollbar-track {
@@ -554,7 +555,7 @@
 
 .modal-container::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
+  border-radius: 5px; /* Diperbesar dari 4px */
 }
 
 .modal-container::-webkit-scrollbar-thumb:hover {
