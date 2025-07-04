@@ -136,9 +136,9 @@ body {
 /* Sidebar Styles */
 .sidebar {
   width: 260px;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--bg-sidebar);
   backdrop-filter: blur(20px);
-  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  border-right: 1px solid var(--border-color);
   padding: 20px 0;
   position: fixed;
   height: 100vh;
