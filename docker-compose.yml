@@ -22,7 +22,7 @@ services:
       POSTGRES_PASSWORD: 945313
       POSTGRES_DB: billing-system
     ports:
-      - "5432:5432"
+      - "5431:5432"
     volumes:
       - dbdata:/var/lib/postgresql/data
 
