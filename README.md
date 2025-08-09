@@ -399,3 +399,6 @@ Sumber daya dan tools yang membantu pengembangan proyek ini:
 [JavaScript-url]: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 [MikroTik.com]: https://img.shields.io/badge/mikrotik-%23293241.svg?style=for-the-badge&logo=mikrotik&logoColor=white
 [MikroTik-url]: https://mikrotik.com/
+
+
+# Hiatus
