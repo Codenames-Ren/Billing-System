@@ -401,4 +401,4 @@ Sumber daya dan tools yang membantu pengembangan proyek ini:
 [MikroTik-url]: https://mikrotik.com/
 
 
-# Hiatus.
+# Hiatus
